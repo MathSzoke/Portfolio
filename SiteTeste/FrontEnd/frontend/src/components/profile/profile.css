@@ -1,0 +1,574 @@
+.line
+{
+  margin-top: 1em;
+  border-bottom: 0.1rem solid var(--text-black-100);
+  margin-bottom: 0.5em;
+}
+
+.modalBackdrop
+{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.modalContentWrapper
+{
+  position: fixed;
+  width: 70rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  background: var(--bg-black-100);
+  border-radius: 10px;
+  margin: auto;
+  top: 8rem;
+  left: 1rem;
+  bottom: 8rem;
+  right: 1rem;
+  padding: 50px;
+  padding-top: 10px;
+  z-index: 101;
+  border: 1px solid var(--skin-color);
+  box-shadow: inset 0 0 20px grey;
+}
+
+.modalContent
+{
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  max-height: calc(100vh - 14rem);
+}
+
+.morphModalTitle
+{
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  border-bottom: 0.1rem solid var(--text-black-100);
+  font-size: 2rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.modalContentHeader
+{
+  display: grid;
+  grid-template-columns: 0fr 1fr 1fr;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  padding: 2rem 0 2rem;
+  border-bottom: 0.1rem solid var(--text-black-100);
+}
+
+.style-switcher-profile
+{
+  position: fixed;
+  right: 0px;
+  top: 1px;
+  padding: 15px;
+  width: 200px;
+  height: 4.5rem;
+  border: 1px solid var(--bg-black-50);
+  background: var(--bg-black-100);
+  z-index: 101;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  transform: translateX(200%);
+}
+
+.style-switcher-profile.open
+{
+    transform: none;
+}
+
+.profileBtn 
+{
+    background-color: transparent;
+    border: 1px solid var(--skin-color);
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    bottom: 5px;
+    position: absolute;
+    color: var(--text-black-900);
+    left: 10px;
+    right: 10px;
+}
+.profileBtn:hover
+{
+  background: var(--hover-black);
+}
+
+.deviceImage
+{
+  margin-right: 1rem;
+  color: var(--skin-color);
+  font-size: 4rem;
+}
+
+.userName
+{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.modalContentWrapper .modalContentHeader .deviceStatus 
+{
+  font-style: italic;
+}
+
+.modalContentWrapper .modalContentHeader .userName, .modalContentWrapper .modalContentHeader .deviceStatus 
+{
+  display: block;
+}
+
+span 
+{
+  color: var(--text-black-900);
+}
+
+/* Ball status online*/
+div.onlineIndicator
+{
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 5px;
+  background-color: #0fcc45;
+  border-radius: 50%;
+}
+span.blinkOnline
+{
+  display: block;
+  width: 15px;
+  height: 15px;
+  
+  background-color: #0fcc45;
+  opacity: 0.7;
+  border-radius: 50%;
+  
+  animation: blinkOnline 1s linear infinite;
+}
+@keyframes blinkOnline 
+{
+  100% 
+  { 
+    transform: scale(2, 2); 
+    opacity: 0;
+  }
+}
+
+/* Ball status offline*/
+
+span.online-text 
+{
+  display: inline;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+div.offlineIndicator
+{
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 5px;
+  background-color: #cc0f0f;
+  border-radius: 50%;
+}
+span.blinkOffline
+{
+  display: block;
+  width: 15px;
+  height: 15px;
+  
+  background-color: #cc0f0f;
+  opacity: 0.7;
+  border-radius: 50%;
+  
+  animation: blinkOffline 1s linear infinite;
+}
+@keyframes blinkOffline
+{
+  100% 
+  { 
+    transform: scale(2, 2); 
+    opacity: 0;
+  }
+}
+/**/
+
+div.divPerson
+{
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  width: 8em;
+  height: 8em;
+  place-self: end;
+}
+
+div.imgDivPerson
+{
+  width: 100%;
+  height: 100%;
+  background: var(--hover-black);
+  border-radius: 10px;
+}
+
+div.divImg
+{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+img.img
+{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+button.buttonImage
+{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: var(--text-black-900);
+  background: var(--bg-black-50);
+  border: none;
+  border-radius: 50%;
+  width: 20%;
+  height: 20%;
+  cursor: pointer;
+}
+
+.buttonImage:hover
+{
+  color: #005b80;
+}
+
+/* MODAL IMAGE PROFILE */
+
+.modalBackdropImage
+{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200;
+}
+
+.modalContentCropImage
+{
+  position: fixed;
+  width: 25rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(70vh - 2rem);
+  background: var(--bg-black-100);
+  border-radius: 10px;
+  margin: auto;
+  top: 8rem;
+  left: 1rem;
+  bottom: 8rem;
+  right: 1rem;
+  padding: 30px;
+  padding-top: 10px;
+  z-index: 201;
+  border: 1px solid var(--skin-color);
+  box-shadow: inset 0 0 20px grey;
+  overflow: auto;
+}
+
+.morphModalHeader
+{
+  border-bottom: 0.1rem solid var(--text-black-100);
+  align-items: center;
+  display: flex;
+  height: 56px;
+  min-height: 56px;
+  width: 100%;
+  z-index: 2;
+}
+
+.closeModalImage
+{
+  color: var(--text-black-500);
+  background: none;
+  border: none;
+  cursor: pointer;
+  left: 2.5em;
+  position: absolute;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 0 !important;
+}
+.closeModalImage:hover
+{
+  background: var(--hover-black);
+}
+
+.textHeaderPhoto
+{
+  font-size: 1.125rem;
+  color: var(--text-black-500);
+  font-family: "Google Sans",Roboto,Arial,sans-serif;
+  position: absolute;
+  left: 8em;
+}
+
+.explainInfoImg
+{
+  font-family: Roboto,Arial,sans-serif;
+  line-height: 1.25rem;
+  font-size: .875rem;
+  letter-spacing: .0142857143em;
+  font-weight: 400;
+  color: var(--text-black-100);
+  margin-top: 3em;
+  margin-bottom: 3em;
+  user-select: none;
+}
+
+.locationImageProfile
+{
+  display: flex;
+  height: min(100vw - 38px,268px);
+  justify-content: center;
+  margin: 3em 0 3em 0;
+  min-height: 96px;
+  width: 100%;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background: var(--bg-black-900);
+  border-radius: 20px;
+}
+
+.photageProfile
+{
+  border-radius: 1em;
+  height: 100%;
+  max-width: 100%;
+}
+
+button.changeImg, button.buttonRemove
+{
+  width: 80%;
+  height: 40px;
+  margin: 10px auto;
+  justify-content: center;
+  display: block;
+  color: #fff;
+  background-color: var(--skin-color);
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: 20px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  transition: .2s ease-in;
+  cursor: pointer;
+  user-select: none;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: .875rem;
+}
+button:hover
+{
+  transform: scale(1.05);
+}
+
+div.selectionPartChange:hover div.optionsChangePhoto { display: flex; }
+
+button.photoGallery:hover, button.photoCamera:hover { transform: scale(.95); }
+
+div.buttonsProfile
+{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.iconEmptyProfile
+{
+  width: 70%;
+  height: 70%;
+  margin: auto;
+}
+
+.buttonCloseWindow
+{
+  width: 30px;
+  height: 30px;
+}
+
+.varColorDark
+{
+  color: var(--text-black-900);
+}
+
+.iconEmptyComponentProfile
+{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.mainModal
+{
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: auto;
+}
+
+div.selectionPartChange, div.buttonRemoveImg
+{
+  flex-grow: 1;
+  display: flex;
+}
+
+div.optionsChangePhoto
+{
+  justify-content: space-between;
+  display: none;
+  position: absolute;
+  width: 60%;
+}
+
+button.photoCamera
+{
+  margin-left: 0.5em;
+}
+
+button.photoGallery, button.photoCamera
+{
+  width: 100%;
+  height: 40px;
+  justify-content: center;
+  display: block;
+  color: #fff;
+  background-color: var(--skin-color);
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  transition: .2s ease-in;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: .875rem;
+  flex-grow: 1;
+}
+
+/**/
+
+p.fileSelected
+{
+  color: var(--text-black-500);
+  position: absolute;
+  bottom: 2em;
+  font-family: math;
+}
+
+@media(max-height:1030px)
+{
+    .optionsChangePhoto
+    {
+      padding-bottom: 5em;
+    }
+}
+
+@media(max-width: 490px)
+{
+  .modalContentHeader, .morphModalTitle
+  {
+    width: 200%;
+  }
+  .modalContent
+  {
+    overflow: auto;
+  }
+}
+
+.modalContentWrapperConfirmDelete
+{
+  position: fixed;
+  width: 30rem;
+  height: 15em;
+  max-width: calc(90vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  background: var(--bg-black-100);
+  border-radius: 10px;
+  margin: auto;
+  top: 11rem;
+  left: 1rem;
+  bottom: 11rem;
+  right: 1rem;
+  z-index: 202;
+  border: 1px solid var(--skin-color);
+  box-shadow: inset 0 0 20px grey;
+}
+
+.modalContentConfirmDelete
+{
+  width: 100%;
+  height: 100%;
+}
+
+.contentsButtons
+{  
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  bottom: 2em;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+.contentCancelBtn, .contentDeleteBtn, .contentRemoveBtn
+{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  left: 1em;
+  position: relative;
+}
+
+.btnRemove
+{
+  background: cornflowerblue !important;
+}
+
+.btnDelete
+{
+  background: red !important;
+}
+
+.areYouSure
+{
+  margin-top: 1.5em;
+  padding: 1em;
+  text-align: center;
+}
+
+
+.modalBackdropNoBackground
+{
+  opacity: 1;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 201;
+}

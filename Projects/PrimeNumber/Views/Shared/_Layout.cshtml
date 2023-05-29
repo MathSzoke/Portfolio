@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notify.css" asp-append-version="true" />
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbarNP navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" id="nav">
+            <div class="text-center">
+                <p class="text-center title">Números primos</p>
+            </div>
+        </nav>
+    </header>
+
+    <div class="col-md-12 text-center">
+        <div class="info">
+            <i class="icon-info-sign"></i>
+            <span class="extra-info"><strong><a class="hover-underline aBtn" id="testeID">Você sabe o que é números primos?</a></strong></span>
+        </div>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3 mainContainer">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/textsInfo.js" asp-append-version="true"></script>
+    <script src="~/js/notify.js" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#testeID").on("click", function () {
+                $(".modalBackdrop").show();
+                $(".modalContainer").show();
+            });
+        })
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

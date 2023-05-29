@@ -1,0 +1,282 @@
+/* CSS of both files (Login and register) */
+
+:root
+{
+    --background-color-main: linear-gradient(to bottom, #ffffff, #e9e9e9);
+    --background-color-container: linear-gradient(to bottom, #ffffff, lightgray, lightgray);
+    --bg-code-input: rgba(126,126,126,0.1);
+}
+body.dark, .main.dark
+{
+    --background-color-main: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+    --background-color-container: linear-gradient(to bottom, #24243e, #302b63, #ffffff);
+    --bg-code-input: rgb(255 255 255 / 28%);
+}
+
+/*---------------------------------------*/
+
+@keyframes overshadowing-dx 
+{
+	0%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+		box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	}
+	100%
+    {
+		z-index: 1;
+		transform: perspective(100px) translate3d(100px, 0px, -30px);
+		opacity: 0.5;
+		box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+	}
+}
+@keyframes overshadowing-sx 
+{
+	0%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+		box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	}
+	100%
+    {
+		z-index: 1;
+		transform: perspective(100px) translate3d(-100px, 0px, -30px);
+		opacity: 0.5;
+		box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+	}
+}
+@keyframes foregrounding-dx 
+{
+	0%
+    {
+		z-index:1;
+		transform: perspective(100px) translate3d(100px, 0px, -30px);
+		opacity: 0.5;
+	}
+	50%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(400px, 0px, -30px);
+	}
+	100%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+	}
+}
+@keyframes foregrounding-sx 
+{
+	0%
+    {
+		z-index:1;
+		transform: perspective(100px) translate3d(-100px, 0px, -30px);
+		opacity: 0.5;
+	}
+	50%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(-400px, 0px, -30px);
+	}
+	100%
+    {
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+	}
+}
+
+
+/*---------------------------------------*/
+
+.active-dx
+{
+	animation-name: foregrounding-dx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+    margin-top: -6em;
+    z-index: 103 !important;
+}
+.active-sx
+{
+	animation-name: foregrounding-sx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+.inactive-dx
+{
+	animation-name: overshadowing-dx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+.inactive-sx
+{
+	animation-name: overshadowing-sx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+    margin-top: 0em;
+    margin-right: -3em;
+}
+
+/*---------------------------------------*/
+
+#chk 
+{
+    display: none !important;
+}
+
+.main 
+{
+    width: 30em;
+    height: 50em;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px #000;
+    z-index: 103 !important;
+    background: var(--background-color-main);
+    position: fixed;
+    margin: auto;
+    top: 8rem;
+    left: 1rem;
+    bottom: 8rem;
+    right: 1rem;
+}
+
+.w100
+{
+	width: 85%;
+	text-align: center;
+    background-color: white;
+}
+
+.w100,
+button
+{
+	outline: none !important;
+    margin-top: 1em;
+}
+
+#chk:checked ~ .login 
+{
+    transform: translateY(-13em);
+}
+    #chk:checked ~ .login label 
+    {
+        transform: scale(1);
+    }
+#chk:checked ~ .signup label 
+{
+    transform: scale(.8);
+}
+
+label 
+{
+    color: var(--skin-color);
+    font-size: 2.3em;
+    justify-content: center;
+    display: flex;
+    margin: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+    user-select: none;
+}
+input 
+{
+    width: 60%;
+    height: 20px;
+    background: #e0dede;
+    justify-content: center;
+    display: flex;
+    margin: 1em auto;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-align: center;
+}
+input[type ='text']
+{
+    background: none;
+    display: block;
+    text-align: center;
+    border: 2px solid var(--skin-color);
+    margin: 1em auto;
+    padding: 10px;
+    width: 200px;
+    outline: none;
+    color: var(--bg-black-900);
+    border-radius: 24px;
+    transition: 0.25s;
+    width: 70%;
+    user-select: none;
+}
+input[type ='text']:focus
+{
+    transform: scale(1.05);
+    border-color: #3498db;
+}
+input[type ='email']
+{
+    background: none;
+    display: block;
+    text-align: center;
+    border: 2px solid var(--skin-color);
+    margin: 1em auto;
+    padding: 1.7em;
+    outline: none;
+    color: var(--bg-black-900);
+    border-radius: 24px;
+    transition: 0.25s;
+    width: 70%;
+    user-select: none;
+}
+input[type ='email']:focus
+{
+    transform: scale(1.05);
+    border-color: #3498db;
+}
+input[type ='password']
+{
+    background: none;
+    display: block;
+    text-align: center;
+    border: 2px solid var(--skin-color);
+    margin: 1em auto;
+    padding: 1.7em;
+    outline: none;
+    color: var(--bg-black-900);
+    border-radius: 24px;
+    transition: 0.25s;
+    width: 70%;
+    user-select: none;
+}
+input[type ='password']:focus
+{
+    transform: scale(1.05);
+    border-color: #3498db;    
+}
+input[type = 'submit']
+{
+    right: 30px;
+    position: absolute;
+    width: 65px;
+    height: 41px;
+    background: var(--skin-color);
+    color: white;
+    bottom: 24px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .2s ease-in;
+    user-select: none;
+}
+input[type = 'submit']:hover
+{
+    transform: scale(1.05);
+}

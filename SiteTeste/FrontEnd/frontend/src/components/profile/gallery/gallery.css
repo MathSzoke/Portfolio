@@ -1,0 +1,294 @@
+.modalContentWrapperGallery
+{
+    position: fixed;
+    width: 65rem;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(70vh - 2rem);
+    background: var(--bg-black-100);
+    border-radius: 10px;
+    margin: auto;
+    top: 8rem;
+    left: 1rem;
+    bottom: 8rem;
+    right: 1rem;
+    padding: 30px;
+    padding-top: 10px;
+    z-index: 201;
+    border: 1px solid var(--skin-color);
+    box-shadow: inset 0 0 20px grey;
+    overflow: auto;
+}
+
+header.gHeader
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    align-items: center;
+}
+
+button.btnBackGallery
+{
+    float: left;
+    padding: 1em;
+    font-size: 10px;
+    background: none !important;
+}
+
+button.btnBackGallery:hover
+{
+    background: var(--hover-black) !important;
+}
+
+span.titleGallery
+{
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+    line-height: 1.5rem;
+    font-size: 1.125rem;
+    letter-spacing: 0;
+    font-weight: 400;
+    width: 100%;
+    user-select: none;
+}
+
+div.galleryHeader
+{
+    border-bottom: 1px solid var(--text-black-500);
+    padding-bottom: 1.5em;
+    padding-top: 0.5em;
+}
+
+.marginTop5
+{
+    margin-top: 5em;
+}
+
+.marginTop1
+{
+    margin-top: 1em;
+}
+
+div.allPhotos
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+button.btnAddMore
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 2em;
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: var(--color-options-editor);
+    margin: 0;
+}
+
+.w25h25
+{
+    width: 25px;
+    height: 25px;
+}
+
+p.txtAddMore
+{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.photo
+{
+    width: 10em;
+    height: 15em;
+    background: var(--hover-black);
+    border: none;
+    border-radius: 1.8em;
+    margin: 1em;
+}
+.images
+{
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 1.8em;
+}
+.photo:hover
+{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.fieldAddPhoto
+{
+    width: 10em;
+    height: 15em;
+    background: var(--hover-black);
+    border: none;
+    border-radius: 1.8em;
+    margin: 1em;
+}
+
+.fieldAddPhoto:hover
+{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* HEADER OPTIONS EDIT / DELETE PHOTOS */
+
+.contentsGallery
+{
+    background: var(--bg-black-50);
+    border-radius: 25px;
+}
+
+.headerPhotos
+{
+    margin: 2em 0 0 0;
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.optionsPhotos
+{
+    display: flex;
+    align-items: center;
+    margin-left: 2em;
+}
+
+.anotherOptions
+{
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-inline-start: auto;
+    margin-right: 2em;
+}
+
+.isLoadingGallery
+{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    right: 50%;
+    top: 50%;
+    margin: -10%;
+}
+
+.itemsHeaderPhoto
+{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1em;
+}
+
+.btnReloadGallery, .btnDeletePhoto, .btnAlterPhoto
+{
+    color: var(--bg-code-input);
+}
+
+/* Estilizando o checkbox */
+
+input[type = 'checkbox']
+{
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid var(--bg-code-input);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    margin: auto;
+}
+
+.checkbox:checked 
+{
+    background-color: transparent;
+}
+
+.checkboxPhoto:before 
+{
+    content: "";
+}
+
+.checkboxPhoto:checked::before
+{
+    content: "✓";
+}
+
+.allChecked::before
+{
+    content: "✓";
+    font-size: 16px;
+    color: var(--text-black-500);
+}
+
+.someChecked::before
+{
+    content: "-" !important;
+    color: var(--color-options-editor);
+    font-size: 40px !important;
+    top: -21px !important;
+    position: relative !important;
+}
+
+.noOneChecked::before
+{
+    content: "";
+}
+
+.checkbox:checked:before 
+{
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-black-500);
+}
+
+.inputCheckbox:hover, .reloadingPhotos:hover, .deletingPhotos:hover, .alterPhoto:hover
+{
+    cursor: pointer;
+    border-radius: 1em;
+    background: rgb(255 255 255 / 15%);
+}
+
+.checkboxPhoto
+{
+    position: fixed !important;
+    margin: 1em 0 0 1em !important;
+    background: #3c3c3cc7 !important;
+}
+
+/* SELECT IMAGE CSS */
+
+.photo 
+{
+    position: relative;
+}
+
+.photo.selected::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 2px solid #599dff;
+    background: #599dff6b;
+    border-radius: 25px;
+    pointer-events: none; /* Permite que o clique passe pela borda e selecione a imagem */
+}

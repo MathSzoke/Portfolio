@@ -1,0 +1,68 @@
+﻿nav 
+{
+    background: var(--hover-black);
+    width: max-content;
+    display: block;
+    padding: 0.7rem 1.7rem;
+    z-index: 100000;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 2rem;
+    display: flex;
+    gap: 0.8rem;
+    border-radius: 3rem;
+    backdrop-filter: blur(15px);
+}
+
+nav a 
+{
+    background: transparent;
+    padding: 0.9rem;
+    border-radius: 50%;
+    display: flex;
+    color: var(--text-black-900);
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+nav a:hover 
+{
+    background-color: var(--hover-black);
+    transform: scale(1.15);
+}
+
+nav a.active 
+{
+    background: var(--skin-color);
+    color: white;
+}
+
+a[title]:hover::after 
+{
+    content: attr(title);
+    position: absolute;
+    top: -100%;
+    left: -5px;
+    font-size: 15px;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 40px;
+    background: var(--skin-color);
+    transition: all 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@keyframes slideSection 
+{
+    0% 
+    {
+        transform: translateX(100%);
+    }
+
+    100% 
+    {
+        transform: translateX(0%);
+    }
+}

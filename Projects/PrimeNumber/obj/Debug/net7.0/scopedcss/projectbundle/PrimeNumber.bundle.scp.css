@@ -1,0 +1,61 @@
+/* _content/PrimeNumber/Views/Shared/_Layout.cshtml.rz.scp.css */
+.navbarNP[b-k07qx78otu] {
+    padding: 10px 0 10px 0;
+}
+
+p.text-center[b-k07qx78otu] {
+    font-size: 30px;
+}
+
+.extra-info[b-k07qx78otu] {
+    display: none;
+    line-height: 30px;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    left: 50px;
+    opacity: 0;
+}
+
+.info:hover .extra-info[b-k07qx78otu] {
+    display: block;
+    opacity: 1;
+}
+
+.info[b-k07qx78otu] {
+    font-size: 20px;
+    padding-left: 5px;
+    width: 20px;
+    border-radius: 15px;
+}
+
+    .info:hover[b-k07qx78otu] {
+        background-color: var(--hover-black);
+        padding: 0 0 0 5px;
+        width: 315px;
+        text-align: left !important;
+        transition: 0.5s;
+    }
+
+a[b-k07qx78otu] {
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.hover-underline[b-k07qx78otu]:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0.5em;
+    left: 0;
+    background-color: #0087ca;
+    transform-origin: bottom right;
+    transition: transform 0.5s ease-out;
+}
+
+.hover-underline:hover[b-k07qx78otu]:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}

@@ -1,0 +1,173 @@
+.portfolio .portfolio-heading
+{
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 40px;
+}
+.portfolio .portfolio-heading h2 
+{
+    color: var(--text-black-900);
+    font-weight: 500;
+}
+.portfolio .portfolio-heading h3
+{
+    color: var(--text-black-900);
+    font-weight: 500;
+    font-size: 1em;
+}
+.portfolio .portfolio-item
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.portfolio .portfolio-item-inner
+{
+    border: 1px solid var(--skin-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    width: 30em;
+    height: 30em;
+    display: flex;
+    flex-flow: column;
+}
+
+.portfolio .portfolio-item-inner .portfolio-img .img
+{
+    width: 100%;
+    display: block;
+}
+.portfolio-title
+{
+    color: var(--skin-color);
+    text-align: center;
+    padding-bottom: 0.3rem;
+    padding-top: 0.5rem;
+    -webkit-user-select: none;
+    user-select: none;
+    font-size: 1em;
+    font-family: monospace;
+    background: var(--bg-black-50);
+}
+
+.portfolio-img
+{
+    width: 100%;
+    height: 100%;
+}
+
+.projectsIMG
+{
+    width: 100%;
+}
+
+.modalBackdropProjects
+{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+}
+
+.modalContentWrapperProjects
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    max-width: calc(90vw - 2rem);
+    max-height: calc(90vh - 2rem);
+    background: var(--bg-black-100);
+    border-radius: 10px;
+    margin: auto;
+    top: 1rem;
+    left: 1rem;
+    bottom: 7rem;
+    right: 1rem;
+    z-index: 200;
+    border: 1px solid var(--skin-color);
+}
+
+.modalContentProjects, .projectInside
+{
+    height: 100%;
+}
+
+.addProject
+{
+    position: fixed;
+    right: 5em;
+    bottom: 5em;
+}
+
+.urlProject
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.btnAddProject
+{
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    font-size: 2.3em;
+    text-align: center;
+    background: var(--skin-color);
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.expansiveWindow
+{
+    width: 2em;
+    height: 2em;
+    color: var(--skin-color);
+    font-size: 0.9em;
+}
+.btnBeforeIcon
+{
+    float: right;
+    width: 2.6em;
+    height: 2.6em;
+    margin-right: 1em;
+    background: none;
+    border: none;
+    color: var(--text-black-500);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.btnBeforeIcon:hover
+{
+    background-color: var(--hover-black);
+    transform: scale(1.10);
+}
+
+.MuiDialogContent-root
+{
+    width: 100%;
+    height: 90%;
+    initial-value: 0;
+    transition: scale(0.3s);
+}
+
+@media (max-width: 767px)
+{
+    .portfolio .portfolio-item 
+    {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 550px)
+{
+    .portfolio .portfolio-item 
+    {
+        grid-template-columns: 1fr;
+    }
+}

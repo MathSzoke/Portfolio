@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+:root
+{
+    --bg-black-900: #f2f2fc;
+    --bg-black-600: #f4fbfb;
+    --bg-black-100: #fdf9ff;
+    --bg-black-50: #e8dfec;
+    --text-black-900: #29283a;
+    --text-black-700: #504e70;
+    --text-black-500: #191b1b;
+    --text-black-100: rgb(95,99,104);
+    --hover-black: rgba(0, 0, 0, 0.3);
+}
+
+body.dark 
+{
+    --bg-black-900: #151515;
+    --bg-black-600: #394144;
+    --bg-black-100: #222222;
+    --bg-black-50: #393939;
+    --text-black-900: #ffffff;
+    --text-black-700: #e9e9e9;
+    --text-black-500: #b0b5b8;
+    --text-black-100: rgb(154,160,166);
+    --hover-black: rgba(255, 255, 255, 0.3);
+}
+
+body 
+{
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    font-size: 16px;
+    font-family: 'Poppins' sans-serif;
+}
+
+* 
+{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+::before, ::after 
+{
+    box-sizing: border-box;
+}

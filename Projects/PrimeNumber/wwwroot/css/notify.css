@@ -1,0 +1,128 @@
+﻿* {
+    font-family: "Raleway";
+}
+
+body #notification-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#notification-area {
+    position: fixed;
+    top: -70px;
+    left: 0;
+    right: 0;
+    /* height: 100vh; */
+    flex-direction: column;
+    text-align: center;
+    z-index: 10000;
+}
+
+    #notification-area .notification {
+        padding: 0 10px;
+        padding-bottom: 2px;
+        background: #111;
+        color: #f5f5f5;
+        font-family: "Raleway";
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 10px;
+        margin: 5px 0px;
+        opacity: 0;
+        animation: showNotification 500ms ease-in-out forwards;
+    }
+
+@keyframes showNotification {
+    to {
+        opacity: 1;
+        left: 0px;
+    }
+}
+
+#notification-area .notification.success {
+    color: #468847;
+    background-color: #DFF0D8;
+    border-color: #D6E9C6;
+}
+
+#notification-area .notification.error {
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+}
+
+#notification-area .notification.info {
+    color: #C09853;
+    background-color: #FCF8E3;
+    border-color: #FBEED5;
+}
+
+.cdb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
+    background-color: var(--skin-color);
+    animation: load 10s normal forwards;
+    width: 0;
+}
+
+    .cdb.error {
+        background: #ff0000;
+    }
+
+    .cdb.success {
+        background: #00e88f;
+    }
+
+    .cdb.info {
+        background: #ff9900;
+    }
+
+.progressBar {
+    height: 5px;
+    border-radius: 10px;
+    width: 100%;
+    position: relative;
+    margin-top: 7px;
+}
+
+.headerTittle {
+    width: 0;
+    position: absolute;
+}
+
+@keyframes load {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.closeNotification {
+    padding-left: 90%;
+}
+
+.headerNotifications {
+    padding-top: 5px;
+}
+
+.closeNotificationBtn {
+    color: var(--text-black-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    left: 2.5em;
+    border-radius: 50%;
+}
+
+    .closeNotificationBtn:hover {
+        background: var(--hover-black);
+        width: 30px;
+        height: 30px;
+    }

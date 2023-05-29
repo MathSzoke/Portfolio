@@ -1,0 +1,52 @@
+.containerForgotPass
+{
+    position: fixed;
+    top: calc(50% - 20em);
+    left: calc(50% - 9em);
+    z-index: 101 !important;
+}
+
+.forgotPass
+{
+    position: absolute;
+    text-align: center;
+    background: var(--background-color-container);
+    width: 30em;
+    height: 50em;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px #000;
+    box-sizing: border-box;
+}
+
+.btnBack
+{
+    top: 1em;
+    left: 2em;
+    position: fixed;
+    border-radius: 50%;
+}
+
+.btnSend
+{
+    border-radius: 15px;
+}
+
+.dx
+{
+    background-color: var(--skin-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 1em;
+}
+
+.lblRecoverPass
+{
+    cursor: default;
+    margin-top: 2em;
+}
+
+.divForgotPass
+{
+    margin-top: 10em;
+}

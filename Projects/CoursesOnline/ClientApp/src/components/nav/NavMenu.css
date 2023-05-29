@@ -1,0 +1,27 @@
+﻿.navBar 
+{
+    width: 200px;
+    background: var(--bg-black-100);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-right: 1px solid var(--bg-black-50);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+a 
+{
+    color: var(--text-black-900) !important;
+    text-decoration: none !important;
+}
+
+a.titleLink
+{
+    position: fixed;
+    top: 5em;
+}

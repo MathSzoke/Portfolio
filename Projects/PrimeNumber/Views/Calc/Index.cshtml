@@ -1,0 +1,185 @@
+﻿@model Calc
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <input type="hidden" id="progress_width" value="0">
+    <div class='progress' id="progress_div">
+        <div class='bar' id='bar1'></div>
+        <div class='percent' id='percent1'></div>
+    </div>
+    @using (Html.BeginForm("Index", "Calc", FormMethod.Post))
+    {
+        <span class="text-danger">@Html.ValidationMessageFor(model => model.Number)</span>
+        @Html.EditorFor(model => model.Number, new { htmlAttributes = new { required="", type="number", id="Number", name="Number" }})
+        <label alt='Insira qualquer número' placeholder='Insira qualquer número'></label>
+        <button class="btn" id="btn" value="sum" type="submit" name="calculate">
+            <div class="loader loader-5" id="divLoader" style="display:none;"><div class="loader-pacman"></div></div>
+            <txt id="txtCalc">Calcular</txt>
+        </button>
+    }
+    <br />
+    <div>
+        <div class="msgError">
+            <p>@ViewBag.FailedTryOne</p>
+        </div>
+        @if (ViewBag.Result != null)
+        {
+            <div class="numberToNumber">
+                <p>@ViewBag.MessageNumberToNumber</p>
+            </div>
+            <div class="result">
+                <table class="tableResults">
+                    @foreach (var el in Model.Result)
+                    {
+                        <tr class="trRows">
+                            <td class="tdRow">@Html.DisplayFor(m => el)</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="primes">
+                <div class="isPrime">
+                    <span>
+                        <p>@ViewBag.CountIsPrime</p>
+                    </span>
+                </div>
+                <div class="isNotPrime" id="isNP">
+                    <span>
+                        <p>@ViewBag.CountNotPrime</p>
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="upSiteTop" id="divButtonUp" style="display: none;">
+        <button class="btnUp" onclick="window.scroll(0, 0)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-arrow-up-circle-fill mediaQuery" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="downSiteTop" id="divButtonDown" style="display:none;">
+        <button class="btnDown" onclick="window.scrollTo(0, document.body.scrollHeight)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-arrow-up-circle-fill mediaQuery" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<div class="modalBackdrop"></div>
+<div class="modalContainer">
+    <div class="modalDialog">
+        <div class="modalContent">
+            <div class="modal-header">
+                <h4 class="modal-title">O que são os números primos?</h4>
+                <button class="closeModal">
+                    <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" class="varColorDark" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px;">
+                        <path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" fill="currentColor"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="whatsNumberPrime"></div>
+            </div>
+        </div>
+
+        <div class="modalContent">
+            <div class="modal-header">
+                <h4 class="modal-title">Por que os números primos são importantes?</h4>
+            </div>
+            <div class="modal-body">
+                <div id="whyImportantNP"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const btn = document.getElementById("btn");
+    const loader = document.getElementById("divLoader");
+    const txt = document.getElementById("txtCalc");
+
+    const btnDown = document.getElementById("btnDown");
+
+    $(document).ready(function () {
+        let scrollHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+
+        if (scrollHeight > document.documentElement.clientHeight) {
+            document.getElementById("divButtonDown").style.display = "block";
+        }
+        else {
+            document.getElementById("divButtonDown").style.display = "none";
+        }
+
+        $("#btnDown").on("click", function () {
+            window.scrollTo(0, document.body.scrollHeight);
+        })
+
+    })
+
+    document.onreadystatechange = function (e) {
+        if (document.readyState == "interactive") {
+            var all = document.getElementsByTagName("*");
+            for (var i = 0, max = all.length; i < max; i++) {
+                set_ele(all[i]);
+            }
+        }
+    }
+
+    function check_element(ele) {
+        var all = document.getElementsByTagName("*");
+        var totalele = all.length;
+        var per_inc = 100 / all.length;
+
+        if ($(ele).on()) {
+            var prog_width = per_inc + Number(document.getElementById("progress_width").value);
+            document.getElementById("progress_width").value = prog_width;
+            $("#bar1").animate({ width: prog_width + "%" }, 10, function () {
+                if (document.getElementById("bar1").style.width == "100%") {
+                    $(".progress").fadeOut("slow");
+                }
+            });
+        }
+        else {
+            set_ele(ele);
+        }
+    }
+
+    function set_ele(set_element) {
+        check_element(set_element);
+    }
+
+    $(btn).on("click", function () {
+        loader.removeAttribute("style");
+        btn.style.background = "black";
+        $("#txtCalc").hide();
+    })
+
+    window.onscroll = function (e) {
+        if (window.scrollY >= 800) {
+            document.getElementById("divButtonUp").style.display = "block";
+        }
+        else {
+            document.getElementById("divButtonUp").style.display = "none";
+        }
+    };
+
+    $("button.closeModal").on("click", function () {
+        $(".modalBackdrop").hide();
+        $(".modalContainer").hide();
+    })
+
+    $("div.modalBackdrop").on("click", function () {
+        $(".modalBackdrop").hide();
+        $(".modalContainer").hide();
+    })
+</script>

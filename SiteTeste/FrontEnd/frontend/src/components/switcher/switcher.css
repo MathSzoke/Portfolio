@@ -1,0 +1,242 @@
+.style-switcher
+{
+    position: fixed;
+    right: 0px;
+    top: 75px;
+    padding: 15px;
+    width: 200px;
+    border: 1px solid var(--bg-black-50);
+    background: var(--bg-black-100);
+    z-index: 100;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    transform: translateX(100%);
+}
+.style-switcher.open
+{
+    transform: none;
+}
+.style-switcher .s-icon
+{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    font-size: 20px;
+    background: var(--bg-black-100);
+    color: var(--text-black-900);
+    right: 100%;
+    border: 1px solid var(--bg-black-50);
+    margin-right: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+.style-switcher .s-icon i 
+{
+    line-height: 42px;
+}
+#logout 
+{
+    margin-left: 3px;
+}
+.s-icon:hover
+{
+    background-color: dimgrey;
+    color: #ffffff;
+    transform: scale(1.15);
+}
+.iconLogout
+{
+    color: var(--text-black-900);
+}
+.s-icon .iconLogout:hover
+{
+    color: #ffffff;
+}
+.style-switcher .style-switcher-toggler
+{
+    top: 0;
+}
+.style-switcher .day-night
+{
+    top: 55px;
+}
+.style-switcher h4
+{
+    margin: 0 0 10px;
+    color: var(--text-black-700);
+    font-size: 16px;
+    font-weight: 600;
+}
+.style-switcher .colors
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.style-switcher .colors span
+{
+    display: none;
+    /*display: inline-block;*/
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.closeSwitcher
+{
+    background: var(--bg-black-100);
+    color: var(--text-black-900);
+}
+.perfil
+{
+    top: 1px;
+    height: 59px;
+}
+#margin10px
+{
+    margin-top: -10px;
+    margin-left: -10px;
+    color: var(--text-black-900);
+}
+
+/* Cores dos temas para destacar */
+
+.style-switcher .color-1
+{
+    background: #37b182;
+    cursor: pointer;
+    display: none;
+}
+.style-switcher .color-2
+{
+    background: #fa5b0f;
+    cursor: pointer;
+    display: none;
+}
+.style-switcher .color-3
+{
+    background: #ec1839;
+    cursor: pointer;
+    display: none;
+}
+.style-switcher .color-4
+{
+    background: #1854b4;
+    cursor: pointer;
+    display: none;
+}
+.style-switcher .color-5
+{
+    background: #f021b2;
+    cursor: pointer;
+    display: none;
+}
+@media only screen 
+    and (device-width : 280px) 
+    and (device-height: 653px) 
+{
+    .style-switcher 
+    {
+        top: 20px;
+    }
+}
+
+.style-background-language
+{
+    position: fixed;
+    top: 12em;
+    right: 1em;
+    display: inline-block;
+}
+
+.dropdown-content 
+{
+    background-color: var(--bg-black-100);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.react-select__input:focus-visible
+{
+    caret-color: transparent;
+}
+
+.iconOptions
+{
+    width: 3em;
+    height: 3em;
+}
+
+.react-select__control:hover, .react-select__control
+{
+    border: none !important;
+}
+
+.react-select__control
+{
+    box-shadow: 0 0 0 1px var(--skin-color) !important;
+}
+
+.react-select__input, .react-select__control, .react-select__menu, .react-select__option, .react-select__input:focus-visible
+{
+    cursor: pointer !important;
+}
+
+.react-select__control, .react-select__menu, .react-select__option
+{
+    background: var(--bg-black-600) !important;
+    color: var(--text-black-900) !important;
+}
+
+.react-select__option:hover, .react-select__control:hover
+{
+    background: var(--hover-black) !important;
+}
+
+.react-select__menu-list, .react-select__menu, .iconOptions, .react-select__control, .dropdown-content 
+{
+    border-radius: 15px !important;
+}
+
+.react-select__menu-list
+{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.react-select__indicators
+{
+    display: none !important;
+}
+
+#slider-horizontal
+{
+    height: 20px;
+    width: 170px;
+    background: -webkit-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%, #00F 66.66%, #F0F 83.33%, #F00 100%);    
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.logout
+{
+    top: -55px;
+}
+
+.rotate 
+{
+    animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation 
+{
+    from 
+    {
+        transform: rotate(0deg);
+    }
+    to 
+    {
+        transform: rotate(359deg);
+    }
+}

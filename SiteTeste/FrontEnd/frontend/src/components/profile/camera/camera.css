@@ -1,0 +1,92 @@
+.modalContentWrapperCamera
+{
+    position: fixed;
+    width: 70rem;
+    height: 70%;
+    max-width: calc(90vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    background: var(--bg-black-100);
+    border-radius: 10px;
+    margin: auto;
+    top: 11rem;
+    left: 1rem;
+    bottom: 11rem;
+    right: 1rem;
+    z-index: 202;
+    border: 1px solid var(--skin-color);
+    box-shadow: inset 0 0 20px grey;
+}
+
+.modalBackdropCamera
+{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+}
+
+
+.modalContentCamera
+{
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  max-height: calc(100vh - 14rem);
+  height: 100%;
+}
+
+.modalCamera
+{
+    height: 100%;
+}
+
+.modalCameraHeader
+{
+    z-index: 350;
+    position: absolute;
+}
+
+.closeModalCamera
+{
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    border-radius: 50%;
+    left: 1em;
+    top: 1em;
+    background: var(--skin-color);
+    width: 30px;
+    height: 30px;
+}
+
+.videoCamera
+{
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.camera
+{
+    width: 100%;
+    height: 100%;
+}
+
+.btnSnapPhoto
+{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 50%;
+    border-radius: 50%;
+    border: none;
+    background: var(--skin-color);
+    color: white;
+    bottom: 5em;
+    cursor: pointer;
+}

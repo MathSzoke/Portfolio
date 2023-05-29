@@ -1,0 +1,145 @@
+* 
+{
+    font-family: S�hne,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+}
+
+#notification-area
+{
+    text-align: center;
+    z-index: 1000000;
+    position: fixed;
+    width: 25rem;
+    margin: auto;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+}
+
+#notification-area .notification 
+{
+    padding: 0 10px;
+    padding-bottom: 2px;
+    background: #111;
+    color: #f5f5f5;
+    font-family: S�hne,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    margin: 5px 0px;
+    opacity: 0;
+    animation: showNotification 500ms ease-in-out forwards;
+}
+
+.notification
+{
+    cursor: pointer;
+}
+
+@keyframes showNotification 
+{
+  to 
+  {
+    opacity:1;
+    left:0px;
+  }
+}
+
+#notification-area .notification.success 
+{
+    color: rgba(255,255,255, 1);
+    background-color: rgba(0, 146, 0, 0.8);
+    border-color: #D6E9C6;
+}
+
+#notification-area .notification.error 
+{
+    color: rgba(255,255,255, 1);
+    background-color: rgba(255, 0, 0, .8);
+    border-color: #EED3D7;
+}
+
+#notification-area .notification.info 
+{
+    color: rgba(255,255,255, 1);
+    background-color: rgba(224,108,43,.8);
+    border-color: #FBEED5;
+}
+
+.cdb
+{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+  background-color: var(--skin-color);
+  animation: load 10s normal forwards;
+  width: 0;
+}
+    .cdb.error 
+    {
+        background: rgba(120, 0, 0, 1);
+    }
+    .cdb.success
+    {
+        background: #00e88f;
+    }
+    .cdb.info
+    {
+        background: #ff9900;
+    }
+
+.progressBar
+{
+    height: 5px;
+    border-radius: 10px;
+    width: 100%;
+    position: relative;
+    margin-top: 7px;
+}
+
+.headerTittle
+{
+    -webkit-user-select: none;
+    user-select: none;
+    text-align: initial;
+    margin-bottom: 1em;
+}
+
+.txtNotify
+{
+    user-select: none;
+}
+
+@keyframes load 
+{
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+
+.closeNotification
+{
+    padding-left: 90%;
+}
+.headerNotifications
+{
+    padding-top: 5px;
+}
+
+.closeNotificationBtn
+{
+    visibility: hidden;
+    color: var(--text-black-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    left: 2.5em;
+    border-radius: 50%;
+}
+
+.closeNotificationBtn:hover
+{
+    background: var(--hover-black);
+    width: 30px;
+    height: 30px;
+}

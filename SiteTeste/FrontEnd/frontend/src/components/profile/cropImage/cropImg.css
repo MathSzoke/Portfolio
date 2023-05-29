@@ -1,0 +1,262 @@
+div.containerProp
+{
+    height: 100%;
+    position: relative;
+    right: 0;
+    width: 100%;
+    background-size: cover;
+    border-radius: 0 10px 10px 0;
+}
+
+.modalContentWrapperCrop
+{
+    position: fixed;
+    width: 70rem;
+    height: 70%;
+    max-width: calc(90vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    background: var(--bg-black-100);
+    border-radius: 10px;
+    margin: auto;
+    top: 11rem;
+    left: 1rem;
+    bottom: 11rem;
+    right: 1rem;
+    z-index: 202;
+    border: 1px solid var(--skin-color);
+    box-shadow: inset 0 0 20px grey;
+    
+    /* position: fixed;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-black-100);
+    margin: auto;
+    top: 0rem;
+    left: 0rem;
+    bottom: 0rem;
+    right: 0rem;
+    z-index: 202; */
+}
+.modalContentCrop
+{
+    max-height: calc(100vh - 14rem);
+    height: 100%;
+}
+
+.modalCropHeader
+{
+    z-index: 350;
+    position: absolute;
+}
+
+.closeModalCrop
+{
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    border-radius: 50%;
+    left: 1em;
+    top: 1em;
+    background: var(--skin-color);
+    width: 30px;
+    height: 30px;
+}
+
+.containerNav
+{
+    position: relative;
+    height: 100%;
+    left: 0;
+    background: var(--bg-black-50);
+    border-radius: 10px 0 0 10px;
+    align-items: center;
+    display: flex;
+}
+
+.contentsToCrop
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+img.imgToCrop
+{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    border-radius: 0 10px 10px 0;
+}
+
+div.btnNavCrop
+{
+    font-size: 17px;
+    line-height: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 1em;
+    position: relative;
+    user-select: none;
+    touch-action: none;
+}
+
+.iconsBtn
+{
+    font-size: 30px;
+    color: var(--text-black-900);
+}
+
+.padding-top
+{
+    padding-top: 1em;
+}
+
+.tui-image-editor-header-logo
+{
+    display: none !important;
+}
+
+.tui-image-editor-container .tui-image-editor-help-menu.right
+{
+    height: 34em !important;
+    background: var(--bg-black-100);
+}
+
+.tui-image-editor-container.left .tui-image-editor-menu, .tui-image-editor-container.right .tui-image-editor-menu
+{
+    background: var(--bg-black-900);
+}
+
+.tui-image-editor-container
+{
+    border-radius: 10px
+}
+
+.tui-image-editor-menu use.disabled.use-default, .tui-image-editor-help-menu use.disabled.use-default
+{
+    fill: var(--text-black-700) !important;
+    stroke: var(--text-black-700) !important;
+}
+
+.tui-image-editor-menu use.normal.use-default, .tui-image-editor-help-menu use.normal.use-default
+{
+    fill: var(--text-black-700) !important;
+    stroke: var(--text-black-700) !important;
+}
+
+.tui-image-editor-container.left .tui-image-editor-main-container
+{
+    background-color: var(--bg-black-50) !important;
+}
+
+.tui-image-editor-container .tui-image-editor-submenu-align:first-child label > span 
+{
+    color: var(--text-black-500);
+}
+
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-submenu-item label > span
+{
+    color: var(--text-black-500);
+}
+
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-button > label, .tui-image-editor-container .tui-image-editor-range-wrap.tui-image-editor-newline.short label, .tui-image-editor-container .tui-image-editor-range-wrap.tui-image-editor-newline.short label > span
+{
+    color: var(--text-black-900) !important;
+    font-family: monospace;
+}
+
+.tui-image-editor-container.left .tui-image-editor-submenu > div, .tui-image-editor-container.right .tui-image-editor-submenu > div
+{
+    background-color: var(--bg-black-900) !important;
+}
+
+.tui-image-editor-container .color-picker-control .tui-colorpicker-palette-button
+{
+    font-size: 5px !important;
+}
+
+.tui-image-editor-menu use.hover.use-default, .tui-image-editor-help-menu use.hover.use-default
+{
+    fill: var(--text-black-100) !important;
+    stroke: var(--text-black-100) !important;
+}
+
+.tui-image-editor-container .tui-image-editor-range-wrap label
+{
+    color: var(--text-black-900) !important;
+}
+
+.tui-image-editor-submenu use.normal.use-default
+{
+    fill: var(--text-black-500);
+    stroke: var(--text-black-500);
+}
+
+.tui-image-editor-container .tui-image-editor-checkbox label > span:before
+{
+    border: 1px solid var(--text-black-900) !important;
+}
+.tui-image-editor-container .tui-image-editor-menu > .tui-image-editor-item.active, .tui-image-editor-container .tui-image-editor-help-menu > .tui-image-editor-item.active
+{
+    background-color: var(--text-black-900) !important;
+}
+
+.tui-image-editor-container .tui-image-editor-main
+{
+    top: 0 !important;
+}
+.tui-image-editor-container .tui-image-editor-header
+{
+    z-index: 1000;
+}
+
+.btnSave
+{
+    display: inline-block;
+    position: relative;
+    width: 120px;
+    height: 40px;
+    padding: 0;
+    line-height: 40px;
+    outline: none;
+    border-radius: 20px;
+    font-family: 'Noto Sans',sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: .3px;
+    text-align: center;
+    background: var(--skin-color);
+    color: white;
+}
+
+.tui-image-editor-container .tui-image-editor-header-buttons button, .tui-image-editor-container .tui-image-editor-header-buttons div, .tui-image-editor-container .tui-image-editor-controls-buttons button, .tui-image-editor-container .tui-image-editor-controls-buttons div
+{
+    border: none !important;
+    vertical-align: baseline !important;
+}
+
+.tui-image-editor-container .tui-image-editor-header-buttons div:hover
+{
+    cursor: pointer !important;
+    transform: scale(1.05);
+}
+
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-submenu-item .tui-image-editor-button
+{
+    font-size: 5px !important;
+}
