@@ -1,0 +1,131 @@
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    background-color: var(--colorNeutralBackground2);
+    color: var(--colorNeutralForeground2);
+    font-family: var(--fontFamilyBase);
+}
+#root{
+    width: 100%;
+    height: 100%;
+    
+}
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    margin: 0;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+button:focus {
+    outline-style: none;
+}
+
+.fui-Button:focus-visible {
+    outline: 2px solid var(--colorCompoundBrandStroke);
+    outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    min-height: 24px;
+    transition: background 0.2s;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+}
+
+html {
+    scrollbar-width: thin;
+}
+
+* {
+    scrollbar-width: thin;
+}
+
+.noSelect{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+@media (prefers-color-scheme: light) {
+: root {
+    color: #213547;
+    background-color: #ffffff;
+}
+    a:hover {
+        color: #747bff;
+    }
+
+    button {
+        background-color: #f9f9f9;
+    }
+}
+
+.epr-emoji-picker,
+.epr-body,
+.epr-emoji-category-list,
+.epr-search-container,
+.epr-search {
+    background: var(--fluentui-neutralBackground1, #f3f3f3) !important;
+    color: var(--fluentui-neutralForeground1, #1b1b1b) !important;
+    border-radius: 12px !important;
+}
+html[data-theme='dark'] .epr-emoji-picker,
+html[data-theme='dark'] .epr-body,
+html[data-theme='dark'] .epr-emoji-category-list,
+html[data-theme='dark'] .epr-search-container,
+html[data-theme='dark'] .epr-search {
+    background: var(--fluentui-neutralBackground1, #18191a) !important;
+    color: var(--fluentui-neutralForeground1, #fff) !important;
+}

@@ -1,0 +1,181 @@
+{
+  "common": {
+    "close": "Fechar",
+    "open": "Abrir"
+  },
+  "loader": {
+    "loading": "Carregando Portfolio...",
+    "success": "Tudo pronto!",
+    "warning": "Servidores offline. Tentando reconectar...",
+    "error": "Falha ao carregar. Por favor, recarregue a página."
+  },
+  "hero": {
+    "title": "Matheus Szoke — Engenheiro de Software",
+    "subtitle": "Construo soluções com .NET 9, Aspire e Web. Aqui você encontra meus projetos e formas de contato.",
+    "buttons": {
+      "viewProjects": "Ver Projetos",
+      "talkToMe": "Falar comigo"
+    }
+  },
+  "social": {
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "whatsapp": "Whatsapp",
+    "ariaLabel": "Links sociais"
+  },
+  "projects": {
+    "title": "Projetos",
+    "loading": "Carregando projetos...",
+    "reorderSaved": "Ordem salva",
+    "reorderFailed": "Falha ao salvar ordem"
+  },
+  "header": {
+    "nav": {
+      "about": "Sobre",
+      "hero": "Início",
+      "projects": "Projetos"
+    },
+    "buttons": {
+      "settings": "Configurações",
+      "login": "Entrar"
+    },
+    "userMenu": {
+      "settings": {
+        "text": "Configurações",
+        "subText": "Editar conta"
+      },
+      "logout": "Sair"
+    }
+  },
+  "settings": {
+    "sidebar": {
+      "title": "Configurações",
+      "general": "Geral",
+      "language": "Idioma"
+    },
+    "language": {
+      "title": "Idioma"
+    },
+    "theme": {
+      "title": "Tema",
+      "system": "Sistema",
+      "light": "Claro",
+      "dark": "Escuro"
+    },
+    "account": {
+      "avatarPicker": {
+        "title": "Mudar a foto do perfil",
+        "tabs": {
+          "gallery": "Galeria",
+          "upload": "Do computador",
+          "social": "Da rede social"
+        },
+        "preview": "Pré-visualização",
+        "sectionMore": "Veja mais",
+        "uploadedPhotos": "Fotos upadas",
+        "sectionSocial": "Fotos de redes sociais",
+        "noSocialPhotos": "Ainda não há fotos de redes sociais",
+        "upload": {
+          "instructions": "Arraste uma imagem aqui ou escolha um arquivo",
+          "dragHere": "Solte a imagem aqui",
+          "chooseFile": "Escolher arquivo"
+        },
+        "actions": {
+          "cancel": "Cancelar",
+          "confirm": "Confirmar"
+        }
+      },
+      "sidebar": {
+        "title": "Configurações da conta",
+        "profile": "Perfil",
+        "deleteAccount": "Deletar conta"
+      },
+      "labels": {
+        "fullName": "Nome completo",
+        "email": "Email",
+        "avatarUrl": "URL do avatar",
+        "emailLockedHint": "Email não pode ser alterado por aqui."
+      },
+      "placeholders": {
+        "title": "ex.: Engenheiro de Software",
+        "location": "Cidade, País",
+        "avatarUrl": "https://...",
+        "bioMarkdown": "Escreva uma breve bio em Markdown"
+      },
+      "profile": {
+        "save": "Salvar alterações",
+        "success": "Perfil atualizado",
+        "error": "Não foi possível atualizar o perfil"
+      },
+      "danger": {
+        "title": "Excluir conta",
+        "desc": "Excluir sua conta é permanente. Todos os seus dados serão removidos e não poderão ser recuperados.",
+        "confirmLabel": "Digite <bold>DELETE</bold> para confirmar",
+        "confirmPlaceholder": "DELETE",
+        "button": "Excluir conta",
+        "error": "Não foi possível excluir a conta"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "goTo": {
+        "Login": "Voltar para login",
+        "Signup": "Criar conta"
+      },
+      "cta": "Entrar",
+      "forgot_password": "Esqueceu a senha?",
+      "no_account": "Não tem uma conta?",
+      "warn": "Esta tela de login é para apenas afim de comunicação via chat, as informações básicas que serão coletadas são Email, Nome e Foto de perfil.\n\nVocê também pode entrar como visitante, porém, a conversa no chat não ficará salvo."
+    },
+    "register": {
+      "title": "Criar conta",
+      "cta": "Criar conta",
+      "have_account": "Já tem uma conta?",
+      "signin_link": "Entrar"
+    },
+    "labels": {
+      "fullName": "Nome completo",
+      "email": "Email",
+      "password": "Senha",
+      "confirmPassword":  "Confirmar senha"
+    },
+    "actions": {
+      "login": "Entrar",
+      "register": "Criar conta",
+      "loginWithGoogle": "Continuar com Google",
+      "loginWithLinkedIn": "Continuar com LinkedIn"
+    },
+    "links": {
+      "noAccount": "Não tem uma conta?",
+      "goToRegister": "Crie uma",
+      "haveAccount": "Já tem uma conta?",
+      "goToLogin": "Entrar"
+    },
+    "social": {
+      "or": "ou",
+      "google_signin": "Continuar com Google",
+      "google_signup": "Registrar com Google",
+      "linkedin_signin": "Continuar com LinkedIn",
+      "linkedin_signup": "Registrar com LinkedIn",
+      "signing_in": "Conectando..."
+    },
+    "validation": {
+      "required_fullname": "Nome completo é obrigatório",
+      "required_email": "Email é obrigatório",
+      "invalid_email": "Informe um email válido",
+      "required_password": "Senha é obrigatória",
+      "min_password": "A senha deve ter no mínimo 6 caracteres",
+      "password_mismatch": "As senhas não combinam"
+    },
+    "errors": {
+      "generic": "Algo deu errado"
+    }
+  },
+  "chat": {
+    "searchPlaceholder": "Pesquisar algo na conversa",
+    "startConversation": "Iniciar conversa",
+    "inputPlaceholder": "Digite algo aqui"
+  }
+}
