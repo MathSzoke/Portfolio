@@ -1,4 +1,3 @@
-using MediatR;
 using Portfolio.Application.Abstractions.Messaging;
 
 namespace Portfolio.Application.Projects.Reorder;

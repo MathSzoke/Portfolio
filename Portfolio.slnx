@@ -3,19 +3,22 @@
     <File Path="src\Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/Aspire/">
-    <Project Path="src\Aspire\Portfolio.AppHost\Portfolio.AppHost.csproj" Type="Classic C#" />
-    <Project Path="src\Aspire\Portfolio.ServiceDefaults\Portfolio.ServiceDefaults.csproj" Type="Classic C#" />
+    <Project Path="src\Aspire\Portfolio.AppHost\Portfolio.AppHost.csproj" />
+    <Project Path="src\Aspire\Portfolio.ServiceDefaults\Portfolio.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/src/Frontend/" />
   <Folder Name="/src/Frontend/Frontend.Modules.UI/">
-    <Project Path="src\Frontend\Frontend.Modules.UI\portfolio-web\Portfolio.Web.esproj" Type="{54A90642-561A-4BB1-A94E-469ADEE60C69}" />
+    <Project Path="src\Frontend\Frontend.Modules.UI\portfolio-web\Portfolio.Web.esproj">
+      <Build />
+      <Deploy />
+    </Project>
   </Folder>
   <Folder Name="/src/Infrastructure/" />
   <Folder Name="/src/Infrastructure/Infra.Database/">
     <Project Path="src/Infrastructure/Infra.Database/Infra.Database.csproj" />
   </Folder>
   <Folder Name="/src/Infrastructure/Infra.Email/">
-    <Project Path="src\Infrastructure\Infra.Email\Infra.Email\Infra.Email.csproj" Type="Classic C#" />
+    <Project Path="src\Infrastructure\Infra.Email\Infra.Email\Infra.Email.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Portfolio/">
@@ -25,7 +28,7 @@
     <Project Path="src/Modules/Portfolio/Portfolio.Infrastructure/Portfolio.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/src/Shared/">
-    <Project Path="src\Shared\Shared.Api.Infrastructure\Shared.Api.Infrastructure.csproj" Type="Classic C#" />
-    <Project Path="src\Shared\SharedKernel\SharedKernel.csproj" Type="Classic C#" />
+    <Project Path="src\Shared\Shared.Api.Infrastructure\Shared.Api.Infrastructure.csproj" />
+    <Project Path="src\Shared\SharedKernel\SharedKernel.csproj" />
   </Folder>
 </Solution>

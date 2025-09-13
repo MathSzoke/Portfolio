@@ -46,7 +46,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddHubsBehaviors(this IServiceCollection services)
     {
-        services.AddSingleton<PresenceTracker>();
+        services.AddScoped<PresenceTracker>();
         return services;
     }
 }

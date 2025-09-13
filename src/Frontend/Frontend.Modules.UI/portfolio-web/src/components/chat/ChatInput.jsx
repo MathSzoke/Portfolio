@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { Button, makeStyles, tokens } from "@fluentui/react-components";
 import { SendFilled, Emoji24Regular } from "@fluentui/react-icons";
-import EmojiPicker from "emoji-picker-react";
 import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles({

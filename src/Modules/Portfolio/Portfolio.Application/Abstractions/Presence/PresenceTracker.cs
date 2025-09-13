@@ -1,6 +1,6 @@
 namespace Portfolio.Application.Abstractions.Presence;
 
-public abstract class PresenceTracker
+public class PresenceTracker
 {
     private readonly Dictionary<string, List<string>> _onlineUsers = [];
 
