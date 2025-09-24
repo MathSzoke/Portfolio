@@ -16,10 +16,10 @@ internal sealed class ProjectTechnologyConfig : IEntityTypeConfiguration<Project
             .OnDelete(DeleteBehavior.Cascade);
 
         b.HasOne(x => x.Technology)
-            .WithMany(x => x.Projects)
+            .WithMany()
             .HasForeignKey(x => x.TechnologyId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         b.HasQueryFilter(s => !s.IsDeleted);
     }
 }

@@ -12,19 +12,29 @@ internal sealed class Update : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("api/v1/Projects/{slug}", async (
-                [FromRoute] string slug,
+        app.MapPut("api/v1/Projects/{id:guid}", async (
+                [FromRoute] Guid id,
                 [FromBody] UpdateProjectRequest request,
                 [FromServices] ICommandHandler<UpdateProjectCommand, ProjectResponse> handler,
                 CancellationToken ct) =>
-            {
-                var cmd = request.ToCommand<UpdateProjectCommand>();
-                var result = await handler.Handle(cmd, ct);
-                return result.Match(
-                    _ => Results.NoContent(),
-                    CustomResults.Problem);
-            })
-            .WithTags(Tags.Projects)
-            .RequireAuthorization("SuperAdminOnly");
+        {
+            var cmd = new UpdateProjectCommand(
+                id,
+                request.Name,
+                request.Summary,
+                request.ThumbnailUrl,
+                request.ProjectUrl,
+                request.RepoName,
+                request.Technologies,
+                request.SortOrder
+            );
+
+            var result = await handler.Handle(cmd, ct);
+            return result.Match(
+                _ => Results.NoContent(),
+                CustomResults.Problem);
+        })
+        .WithTags(Tags.Projects)
+        .RequireAuthorization("SuperAdminOnly");
     }
 }

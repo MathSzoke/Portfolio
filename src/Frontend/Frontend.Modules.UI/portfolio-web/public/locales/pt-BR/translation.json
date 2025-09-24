@@ -1,7 +1,12 @@
 {
   "common": {
     "close": "Fechar",
-    "open": "Abrir"
+    "open": "Abrir",
+    "save": "Salvar",
+    "requiredField": "Campo obrigatório.",
+    "invalidUrl": "Informe uma URL válida.",
+    "validField": "Campo válido.",
+    "add": "Adicionar"
   },
   "loader": {
     "loading": "Carregando Portfolio...",
@@ -11,10 +16,37 @@
   },
   "hero": {
     "title": "Matheus Szoke — Engenheiro de Software",
-    "subtitle": "Construo soluções com .NET 9, Aspire e Web. Aqui você encontra meus projetos e formas de contato.",
+    "subtitle": "Tenho {{age}} anos de idade. Aqui você encontra meus projetos e formas de contato.\nEste portfólio foi criado com .NET 9 Aspire, React e PostgreSQL para banco de dados. Para o front-end, utilizei a biblioteca FluentUI.",
     "buttons": {
-      "viewProjects": "Ver Projetos",
+      "viewProjects": "Ver projetos",
       "talkToMe": "Falar comigo"
+    }
+  },
+  "about": {
+    "title": "Sobre mim",
+    "sections": {
+      "summary": {
+        "title": "Resumo",
+        "text": "Sou desenvolvedor Fullstack especializado em .NET e React, apaixonado por criar soluções escaláveis. Mais de 4 anos de experiência em sistemas corporativos e web apps, seguindo boas práticas como Clean Architecture e metodologias ágeis."
+      },
+      "interests": {
+        "title": "Interesses",
+        "text": "Atualmente me aprofundando em Inteligência Artificial com C#, explorando Agentes de IA, modelos customizados e automação inteligente. Sempre buscando aprender novas tecnologias e práticas modernas."
+      },
+      "skills": {
+        "title": "Habilidades",
+        "techs": [ ".NET Framework/Core", "React", "PostgreSQL", "Docker", "Python", "Azure" ]
+      },
+      "languages": {
+        "title": "Idiomas",
+        "text": {
+          "enUs": "Inglês intermediário (B1)",
+          "ptBr": "Português nativo"
+        }
+      },
+      "cta": {
+        "viewCurriculum": "Visualizar currículo"
+      }
     }
   },
   "social": {
@@ -26,8 +58,47 @@
   "projects": {
     "title": "Projetos",
     "loading": "Carregando projetos...",
-    "reorderSaved": "Ordem salva",
-    "reorderFailed": "Falha ao salvar ordem"
+    "superAdmin": {
+      "title": "Área do super admin",
+      "editTitle": "Área de editar projeto",
+      "description": "Gerencie seus projetos e configurações avançadas aqui.",
+      "actions": {
+        "addProject": "Adicionar projeto",
+        "updateProject": "Atualizar projeto",
+        "deleteProject": "Deletar projeto",
+        "reorderProjects": "Reordenar projetos"
+      },
+      "dialogs": {
+        "confirmationDelete": {
+          "title": "Deletar projeto",
+          "message": "Você realmente deseja deletar este projeto?",
+          "confirm": "Confirmar"
+        }
+      },
+      "responses": {
+        "added": "Projeto adicionado com sucesso!",
+        "loadError": "Erro ao carregar projetos.",
+        "reorderSaved": "Nova ordem salva!",
+        "reorderFailed": "Falha ao salvar a nova ordem.",
+        "deleted": "Projeto deletado com sucesso",
+        "deleteFailed": "Falha ao deletar o projeto",
+        "updated": "Projeto atualizado com sucesso"
+      },
+      "placeholders": {
+        "name": "Nome do projeto",
+        "summary": "Resumo curto",
+        "repoUrl": "Nome do repositório",
+        "liveUrl": "URL do projeto online",
+        "technologies": "Tecnologias",
+        "pastThumbUrl": "Cole uma URL da imagem",
+        "addTechError": "Falhou ao salvar uma nova tecnologia, veja o console devtools para visualizar o erro."
+      },
+      "labels": {
+        "uploadImage": "Subir imagem",
+        "newTechnology": "Nova tecnologia",
+        "tech": "Thumbnail URL / Upload"
+      }
+    }
   },
   "header": {
     "nav": {
@@ -139,7 +210,7 @@
       "fullName": "Nome completo",
       "email": "Email",
       "password": "Senha",
-      "confirmPassword":  "Confirmar senha"
+      "confirmPassword": "Confirmar senha"
     },
     "actions": {
       "login": "Entrar",

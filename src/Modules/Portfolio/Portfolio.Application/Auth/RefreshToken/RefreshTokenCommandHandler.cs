@@ -16,7 +16,7 @@ internal sealed class RefreshTokenCommandHandler(
     {
         var ttlMin = int.TryParse(config["Jwt:AccessTokenMinutes"], out var m) ? m : 15;
 
-        var issued = await rts.RefreshAsync(
+        var (accessToken, refreshToken, refreshExpires) = await rts.RefreshAsync(
             cmd.RefreshToken,
             uid => claimsGenerator.GenerateAsync(uid, "refresh", ct).GetAwaiter().GetResult(),
             null,
@@ -25,9 +25,9 @@ internal sealed class RefreshTokenCommandHandler(
             ct);
 
         return Result.Success(new RefreshResponse(
-            issued.accessToken,
+            accessToken,
             ttlMin * 60,
-            issued.refreshToken,
-            issued.refreshExpires));
+            refreshToken,
+            refreshExpires));
     }
 }

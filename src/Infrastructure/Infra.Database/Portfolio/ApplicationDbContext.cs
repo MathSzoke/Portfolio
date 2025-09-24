@@ -16,20 +16,17 @@ public class ApplicationDbContext(
     DomainEventsDispatcher domainEventsDispatcher)
     : BaseDbContext(options, currentUserContext, domainEventsDispatcher), IApplicationDbContext
 {
-    public DbSet<User> Users => Set<User>();
-    public DbSet<ExternalLogin> ExternalLogins => Set<ExternalLogin>();
-    public DbSet<UserPhotos> UserPhotos => Set<UserPhotos>();
-    public DbSet<Project> Projects => Set<Project>();
-    public DbSet<Technology> Technologies => Set<Technology>();
-    public DbSet<Tag> Tags => Set<Tag>();
-    public DbSet<ProjectAsset> ProjectAssets => Set<ProjectAsset>();
-    public DbSet<ProjectTechnology> ProjectTechnologies => Set<ProjectTechnology>();
-    public DbSet<ProjectTag> ProjectTags => Set<ProjectTag>();
-    public DbSet<Showcase> Showcases => Set<Showcase>();
-    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
-    public DbSet<ChatSession> ChatSessions => Set<ChatSession>();
-    public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
-    public DbSet<EmailOutbox> EmailOutbox => Set<EmailOutbox>();
+    public DbSet<User> Users => this.Set<User>();
+    public DbSet<ExternalLogin> ExternalLogins => this.Set<ExternalLogin>();
+    public DbSet<UserPhotos> UserPhotos => this.Set<UserPhotos>();
+    public DbSet<Project> Projects => this.Set<Project>();
+    public DbSet<Technology> Technologies => this.Set<Technology>();
+    public DbSet<ProjectTechnology> ProjectTechnologies => this.Set<ProjectTechnology>();
+    public DbSet<ProjectRating> ProjectRatings => this.Set<ProjectRating>();
+    public DbSet<RefreshToken> RefreshTokens => this.Set<RefreshToken>();
+    public DbSet<ChatSession> ChatSessions => this.Set<ChatSession>();
+    public DbSet<ChatMessage> ChatMessages => this.Set<ChatMessage>();
+    public DbSet<EmailOutbox> EmailOutbox => this.Set<EmailOutbox>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

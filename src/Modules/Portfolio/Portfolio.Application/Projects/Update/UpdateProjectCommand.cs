@@ -7,14 +7,9 @@ public sealed record UpdateProjectCommand(
     Guid Id,
     string Name,
     string Summary,
-    string? DescriptionMarkdown,
-    string? RepoUrl,
-    string? LiveUrl,
-    string? IconUrl,
+    string ThumbnailUrl,
+    string ProjectUrl,
+    string RepoName,
     IReadOnlyCollection<string> Technologies,
-    IReadOnlyCollection<string> Tags,
-    IReadOnlyCollection<string> Assets,
-    bool? IsFeatured,
-    int? SortOrder,
-    Add.ShowcaseDto? Showcase
+    int SortOrder
 ) : ICommand<ProjectResponse>;

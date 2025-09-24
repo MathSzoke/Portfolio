@@ -1,6 +1,6 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +11,7 @@ using Portfolio.Infrastructure.Authorization;
 using Portfolio.Infrastructure.Time;
 using SharedKernel;
 using SharedKernel.DomainEvents;
+using System.Text;
 using IRefreshTokenService = Portfolio.Application.Abstractions.Authentication.IRefreshTokenService;
 
 namespace Portfolio.Infrastructure;
@@ -73,11 +74,21 @@ public static class DependencyInjection
                     OnMessageReceived = context =>
                     {
                         var accessToken = context.Request.Query["access_token"];
-
                         if (!string.IsNullOrEmpty(accessToken))
                             context.Token = accessToken;
-
                         return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"JWT Authentication Failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+                        return context.Response.WriteAsync("{\"error\":\"Unauthorized: token expired or invalid\"}");
                     }
                 };
             });

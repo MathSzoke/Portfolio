@@ -21,7 +21,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         CancellationToken ct)
     {
         var now = DateTime.UtcNow;
-        var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 10080);
+        var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 15);
         var absolute = TimeSpan.FromDays(cfg.GetValue<int?>("Jwt:RefreshAbsoluteDays") ?? 30);
 
         var token = GenerateToken();
@@ -77,13 +77,44 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         CancellationToken ct)
     {
         var now = DateTime.UtcNow;
-        var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 10080);
-
+        var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 15);
         var hash = Hash(refreshToken);
-        var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct);
-        if (current is null) throw new InvalidOperationException("invalid_refresh_token");
-        if (current.RevokedAtUtc is not null) throw new InvalidOperationException("revoked_refresh_token");
-        if (now > current.ExpiresAtUtc) throw new InvalidOperationException("expired_refresh_token");
+
+        var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
+                      ?? throw new InvalidOperationException("invalid_refresh_token");
+
+        if (current.RevokedAtUtc is not null)
+        {
+            var newToken = GenerateToken();
+            var newHash = Hash(newToken);
+
+            var newRefresh = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = current.UserId,
+                TokenHash = newHash,
+                CreatedAtUtc = now,
+                ExpiresAtUtc = now.Add(sliding) > current.MaxExpiresAtUtc ? current.MaxExpiresAtUtc : now.Add(sliding),
+                MaxExpiresAtUtc = current.MaxExpiresAtUtc,
+                Device = current.Device,
+                IpAddress = current.IpAddress,
+                UserAgent = current.UserAgent
+            };
+
+            db.RefreshTokens.Add(newRefresh);
+            await db.SaveChangesAsync(ct);
+
+            var claimsX = claimsFactory(newRefresh.UserId);
+            var atX = accessTokens.Create(claimsX);
+            return (atX, newToken, newRefresh.ExpiresAtUtc);
+        }
+
+        if (now > current.ExpiresAtUtc)
+        {
+            var newExp = now.Add(sliding);
+            current.ExpiresAtUtc = newExp > current.MaxExpiresAtUtc ? current.MaxExpiresAtUtc : newExp;
+        }
+
         if (now > current.MaxExpiresAtUtc) throw new InvalidOperationException("max_lifetime_reached");
 
         var nextToken = GenerateToken();
@@ -93,6 +124,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         if (nextExp > current.MaxExpiresAtUtc) nextExp = current.MaxExpiresAtUtc;
 
         current.TokenHash = nextHash;
+        current.CreatedAtUtc = now;
         current.ExpiresAtUtc = nextExp;
         current.IpAddress = ip;
         current.UserAgent = ua;

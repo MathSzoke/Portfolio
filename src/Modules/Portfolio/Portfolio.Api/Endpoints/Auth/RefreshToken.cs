@@ -7,22 +7,20 @@ namespace Portfolio.Api.Endpoints.Auth;
 
 internal sealed class RefreshToken : IEndpoint
 {
+    public sealed record RefreshRequest(string RefreshTokenStorage);
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("api/v1/auth/refresh", async (
+                [FromBody] RefreshRequest request,
                 [FromServices] ICommandHandler<RefreshTokenCommand, RefreshResponse> handler,
                 IConfiguration cfg,
                 HttpContext http,
                 CancellationToken ct) =>
             {
-                var cookieName = cfg["Jwt:CookieName"] ?? "rt";
-                if (!http.Request.Cookies.TryGetValue(cookieName, out var rt) || string.IsNullOrWhiteSpace(rt))
-                    return Results.Unauthorized();
-
-                var result = await handler.Handle(new RefreshTokenCommand(rt), ct);
+                var result = await handler.Handle(new RefreshTokenCommand(request.RefreshTokenStorage), ct);
 
                 RefreshTokenContract.SetRefreshCookie(http, cfg, result.Value.RefreshToken, result.Value.RefreshExpiresAtUtc);
-                return Results.Ok(new { accessToken = result.Value.AccessToken, expiresInSeconds = result.Value.ExpiresInSeconds });
+                return Results.Ok(new { accessToken = result.Value.AccessToken, expiresInSeconds = result.Value.ExpiresInSeconds, refreshToken = result.Value.RefreshToken });
             })
             .WithTags(Tags.Auth);
     }

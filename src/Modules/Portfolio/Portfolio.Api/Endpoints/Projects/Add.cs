@@ -16,11 +16,20 @@ internal sealed class Add : IEndpoint
                 [FromServices] ICommandHandler<AddProjectCommand, ProjectResponse> handler,
                 CancellationToken ct) =>
             {
-                var cmd = request.ToCommand<AddProjectCommand>();
+                var cmd = new AddProjectCommand(
+                    request.Name,
+                    request.Summary,
+                    request.ThumbnailUrl,
+                    request.ProjectUrl,
+                    request.RepoName,
+                    request.Technologies,
+                    request.SortOrder
+                );
+
                 var result = await handler.Handle(cmd, ct);
 
                 return result.Match(
-                    slug => Results.Ok(new { Slug = slug }),
+                    id => Results.Ok(new { Id = id }),
                     CustomResults.Problem);
             })
             .WithTags(Tags.Projects)

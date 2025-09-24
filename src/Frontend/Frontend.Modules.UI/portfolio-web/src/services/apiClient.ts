@@ -4,7 +4,7 @@ const getApiClient = (refreshTokenCallback?: () => Promise<any>) => {
     const backendUrl = import.meta.env.VITE_PORTFOLIO_API || import.meta.env.VITE_API_BASE_URL;
     if (!backendUrl) throw new Error("API base URL not set.");
 
-    const request = async (method: string, endpoint: string, body: any = null) => {
+    const request = async (method: string, endpoint: string, body: any = null, options: { skipAuth?: boolean } = {}) => {
         const makeFetch = async () => {
             const currentLang = i18n.resolvedLanguage || 'pt-BR';
             const token = localStorage.getItem('authToken');
@@ -12,7 +12,7 @@ const getApiClient = (refreshTokenCallback?: () => Promise<any>) => {
                 'Content-Type': 'application/json',
                 'Accept-Language': currentLang,
             });
-            if (token) headers.append('Authorization', `Bearer ${token}`);
+            if (token && !options.skipAuth) headers.append('Authorization', `Bearer ${token}`);
             const config: RequestInit = {
                 method: method.toUpperCase(),
                 headers,
@@ -24,7 +24,7 @@ const getApiClient = (refreshTokenCallback?: () => Promise<any>) => {
 
         let response = await makeFetch();
 
-        if (response.status === 401 && typeof refreshTokenCallback === 'function') {
+        if (response.status === 401 && typeof refreshTokenCallback === 'function' && !options.skipAuth) {
             try {
                 await refreshTokenCallback();
                 response = await makeFetch();
@@ -46,10 +46,10 @@ const getApiClient = (refreshTokenCallback?: () => Promise<any>) => {
     };
 
     return {
-        get: (endpoint: string) => request('GET', endpoint),
-        post: (endpoint: string, body?: any) => request('POST', endpoint, body),
-        put: (endpoint: string, body?: any) => request('PUT', endpoint, body),
-        delete: (endpoint: string, body?: any) => request('DELETE', endpoint, body),
+        get: (endpoint: string, options?: { skipAuth?: boolean }) => request('GET', endpoint, null, options),
+        post: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('POST', endpoint, body, options),
+        put: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('PUT', endpoint, body, options),
+        delete: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('DELETE', endpoint, body, options),
     };
 };
 

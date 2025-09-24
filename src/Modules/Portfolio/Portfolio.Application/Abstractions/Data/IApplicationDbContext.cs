@@ -13,11 +13,8 @@ public interface IApplicationDbContext
     DbSet<UserPhotos> UserPhotos { get; }
     DbSet<Project> Projects { get; }
     DbSet<Technology> Technologies { get; }
-    DbSet<Tag> Tags { get; }
-    DbSet<ProjectAsset> ProjectAssets { get; }
     DbSet<ProjectTechnology> ProjectTechnologies { get; }
-    DbSet<ProjectTag> ProjectTags { get; }
-    DbSet<Showcase> Showcases { get; }
+    DbSet<ProjectRating> ProjectRatings { get; }
     DbSet<RefreshToken> RefreshTokens { get; }
     DbSet<ChatSession> ChatSessions { get; }
     DbSet<ChatMessage> ChatMessages { get; }

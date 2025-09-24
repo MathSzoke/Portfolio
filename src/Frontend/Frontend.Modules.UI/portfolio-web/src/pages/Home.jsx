@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
     content: {
         width: '100%',
-        maxWidth: '1200px',
+        maxWidth: '80%',
         margin: '0 auto',
         padding: '56px 24px',
         display: 'grid',

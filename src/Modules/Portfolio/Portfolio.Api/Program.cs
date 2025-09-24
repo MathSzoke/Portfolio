@@ -44,6 +44,7 @@ app.MapHealthChecks("health", new HealthCheckOptions
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwaggerWithUi();
     app.MapOpenApi();
     app.ApplyMigrations();
 }

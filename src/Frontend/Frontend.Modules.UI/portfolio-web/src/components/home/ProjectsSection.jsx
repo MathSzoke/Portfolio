@@ -1,135 +1,226 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Spinner, makeStyles, Toaster, useToastController, Title3 } from '@fluentui/react-components';
+import {
+    Spinner,
+    makeStyles,
+    Toaster,
+    useToastController,
+    useId,
+    ToastTitle,
+    Toast,
+    Title3,
+    Button,
+    CarouselCard,
+    tokens,
+    Dialog,
+    DialogSurface,
+    DialogBody,
+    DialogContent,
+    DialogActions,
+    DialogTitle
+} from '@fluentui/react-components';
 import ProjectCard from '../projects/ProjectCard.jsx';
 import { getAggregatedProjects, reorderProjects } from '../../services/projects.js';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../services/auth.tsx';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, rectSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import { SortableContext, horizontalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import SortableItem from './SortableItem.jsx';
+import AddProjectModal from '../projects/AddProjectModal.jsx';
+import { AddRegular, EditRegular, DeleteRegular } from '@fluentui/react-icons';
+import { ProjectsCarousel } from '../projects/ProjectsCarousel.jsx';
+import getApiClient from '../../services/apiClient';
 
 const useStyles = makeStyles({
     root: { maxWidth: 1200 },
-    grid: {
-        display: 'grid',
-        gap: '32px',
-        gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))',
-        marginTop: '2em'
-    }
+    actions: { display: 'flex', justifyContent: 'flex-end', marginTop: '1em' },
+    card: {
+        margin: '0 8px',
+        flex: '0 0 280px',
+        boxShadow: tokens.shadow8,
+        borderRadius: tokens.borderRadiusMedium,
+        height: '100%'
+    },
+    cardActions: { display: 'flex', justifyContent: 'flex-end', gap: '4px', marginTop: '4px' }
 });
 
 export default function ProjectsSection() {
     const s = useStyles();
     const { t } = useTranslation();
-    const { user } = useAuth();
-    const canReorder = Array.isArray(user?.roles) && user.roles.includes('SuperAdmin');
+    const { userInfo } = useAuth();
+    const superAdmin = Array.isArray(userInfo?.roles) && userInfo.roles.includes('SuperAdmin');
     const [loading, setLoading] = useState(true);
     const [projects, setProjects] = useState([]);
-    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+    const [modalData, setModalData] = useState(null);
+    const [deleteProjectId, setDeleteProjectId] = useState(null);
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
     const { dispatchToast } = useToastController();
+    const toasterId = useId("toaster");
 
     useEffect(() => {
         let alive = true;
         (async () => {
             setLoading(true);
             try {
-                const fakeProjects = [
-                    {
-                        slug: 'portfolio',
-                        name: 'Meu Portfólio',
-                        summary: 'Aplicação pessoal para exibir projetos e experiências.',
-                        technologies: ['React', 'FluentUI', 'Vite'],
-                        image: 'https://picsum.photos/400/200?random=1',
-                        repoUrl: 'https://github.com/matheus/portfolio',
-                        liveUrl: 'https://meuportfolio.dev',
-                        source: 'aspire',
-                        rating: 1
-                    },
-                    {
-                        slug: 'erp-saas',
-                        name: 'ERP SaaS',
-                        summary: 'Plataforma ERP modular com multi-tenancy e dashboards interativos.',
-                        technologies: ['.NET 9', 'PostgreSQL', 'Docker', 'Aspire'],
-                        image: 'https://picsum.photos/400/200?random=2',
-                        repoUrl: 'https://github.com/matheus/erp-saas',
-                        liveUrl: 'https://erp-saas.dev',
-                        source: 'aspire',
-                        rating: 3.5
-                    },
-                    {
-                        slug: 'wager-guard',
-                        name: 'WagerGuard',
-                        summary: 'Projeto de IA para bloquear sites de apostas online.',
-                        technologies: ['Python', 'FastAPI', 'TensorFlow'],
-                        image: 'https://picsum.photos/400/200?random=3',
-                        repoUrl: 'https://github.com/matheus/wager-guard',
-                        liveUrl: null,
-                        source: 'external',
-                        rating: 4
-                    },
-                    {
-                        slug: 'bitern-ai',
-                        name: 'Bitern AI',
-                        summary: 'Assistente de IA integrado a sistemas SaaS corporativos.',
-                        technologies: ['LangChain', 'OpenAI', 'Redis'],
-                        image: 'https://picsum.photos/400/200?random=4',
-                        repoUrl: 'https://github.com/matheus/bitern-ai',
-                        liveUrl: 'https://bitern.ai',
-                        source: 'external',
-                        rating: 5
-                    }
-                ];
-                const apiData = await getAggregatedProjects().catch(() => null);
-                const data = Array.isArray(apiData) && apiData.length > 0 ? apiData : fakeProjects;
-                if (alive) setProjects(data);
+                const apiData = await getAggregatedProjects();
+                if (alive && Array.isArray(apiData)) setProjects(apiData);
+            } catch {
+                dispatchToast(
+                    <Toast>
+                        <ToastTitle>{t('projects.superAdmin.responses.loadError')}</ToastTitle>
+                    </Toast>,
+                    { intent: 'error' }
+                );
             } finally {
                 if (alive) setLoading(false);
             }
         })();
         return () => { alive = false; };
-    }, []);
+    }, [dispatchToast, t]);
 
-    const items = useMemo(() => projects.map(p => p.slug), [projects]);
+    const items = useMemo(() => projects.filter(p => p?.id).map(p => p.id), [projects]);
 
-    function handleDragEnd(event) {
-        if (!canReorder) return;
+    async function handleDragEnd(event) {
+        if (!superAdmin) return;
         const { active, over } = event;
         if (!over || active.id === over.id) return;
+
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
         const newList = arrayMove(projects, oldIndex, newIndex);
         setProjects(newList);
-        const ordered = newList.map((p, idx) => ({ slug: p.slug, order: idx + 1 }));
-        reorderProjects(ordered)
-            .then(() => dispatchToast(t('projects.reorderSaved'), { intent: 'success' }))
-            .catch(() => dispatchToast(t('projects.reorderFailed'), { intent: 'error' }));
+
+        const ordered = newList.map((p, idx) => ({ id: p.id, sortOrder: idx + 1 }));
+        try {
+            await reorderProjects(ordered);
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{t('projects.superAdmin.responses.reorderSaved')}</ToastTitle>
+                </Toast>,
+                { intent: 'success' }
+            );
+        } catch {
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{t('projects.superAdmin.responses.reorderFailed')}</ToastTitle>
+                </Toast>,
+                { intent: 'error' }
+            );
+        }
+    }
+
+    async function handleDelete() {
+        if (!deleteProjectId) return;
+        try {
+            const api = getApiClient();
+            await api.delete(`/api/v1/Projects/${deleteProjectId}`);
+            setProjects(prev => prev.filter(p => p.id !== deleteProjectId));
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{t('projects.superAdmin.responses.deleted')}</ToastTitle>
+                </Toast>,
+                { intent: 'success' }
+            );
+        } catch (err) {
+            console.error(err);
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{t('projects.superAdmin.responses.deleteFailed')}</ToastTitle>
+                </Toast>,
+                { intent: 'error' }
+            );
+        } finally {
+            setDeleteProjectId(null);
+        }
     }
 
     return (
-        <section id={"projects"} className={s.root}>
-            <Title3>{t('projects.title')}</Title3>
-            {loading ? (
-                <div style={{ padding: 32 }}>
-                    <Spinner label={t('projects.loading')} />
-                </div>
-            ) : canReorder ? (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext items={items} strategy={rectSortingStrategy}>
-                        <div className={s.grid}>
-                            {projects.map(p => (
-                                <SortableItem key={p.slug} id={p.slug}>
-                                    <ProjectCard project={p} />
-                                </SortableItem>
-                            ))}
-                        </div>
-                    </SortableContext>
-                </DndContext>
-            ) : (
-                <div className={s.grid}>
-                    {projects.map(p => <ProjectCard key={p.slug} project={p} />)}
-                </div>
+        <>
+            <section id="projects" className={s.root}>
+                <Title3>{t('projects.title')}</Title3>
+
+                {superAdmin && (
+                    <div className={s.actions}>
+                        <Button appearance="primary" onClick={() => setModalData(true)} icon={<AddRegular />}>
+                            {t('projects.superAdmin.actions.addProject')}
+                        </Button>
+                    </div>
+                )}
+
+                {loading ? (
+                    <div style={{ padding: 32 }}>
+                        <Spinner label={t('projects.loading')} />
+                    </div>
+                ) : superAdmin ? (
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                        <ProjectsCarousel>
+                            <SortableContext items={items} strategy={horizontalListSortingStrategy}>
+                                {projects.map((p, index) => (
+                                    <SortableItem key={p.id} id={p.id}>
+                                        <CarouselCard className={s.card} aria-label={`Projeto ${index + 1} de ${projects.length}, ${p.name}`}>
+                                            <ProjectCard project={p} superAdmin={superAdmin} userInfo={userInfo} onClickEditable={() => setModalData(p)} onClickDeletable={() => setDeleteProjectId(p.id)} />
+                                        </CarouselCard>
+                                    </SortableItem>
+                                ))}
+                            </SortableContext>
+                        </ProjectsCarousel>
+                    </DndContext>
+                ) : (
+                    <ProjectsCarousel>
+                        {projects.map((p, index) => (
+                            <CarouselCard key={p.id} className={s.card} aria-label={`Projeto ${index + 1} de ${projects.length}, ${p.name}`}>
+                                <ProjectCard project={p} superAdmin={superAdmin} userInfo={userInfo} />
+                            </CarouselCard>
+                        ))}
+                    </ProjectsCarousel>
+                )}
+                <Toaster />
+            </section>
+
+            {superAdmin && modalData !== null && (
+                <AddProjectModal
+                    open={true}
+                    onClose={() => setModalData(null)}
+                    onSuccess={(resp) => {
+                        if (modalData === true) {
+                            dispatchToast(
+                                <Toast>
+                                    <ToastTitle>{t('projects.superAdmin.responses.added')}</ToastTitle>
+                                </Toast>,
+                                { intent: 'success' }
+                            );
+                            setProjects([...projects, { ...resp }]);
+                        } else {
+                            dispatchToast(
+                                <Toast>
+                                    <ToastTitle>{t('projects.superAdmin.responses.updated')}</ToastTitle>
+                                </Toast>,
+                                { intent: 'success' }
+                            );
+                            setProjects(prev => prev.map(p => p.id === resp.id ? { ...p, ...resp } : p));
+                        }
+                    }}
+                    initialData={modalData === true ? null : modalData}
+                />
             )}
-            <Toaster />
-        </section>
+
+            <Dialog open={!!deleteProjectId} onOpenChange={(_, d) => !d.open && setDeleteProjectId(null)}>
+                <DialogSurface>
+                    <DialogBody>
+                        <DialogTitle>{t('projects.superAdmin.dialogs.confirmationDelete.title')}</DialogTitle>
+                        <DialogContent>{t('projects.superAdmin.dialogs.confirmationDelete.message')}</DialogContent>
+                        <DialogActions>
+                            <Button appearance="secondary" onClick={() => setDeleteProjectId(null)}>
+                                {t('common.close')}
+                            </Button>
+                            <Button appearance="primary" onClick={handleDelete}>
+                                {t('projects.superAdmin.dialogs.confirmationDelete.confirm')}
+                            </Button>
+                        </DialogActions>
+                    </DialogBody>
+                </DialogSurface>
+            </Dialog>
+
+            <Toaster toasterId={toasterId} />
+        </>
     );
 }

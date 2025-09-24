@@ -10,8 +10,8 @@ public static class RefreshTokenContract
         var secure = cfg.GetValue<bool?>("Jwt:CookieSecure") ?? true;
         var sameSiteStr = cfg["Jwt:CookieSameSite"] ?? "None";
         var sameSite = sameSiteStr.Equals("None", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.None :
-                       sameSiteStr.Equals("Strict", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.Strict :
-                       SameSiteMode.Lax;
+                         sameSiteStr.Equals("Strict", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.Strict :
+                         SameSiteMode.Lax;
 
         var opts = new CookieOptions
         {
@@ -37,8 +37,8 @@ public static class RefreshTokenContract
         var secure = cfg.GetValue<bool?>("Jwt:CookieSecure") ?? true;
         var sameSiteStr = cfg["Jwt:CookieSameSite"] ?? "None";
         var sameSite = sameSiteStr.Equals("None", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.None :
-                       sameSiteStr.Equals("Strict", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.Strict :
-                       SameSiteMode.Lax;
+                         sameSiteStr.Equals("Strict", StringComparison.OrdinalIgnoreCase) ? SameSiteMode.Strict :
+                         SameSiteMode.Lax;
 
         var opts = new CookieOptions
         {
@@ -56,3 +56,4 @@ public static class RefreshTokenContract
         http.Response.Cookies.Append(name, "", opts);
     }
 }
+

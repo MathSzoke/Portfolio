@@ -15,9 +15,10 @@ public static class DependencyInjection
     {
         services.AddEndpointsApiExplorer()
             .AddPortfolioAuthorization()
-            .AddSwaggerGen()
             .AddControllers();
         
+        services.AddSwaggerGenWithAuth();
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddHttpClient();
