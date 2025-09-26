@@ -44,6 +44,7 @@ export const ProjectsCarousel = ({ children }) => {
                 </CarouselViewport>
                 <CarouselNavContainer
                     layout="inline"
+                    autoplayTooltip={{ content: 'Autoplay', relationship: 'label' }}
                     next={{ 'aria-label': 'Próximo' }}
                     prev={{ 'aria-label': 'Anterior' }}
                 >

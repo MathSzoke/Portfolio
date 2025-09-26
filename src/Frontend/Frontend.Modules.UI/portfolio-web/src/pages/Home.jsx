@@ -9,34 +9,43 @@ import HeaderSection from '../components/home/HeaderSection.jsx';
 
 const useStyles = makeStyles({
     page: {
-        display: 'grid',
-        justifyContent: 'center',
-    },
-    content: {
+        margin: '0',
+        padding: '0',
         width: '100%',
-        maxWidth: '80%',
-        margin: '0 auto',
-        padding: '56px 24px',
-        display: 'grid',
-        gap: '32px',
+        height: '100%',
+        overflowY: 'auto',
+        scrollSnapType: 'y mandatory',
     },
+    section: {
+        scrollSnapAlign: 'start',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+        padding: '0 24px',
+        margin: '0 10%',
+        height: 'calc(100vh - 5em)',
+    }
 });
 
 export default function Home() {
     const s = useStyles();
-    const projectsRef = useRef<HTMLDivElement | null>null;
+    const projectsRef = useRef(null);
 
     return (
         <>
-            <HeaderSection/>
+            <HeaderSection />
+            <SocialFloatingBar />
             <div className={s.page}>
-                <SocialFloatingBar />
-                <div className={s.content}>
+                <section id="hero" className={`${s.section} scroll-section`} style={{ justifyContent: 'center', height: '100vh' }}>
                     <HeroSection onSeeProjects={() => projectsRef.current?.scrollIntoView({ behavior: 'smooth' })} />
+                </section>
+                <section id="about" className={`${s.section} scroll-section`}>
                     <AboutSection />
-                    <ProjectsSection ref={projectsRef} />
-                    {/* TO FINISH <ChatLauncherFloatingButton/>*/}
-                </div>
+                </section>
+                <section id="projects" className={`${s.section} scroll-section`} ref={projectsRef}>
+                    <ProjectsSection />
+                </section>
+                {/* TO FINISH <ChatLauncherFloatingButton/>*/}
             </div>
         </>
     );

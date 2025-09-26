@@ -135,7 +135,7 @@ export default function ProjectsSection() {
 
     return (
         <>
-            <section id="projects" className={s.root}>
+            <div className={s.root}>
                 <Title3>{t('projects.title')}</Title3>
 
                 {superAdmin && (
@@ -174,7 +174,7 @@ export default function ProjectsSection() {
                     </ProjectsCarousel>
                 )}
                 <Toaster />
-            </section>
+            </div>
 
             {superAdmin && modalData !== null && (
                 <AddProjectModal

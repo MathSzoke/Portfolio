@@ -15,8 +15,9 @@
     "error": "Failed to load. Please reload the page."
   },
   "hero": {
-    "title": "Matheus Szoke — Software Engineer",
-    "subtitle": "I'm {{age}} old. Here you’ll find my projects and ways to contact me.\nThis portfolio was created with .NET 9 Aspire, React and PostgreSQL for the database. For the front-end, I used the FluentUI library.",
+    "title": "HELLO THERE 👋, WELCOME TO MY SITE!",
+    "introducingMe": "<span>My name is <code>Matheus Szoke</code>\nI'm a <code>Fullstack developer</code>\n& <code>Agent AI Developer</code></span>",
+    "imageAlt": "Matheus's avatar",
     "buttons": {
       "viewProjects": "See Projects",
       "talkToMe": "Talk to me"
@@ -33,9 +34,78 @@
         "title": "Interests",
         "text": "Currently diving deep into Artificial Intelligence with C#, exploring AI Agents, custom models, and intelligent automation. Always learning and exploring modern technologies and practices."
       },
+      "experiences": {
+        "title": "Experiences",
+        "text": "These are the professional experiences I have had over time. Below, you can see these companies.",
+        "descriptionTitle": "Main activities",
+        "items": [
+          {
+            "company": "Banco Bradesco (via Syscode)",
+            "logo": "/assets/experiences_logos/bradesco_logo.png",
+            "role": "Software Engineer II",
+            "period": "Sep 2024 - Sep 2025 · 1 yr",
+            "location": "Osasco, São Paulo, Brazil · Remote",
+            "description": [
+              "Developed a web-based system for managing employees.",
+              "Improved the system with client-requested changes.",
+              "Applied Clean Architecture and SOLID principles.",
+              "Created unit tests to ensure reliability."
+            ]
+          },
+          {
+            "company": "Viveo",
+            "logo": "/assets/experiences_logos/viveosaude_logo.png",
+            "role": "Junior Software Engineer",
+            "period": "Sep 2023 - Aug 2024 · 1 yr",
+            "location": "São Paulo, Brazil · Hybrid",
+            "description": [
+              "Refined SQL queries and procedures in Microsoft SQL Server.",
+              "Refactored C# code using .NET Core and ReactJS.",
+              "Built a WhatsApp chatbot for customer service.",
+              "Supported operators via Topdesk tickets."
+            ]
+          },
+          {
+            "company": "Geosaúde Gerenciadora",
+            "logo": "/assets/experiences_logos/geosaude_gerenciadora_logo.png",
+            "role": "Systems Analyst I",
+            "period": "Jun 2023 - Sep 2023 · 3 mos",
+            "location": "São Paulo, Brazil · On-site",
+            "description": [
+              "Developed an analytical platform for monitoring patients.",
+              "Used C# (.NET Core 7), PostgreSQL and AngularJS.",
+              "Automated daily OneDrive file transfers."
+            ]
+          },
+          {
+            "company": "Ka Solution",
+            "logo": "/assets/experiences_logos/ka_solution_logo.png",
+            "role": "Web Development Intern",
+            "period": "Jan 2022 - Jun 2023 · 1 yr 6 mos",
+            "location": "São Paulo, Brazil · Remote",
+            "description": [
+              "Reviewed and enhanced web applications.",
+              "Optimized SQL queries improving performance.",
+              "Achieved 98% faster PDF load times."
+            ]
+          },
+          {
+            "company": "Ajv Sistemas LTDA",
+            "logo": "/assets/experiences_logos/ajv_sistemas_logo.png",
+            "role": "Web Development Intern",
+            "period": "Jan 2021 - Oct 2021 · 10 mos",
+            "location": "São Paulo, Brazil · On-site",
+            "description": [
+              "Streamlined distribution system for medicines.",
+              "Managed database entry and organization.",
+              "Resolved system bugs improving efficiency."
+            ]
+          }
+        ]
+      },
       "skills": {
         "title": "Skills",
-        "techs": [ ".NET Framework/Core", "React", "PostgreSQL", "Docker", "Python", "Azure" ]
+        "techs": [ ".NET Framework/Core", ".NET Aspire", "React", "PostgreSQL", "SQL Server", "Docker", "Python", "Azure" ]
       },
       "languages": {
         "title": "Languages",

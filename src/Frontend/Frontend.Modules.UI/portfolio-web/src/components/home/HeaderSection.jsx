@@ -10,7 +10,8 @@ import { useAuth } from '../../services/auth';
 
 const useStyles = makeStyles({
     wrapper: {
-        position: 'sticky',
+        position: 'fixed',
+        width: '100%',
         top: 0,
         zIndex: 20,
         backgroundColor: 'transparent',
@@ -49,8 +50,10 @@ export default function HeaderSection() {
     const { isAuthenticated } = useAuth();
 
     const scrollToSection = useCallback((id) => {
-        const el = document.getElementById(id) || document.querySelector(`[data-section="${id}"], section[id*="${id}"]`);
-        if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const el = document.getElementById(id);
+        if (el && el.scrollIntoView) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }, []);
 
     useEffect(() => {
@@ -67,6 +70,7 @@ export default function HeaderSection() {
                     <div />
                     <div className={s.center}>
                         <Toolbar size="small" aria-label="Navigation">
+                            <ToolbarButton appearance="subtle" onClick={() => scrollToSection('hero')}>{t('header.nav.hero')}</ToolbarButton>
                             <ToolbarButton appearance="subtle" onClick={() => scrollToSection('about')}>{t('header.nav.about')}</ToolbarButton>
                             <ToolbarButton appearance="subtle" onClick={() => scrollToSection('projects')}>{t('header.nav.projects')}</ToolbarButton>
                         </Toolbar>

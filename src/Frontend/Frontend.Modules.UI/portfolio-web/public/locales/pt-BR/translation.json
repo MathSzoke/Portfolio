@@ -15,8 +15,9 @@
     "error": "Falha ao carregar. Por favor, recarregue a página."
   },
   "hero": {
-    "title": "Matheus Szoke — Engenheiro de Software",
-    "subtitle": "Tenho {{age}} anos de idade. Aqui você encontra meus projetos e formas de contato.\nEste portfólio foi criado com .NET 9 Aspire, React e PostgreSQL para banco de dados. Para o front-end, utilizei a biblioteca FluentUI.",
+    "title": "OLÁ 👋, SEJA BEM VINDO AO MEU SITE!",
+    "introducingMe": "<span>Meu nome é <code>Matheus Szoke</code>\nSou um <code>Desenvolvedor fullstack</code>\n& <code>Desenvolvedor de agentes de IA</code></span>",
+    "imageAlt": "Avatar Matheus Szoke",
     "buttons": {
       "viewProjects": "Ver projetos",
       "talkToMe": "Falar comigo"
@@ -33,9 +34,78 @@
         "title": "Interesses",
         "text": "Atualmente me aprofundando em Inteligência Artificial com C#, explorando Agentes de IA, modelos customizados e automação inteligente. Sempre buscando aprender novas tecnologias e práticas modernas."
       },
+      "experiences": {
+        "title": "Experiências",
+        "text": "Essas são as experiências profissionais que eu obtive ao decorrer do tempo, abaixo você poderá ver as empresas.",
+        "descriptionTitle": "Principais atividades",
+        "items": [
+          {
+            "company": "Banco Bradesco (via Syscode)",
+            "logo": "/assets/NewFolder/bradesco_logo.png",
+            "role": "Engenheiro de Software Pleno",
+            "period": "Set 2024 - Set 2025 · 1 ano 1 mês",
+            "location": "Osasco, São Paulo, Brasil · Remoto",
+            "description": [
+              "Desenvolvimento de sistema web para gestão de colaboradores.",
+              "Melhorias no sistema conforme demandas do cliente.",
+              "Aplicação de Clean Architecture e princípios SOLID.",
+              "Criação de testes unitários para garantir confiabilidade."
+            ]
+          },
+          {
+            "company": "Viveo",
+            "logo": "/assets/NewFolder/viveosaude_logo.png",
+            "role": "Engenheiro de Software Júnior",
+            "period": "Set 2023 - Ago 2024 · 1 ano",
+            "location": "São Paulo, Brasil · Híbrido",
+            "description": [
+              "Aprimoramento de queries e procedures em Microsoft SQL Server.",
+              "Refatoração de código C# usando .NET Core e ReactJS.",
+              "Desenvolvimento de chatbot WhatsApp para atendimento.",
+              "Suporte a operadores via chamados Topdesk."
+            ]
+          },
+          {
+            "company": "Geosaúde Gerenciadora",
+            "logo": "/assets/NewFolder/geosaude_gerenciadora_logo.png",
+            "role": "Analista de Sistemas I",
+            "period": "Jun 2023 - Set 2023 · 4 meses",
+            "location": "São Paulo, Brasil · Presencial",
+            "description": [
+              "Desenvolvimento de plataforma analítica para monitoramento de pacientes.",
+              "Utilização de C# (.NET Core 7), PostgreSQL e AngularJS.",
+              "Automação de transferências diárias de arquivos via OneDrive."
+            ]
+          },
+          {
+            "company": "Ka Solution",
+            "logo": "/assets/NewFolder/ka_solution_logo.png",
+            "role": "Estagiário de Desenvolvimento Web",
+            "period": "Jan 2022 - Jun 2023 · 1 ano 6 meses",
+            "location": "São Paulo, Brasil · Remoto",
+            "description": [
+              "Revisão e aprimoramento de aplicações web.",
+              "Otimização de queries SQL para performance.",
+              "Redução de 98% no tempo de carregamento de PDFs."
+            ]
+          },
+          {
+            "company": "Ajv Sistemas LTDA",
+            "logo": "/assets/NewFolder/ajv_sistemas_logo.png",
+            "role": "Estagiário de Desenvolvimento Web",
+            "period": "Jan 2021 - Out 2021 · 10 meses",
+            "location": "São Paulo, Brasil · Presencial",
+            "description": [
+              "Otimização de sistema de distribuição de medicamentos.",
+              "Gestão e organização de dados em banco.",
+              "Correção de bugs para maior eficiência."
+            ]
+          }
+        ]
+      },
       "skills": {
         "title": "Habilidades",
-        "techs": [ ".NET Framework/Core", "React", "PostgreSQL", "Docker", "Python", "Azure" ]
+        "techs": [ ".NET Framework/Core", ".NET Aspire", "React", "PostgreSQL", "SQL Server", "Docker", "Python", "Azure" ]
       },
       "languages": {
         "title": "Idiomas",

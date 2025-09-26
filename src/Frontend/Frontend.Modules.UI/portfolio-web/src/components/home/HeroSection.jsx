@@ -1,15 +1,44 @@
-import { Button, Text, Title3, tokens, makeStyles } from '@fluentui/react-components';
-import { useTranslation } from 'react-i18next';
+import {
+    Button,
+    Text,
+    Title3,
+    tokens,
+    makeStyles,
+    Image
+} from '@fluentui/react-components';
+import { useTranslation, Trans } from 'react-i18next';
 
 const useStyles = makeStyles({
     root: {
-        display: 'grid',
-        gap: '16px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    heroTextContent: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px'
     },
     sub: {
         color: tokens.colorNeutralForeground3,
-        whiteSpace: 'pre-line'
+        whiteSpace: 'pre-line',
+        lineHeight: '1'
     },
+    code: {
+        color: tokens.colorBrandBackground
+    },
+    highlight: {
+        fontSize: '2.5rem',
+        fontWeight: 700,
+        display: 'inline-block',
+        fontFamily: 'sans-serif'
+    },
+    helloMessage: {
+        fontFamily: 'cursive'
+    },
+    image: {
+        border: `3px solid ${tokens.colorBrandBackground}`
+    }
 });
 
 export default function HeroSection({ onSeeProjects }) {
@@ -28,11 +57,28 @@ export default function HeroSection({ onSeeProjects }) {
     })();
 
     return (
-        <section id={"hero"} className={s.root}>
-            <Title3>{t('hero.title')}</Title3>
-            <Text className={s.sub}>
-                {t('hero.subtitle', { age })}
-            </Text>
-        </section>
+        <div className={s.root}>
+            <div className={s.heroTextContent}>
+                <Text className={s.helloMessage}>{t('hero.title')}</Text>
+                <Title3 className={s.sub}>
+                    <Trans
+                        i18nKey="hero.introducingMe"
+                        components={{
+                            code: <code className={s.code} />,
+                            span: <span className={s.highlight} />
+                        }}
+                    />
+                </Title3>
+            </div>
+
+                <Image
+                    alt={t('hero.imageAlt')}
+                    shape="circular"
+                    className={s.image}
+                    src="/assets/my_image.png"
+                    height={600}
+                    width={400}
+                />
+        </div>
     );
 }
