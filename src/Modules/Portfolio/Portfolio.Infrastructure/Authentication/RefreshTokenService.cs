@@ -25,7 +25,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         var absolute = TimeSpan.FromDays(cfg.GetValue<int?>("Jwt:RefreshAbsoluteDays") ?? 30);
 
         var token = GenerateToken();
-        var hash = Hash(token);
+        var hash = await Hash(token);
 
         RefreshToken? rt = null;
         if (!string.IsNullOrWhiteSpace(device))
@@ -78,7 +78,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
     {
         var now = DateTime.UtcNow;
         var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 15);
-        var hash = Hash(refreshToken);
+        var hash = await Hash(refreshToken);
 
         var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
                       ?? throw new InvalidOperationException("invalid_refresh_token");
@@ -86,7 +86,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         if (current.RevokedAtUtc is not null)
         {
             var newToken = GenerateToken();
-            var newHash = Hash(newToken);
+            var newHash = await Hash(newToken);
 
             var newRefresh = new RefreshToken
             {
@@ -118,7 +118,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         if (now > current.MaxExpiresAtUtc) throw new InvalidOperationException("max_lifetime_reached");
 
         var nextToken = GenerateToken();
-        var nextHash = Hash(nextToken);
+        var nextHash = await Hash(nextToken);
 
         var nextExp = now.Add(sliding);
         if (nextExp > current.MaxExpiresAtUtc) nextExp = current.MaxExpiresAtUtc;
@@ -139,7 +139,7 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
 
     public async Task RevokeAsync(string refreshToken, string reason, CancellationToken ct)
     {
-        var hash = Hash(refreshToken);
+        var hash = await Hash(refreshToken);
         var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct);
         if (current is null) return;
         if (current.RevokedAtUtc is not null) return;
@@ -155,10 +155,10 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         return Base64UrlEncode(bytes);
     }
 
-    static string Hash(string token)
+    static Task<string> Hash(string token)
     {
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-        return Convert.ToHexString(bytes);
+        return Task.FromResult(Convert.ToHexString(bytes));
     }
 
     static string Base64UrlEncode(ReadOnlySpan<byte> bytes)
