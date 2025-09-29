@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import {
     Dialog,
     DialogSurface,
@@ -10,7 +10,10 @@ import {
     Button,
     Input,
     Field,
-    Badge
+    Badge,
+    useToastController,
+    Toast,
+    ToastTitle
 } from '@fluentui/react-components';
 import { Dismiss24Regular, CodeFilled, Add24Filled, Checkmark24Regular, DismissCircle24Regular } from '@fluentui/react-icons';
 import { FaGithub } from 'react-icons/fa';
@@ -21,6 +24,7 @@ import ProjectCard from './ProjectCard';
 
 export default function AddProjectModal({ open, onClose, onSuccess, initialData }) {
     const { t } = useTranslation();
+    const { dispatchToast } = useToastController();
     const [form, setForm] = useState({
         name: '',
         summary: '',
@@ -120,7 +124,38 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
         return { state: 'success', message: t('common.validField') };
     }
 
+    function validateForm() {
+        const errors = [];
+
+        if (!form.name || !form.name.trim()) errors.push(t('projects.superAdmin.placeholders.name') || 'Name');
+        if (!form.summary || !form.summary.trim()) errors.push(t('projects.superAdmin.placeholders.summary') || 'Summary');
+        if (!form.projectUrl || !form.projectUrl.trim()) errors.push(t('projects.superAdmin.placeholders.liveUrl') || 'Live URL');
+        if (!form.thumbnailUrl || !form.thumbnailUrl.trim()) errors.push(t('projects.superAdmin.placeholders.pastThumbUrl') || 'Thumbnail URL');
+
+        if (form.projectUrl && form.projectUrl.trim()) {
+            try { new URL(form.projectUrl); } catch { errors.push(t('common.invalidUrl')); }
+        }
+        if (form.thumbnailUrl && form.thumbnailUrl.trim()) {
+            try { new URL(form.thumbnailUrl); } catch { errors.push(t('common.invalidUrl')); }
+        }
+        setTouched(prev => ({ ...prev, name: true, summary: true, projectUrl: true, thumbnailUrl: true }));
+
+        return errors;
+    }
+
     async function handleSubmit() {
+        const errors = validateForm();
+        if (errors.length > 0) {
+            const message = errors.length === 1 ? errors[0] : `${errors.length} campos inválidos ou em branco: ${errors.join(', ')}`;
+            dispatchToast(
+                <Toast>
+                    <ToastTitle>{message}</ToastTitle>
+                </Toast>,
+                { intent: 'error' }
+            );
+            return;
+        }
+
         setLoading(true);
         try {
             const api = getApiClient();
@@ -207,16 +242,16 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
 
                             <form style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '1em 0' }}>
                                 <Field label={t('projects.superAdmin.placeholders.name')} validationState={getValidation('name').state} validationMessage={getValidation('name').message}>
-                                    <Input name="name" value={form.name} onChange={handleChange} />
+                                    <Input name="name" value={form.name} onChange={handleChange} required />
                                 </Field>
                                 <Field label={t('projects.superAdmin.placeholders.summary')} validationState={getValidation('summary').state} validationMessage={getValidation('summary').message}>
-                                    <Input name="summary" value={form.summary} onChange={handleChange} />
+                                    <Input name="summary" value={form.summary} onChange={handleChange} required />
                                 </Field>
                                 <Field label={t('projects.superAdmin.placeholders.repoUrl')}>
                                     <Input contentBefore={<FaGithub />} name="repoName" value={form.repoName} onChange={handleChange} />
                                 </Field>
                                 <Field label={t('projects.superAdmin.placeholders.liveUrl')} validationState={getValidation('projectUrl').state} validationMessage={getValidation('projectUrl').message}>
-                                    <Input contentBefore={<CodeFilled />} name="projectUrl" value={form.projectUrl} onChange={handleChange} />
+                                    <Input contentBefore={<CodeFilled />} name="projectUrl" value={form.projectUrl} onChange={handleChange} required />
                                 </Field>
                                 <Field label={t('projects.superAdmin.placeholders.technologies')}>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
@@ -237,7 +272,7 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                                             </Button>
                                         ) : (
                                             <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                                                <Input size="small" value={newTech} onChange={e => setNewTech(e.target.value)} placeholder={t('projects.superAdmin.labels.newTechnology')} />
+                                                <Input size="small" required value={newTech} onChange={e => setNewTech(e.target.value)} placeholder={t('projects.superAdmin.labels.newTechnology')} />
                                                 <Button appearance="subtle" size="small" icon={<Checkmark24Regular />} onClick={confirmAddTech} />
                                                 <Button appearance="subtle" size="small" icon={<DismissCircle24Regular color="red" />} onClick={cancelAddTech} />
                                             </div>
@@ -246,9 +281,9 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                                 </Field>
                                 <Field label={t('projects.superAdmin.labels.tech')} validationState={getValidation('thumbnailUrl').state} validationMessage={getValidation('thumbnailUrl').message}>
                                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
-                                        <Input style={{ width: '-webkit-fill-available' }} name="thumbnailUrl" value={form.thumbnailUrl} onChange={handleChange} placeholder={t('projects.superAdmin.placeholders.pastThumbUrl')} />
+                                        <Input style={{ width: '-webkit-fill-available' }} name="thumbnailUrl" value={form.thumbnailUrl} onChange={handleChange} placeholder={t('projects.superAdmin.placeholders.pastThumbUrl')} required />
                                         <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={e => handleFileSelect(e.target.files[0])} />
-                                        <Button style={{ minWidth: 'max-content'}} onClick={() => fileInputRef.current?.click()}>{t('projects.superAdmin.labels.uploadImage')}</Button>
+                                        <Button style={{ minWidth: 'max-content' }} onClick={() => fileInputRef.current?.click()}>{t('projects.superAdmin.labels.uploadImage')}</Button>
                                     </div>
                                 </Field>
                             </form>

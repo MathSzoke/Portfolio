@@ -21,7 +21,7 @@ const useClasses = makeStyles({
 });
 
 const getAnnouncement = (index, totalSlides) =>
-    `Carrossel: slide ${index + 1} de ${totalSlides}`;
+    `Carousel: slide ${index + 1} of ${totalSlides}`;
 
 export const ProjectsCarousel = ({ children }) => {
     const classes = useClasses();
@@ -37,7 +37,7 @@ export const ProjectsCarousel = ({ children }) => {
                 <CarouselViewport>
                     <CarouselSlider
                         cardFocus
-                        aria-label="Use as setas para navegar entre os projetos"
+                        aria-label="Use the arrows to navigate between the projects"
                     >
                         {children}
                     </CarouselSlider>
@@ -45,13 +45,13 @@ export const ProjectsCarousel = ({ children }) => {
                 <CarouselNavContainer
                     layout="inline"
                     autoplayTooltip={{ content: 'Autoplay', relationship: 'label' }}
-                    next={{ 'aria-label': 'Próximo' }}
-                    prev={{ 'aria-label': 'Anterior' }}
+                    next={{ 'aria-label': 'Next' }}
+                    prev={{ 'aria-label': 'Previous' }}
                 >
                     <CarouselNav>
                         {(index) => (
                             <CarouselNavButton
-                                aria-label={`Ir para o slide ${index + 1}`}
+                                aria-label={`Go to slide ${index + 1}`}
                             />
                         )}
                     </CarouselNav>

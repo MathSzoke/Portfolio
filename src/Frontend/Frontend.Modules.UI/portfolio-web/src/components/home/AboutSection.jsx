@@ -9,7 +9,7 @@
     ListItem,
     Card,
     CardHeader,
-    mergeClasses,
+    mergeClasses
 } from '@fluentui/react-components';
 import { useTranslation } from 'react-i18next';
 import { DocumentPdfFilled } from '@fluentui/react-icons';
@@ -85,10 +85,19 @@ const useStyles = makeStyles({
         boxShadow: tokens.shadow8,
         transition: 'opacity 0.2s',
         opacity: 0.98
+    },
+    techs: {
+        display: 'flex',
+        gap: '6px',
+        flexWrap: 'wrap',
+        marginTop: '8px',
+    },
+    languagesItem: {
+        padding: '0 0 0 30px',
+        listStyleType: 'inherit'
     }
 });
 
-// announcer para acessibilidade (mesmo padrão usado no exemplo da doc)
 const getAnnouncement = (index, totalSlides) => `Carrossel: slide ${index + 1} de ${totalSlides}`;
 
 export default function AboutSection() {
@@ -148,16 +157,24 @@ export default function AboutSection() {
                                             <Text className={s.period}>{exp.period}</Text>
                                             <Text className={s.sub}>{exp.location}</Text>
                                             {isHovered && (
-                                                <div className={s.description}>
-                                                    <Text weight="semibold" style={{ padding: 8, marginBottom: 8 }}>
-                                                        {t('about.sections.experiences.descriptionTitle', 'Main activities')}
-                                                    </Text>
-                                                    <ul style={{ padding: '0 40px 10px', margin: 0 }}>
-                                                        {exp.description.map((desc, idx) => (
-                                                            <li key={idx}><Text size={200}>{desc}</Text></li>
+                                                <>
+                                                    <div className={s.description}>
+                                                        <Text weight="semibold" style={{ padding: 8, marginBottom: 8 }}>
+                                                            {t('about.sections.experiences.descriptionTitle', 'Main activities')}
+                                                        </Text>
+                                                        <ul style={{ padding: '0 40px 10px', margin: 0 }}>
+                                                            {exp.description.map((desc, idx) => (
+                                                                <li key={idx}><Text size={200}>{desc}</Text></li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                    <div className={s.techs}>
+                                                        {
+                                                            exp.techs.map((tech, idx) => (
+                                                                    <Badge key={idx} appearance="outline">{tech}</Badge>
                                                         ))}
-                                                    </ul>
-                                                </div>
+                                                    </div>
+                                                </>
                                             )}
                                         </Card>
                                     </CarouselCard>
@@ -191,13 +208,13 @@ export default function AboutSection() {
 
             <div className={s.section}>
                 <Text weight="semibold">{sections.languages.title}</Text>
-                <List>
-                    <ListItem>
+                <List className={s.languagesItem}>
+                    <li>
                         <Text className={s.sub}>{sections.languages.text.enUs}</Text>
-                    </ListItem>
-                    <ListItem>
+                    </li>
+                    <li>
                         <Text className={s.sub}>{sections.languages.text.ptBr}</Text>
-                    </ListItem>
+                    </li>
                 </List>
             </div>
 

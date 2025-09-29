@@ -6,7 +6,8 @@
     "requiredField": "Campo obrigatório.",
     "invalidUrl": "Informe uma URL válida.",
     "validField": "Campo válido.",
-    "add": "Adicionar"
+    "add": "Adicionar",
+    "openNewTab": "Abrir em nova aba"
   },
   "loader": {
     "loading": "Carregando Portfolio...",
@@ -28,7 +29,7 @@
     "sections": {
       "summary": {
         "title": "Resumo",
-        "text": "Sou desenvolvedor Fullstack especializado em .NET e React, apaixonado por criar soluções escaláveis. Mais de 4 anos de experiência em sistemas corporativos e web apps, seguindo boas práticas como Clean Architecture e metodologias ágeis."
+        "text": "Sou Desenvolvedor Web especializado em .NET e React, apaixonado por criar soluções escaláveis. Mais de 4 anos de experiência em sistemas corporativos e web apps, seguindo boas práticas como Clean Architecture e padrão de design S.O.L.I.D"
       },
       "interests": {
         "title": "Interesses",
@@ -50,6 +51,17 @@
               "Melhorias no sistema conforme demandas do cliente.",
               "Aplicação de Clean Architecture e princípios SOLID.",
               "Criação de testes unitários para garantir confiabilidade."
+            ],
+            "techs": [
+              "ASP.NET Framework 4.7.2",
+              "SQL Server",
+              "ADO.NET",
+              "Blazor",
+              "Clean Architecture",
+              "xUnit",
+              "Microsservices",
+              "Git",
+              "Docker"
             ]
           },
           {
@@ -63,6 +75,20 @@
               "Refatoração de código C# usando .NET Core e ReactJS.",
               "Desenvolvimento de chatbot WhatsApp para atendimento.",
               "Suporte a operadores via chamados Topdesk."
+            ],
+            "techs": [
+              ".NET Core 7",
+              "SQL Server",
+              "EntityFramework",
+              "ReactJS",
+              "Python",
+              "xUnit",
+              "Microsservices",
+              "Git",
+              "Docker",
+              "Agile methodology",
+              "SCRUM",
+              "KANBAN"
             ]
           },
           {
@@ -75,6 +101,14 @@
               "Desenvolvimento de plataforma analítica para monitoramento de pacientes.",
               "Utilização de C# (.NET Core 7), PostgreSQL e AngularJS.",
               "Automação de transferências diárias de arquivos via OneDrive."
+            ],
+            "techs": [
+              ".NET Core 7",
+              "PostgreSQL",
+              "AngularJS",
+              "Python",
+              "Git",
+              "Docker"
             ]
           },
           {
@@ -87,6 +121,17 @@
               "Revisão e aprimoramento de aplicações web.",
               "Otimização de queries SQL para performance.",
               "Redução de 98% no tempo de carregamento de PDFs."
+            ],
+            "techs": [
+              "ASP.NET Framework 4.5",
+              ".NET Core 6",
+              "SQL Server",
+              "ADO.NET",
+              "EntityFramework",
+              "Blazor",
+              "ReactJS",
+              "Python",
+              "Git"
             ]
           },
           {
@@ -99,6 +144,12 @@
               "Otimização de sistema de distribuição de medicamentos.",
               "Gestão e organização de dados em banco.",
               "Correção de bugs para maior eficiência."
+            ],
+            "techs": [
+              ".NET Core 6",
+              "React Native com Expo",
+              "SQL Server",
+              "Git SourceTree"
             ]
           }
         ]
@@ -128,48 +179,51 @@
   "projects": {
     "title": "Projetos",
     "loading": "Carregando projetos...",
+    "responses": {
+      "rateError": "Erro ao salvar a avaliação, espere um minuto e tente novamente."
+    },
     "superAdmin": {
-      "title": "Área do super admin",
-      "editTitle": "Área de editar projeto",
-      "description": "Gerencie seus projetos e configurações avançadas aqui.",
-      "actions": {
-        "addProject": "Adicionar projeto",
-        "updateProject": "Atualizar projeto",
-        "deleteProject": "Deletar projeto",
-        "reorderProjects": "Reordenar projetos"
-      },
-      "dialogs": {
-        "confirmationDelete": {
-          "title": "Deletar projeto",
-          "message": "Você realmente deseja deletar este projeto?",
-          "confirm": "Confirmar"
+        "title": "Área do super admin",
+        "editTitle": "Área de editar projeto",
+        "description": "Gerencie seus projetos e configurações avançadas aqui.",
+        "actions": {
+          "addProject": "Adicionar projeto",
+          "updateProject": "Atualizar projeto",
+          "deleteProject": "Deletar projeto",
+          "reorderProjects": "Reordenar projetos"
+        },
+        "dialogs": {
+          "confirmationDelete": {
+            "title": "Deletar projeto",
+            "message": "Você realmente deseja deletar este projeto?",
+            "confirm": "Confirmar"
+          }
+        },
+        "responses": {
+          "added": "Projeto adicionado com sucesso!",
+          "loadError": "Erro ao carregar projetos.",
+          "reorderSaved": "Nova ordem salva!",
+          "reorderFailed": "Falha ao salvar a nova ordem.",
+          "deleted": "Projeto deletado com sucesso",
+          "deleteFailed": "Falha ao deletar o projeto",
+          "updated": "Projeto atualizado com sucesso"
+        },
+        "placeholders": {
+          "name": "Nome do projeto",
+          "summary": "Resumo curto",
+          "repoUrl": "Nome do repositório",
+          "liveUrl": "URL do projeto online",
+          "technologies": "Tecnologias",
+          "pastThumbUrl": "Cole uma URL da imagem",
+          "addTechError": "Falhou ao salvar uma nova tecnologia, veja o console devtools para visualizar o erro."
+        },
+        "labels": {
+          "uploadImage": "Subir imagem",
+          "newTechnology": "Nova tecnologia",
+          "tech": "Thumbnail URL / Upload"
         }
-      },
-      "responses": {
-        "added": "Projeto adicionado com sucesso!",
-        "loadError": "Erro ao carregar projetos.",
-        "reorderSaved": "Nova ordem salva!",
-        "reorderFailed": "Falha ao salvar a nova ordem.",
-        "deleted": "Projeto deletado com sucesso",
-        "deleteFailed": "Falha ao deletar o projeto",
-        "updated": "Projeto atualizado com sucesso"
-      },
-      "placeholders": {
-        "name": "Nome do projeto",
-        "summary": "Resumo curto",
-        "repoUrl": "Nome do repositório",
-        "liveUrl": "URL do projeto online",
-        "technologies": "Tecnologias",
-        "pastThumbUrl": "Cole uma URL da imagem",
-        "addTechError": "Falhou ao salvar uma nova tecnologia, veja o console devtools para visualizar o erro."
-      },
-      "labels": {
-        "uploadImage": "Subir imagem",
-        "newTechnology": "Nova tecnologia",
-        "tech": "Thumbnail URL / Upload"
       }
-    }
-  },
+    },
   "header": {
     "nav": {
       "about": "Sobre",
