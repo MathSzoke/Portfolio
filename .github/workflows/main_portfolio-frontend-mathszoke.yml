@@ -45,7 +45,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-  
+
+      - name: List repo structure
+        run: ls -R ./src/Frontend/Frontend.Modules.UI/portfolio-web/public
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -66,4 +69,5 @@ jobs:
           slot-name: 'Production'
           package: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CF56042EEB52429E9F8F1C90B356EB2C }}
+
 
