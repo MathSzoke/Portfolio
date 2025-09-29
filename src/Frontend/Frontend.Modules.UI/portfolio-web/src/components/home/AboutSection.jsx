@@ -26,13 +26,6 @@ const useStyles = makeStyles({
         display: 'grid',
         gap: '8px'
     },
-    techs: {
-        display: 'flex',
-        gap: '6px',
-        flexWrap: 'wrap',
-        marginTop: '8px',
-        marginBottom: '8px'
-    },
     sub: {
         color: tokens.colorNeutralForeground3,
         whiteSpace: 'pre-line'
