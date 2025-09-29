@@ -16,9 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify package.json
-        run: cat ./src/Frontend/Frontend.Modules.UI/portfolio-web/package.json
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -28,40 +25,13 @@ jobs:
         run: npm install --legacy-peer-deps
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
 
-      - name: Build project with Vite
-        run: npm run build
-        working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-  
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: List repo structure
-        run: ls -R ./src/Frontend/Frontend.Modules.UI/portfolio-web/public
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-  
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-        working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
-  
       - name: Build project
         run: npm run build
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
-  
+
+      - name: List dist contents
+        run: ls -R ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
@@ -69,5 +39,3 @@ jobs:
           slot-name: 'Production'
           package: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CF56042EEB52429E9F8F1C90B356EB2C }}
-
-
