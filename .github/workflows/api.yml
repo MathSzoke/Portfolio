@@ -1,0 +1,48 @@
+name: Deploy API (.NET) to Azure App Service
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/Modules/Portfolio/**"
+      - "src/Shared/**"
+      - "Directory.Packages.props"
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      API_CSPROJ: src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore ${{ env.API_CSPROJ }}
+
+      - name: Publish
+        run: dotnet publish ${{ env.API_CSPROJ }} -c Release -o publish_api
+
+      - name: Zip
+        run: |
+          cd publish_api
+          zip -r ../api.zip .
+          cd ..
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "portfolio-api-mathszoke" 
+          slot-name: "Production"
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_API }}
+          package: api.zip
