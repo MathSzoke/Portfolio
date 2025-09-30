@@ -1,4 +1,4 @@
-name: Portfolio API
+name: Portfolio API Workflow
 
 on:
   push:
