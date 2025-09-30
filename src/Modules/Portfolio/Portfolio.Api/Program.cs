@@ -42,18 +42,9 @@ app.MapHealthChecks("health", new HealthCheckOptions
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwaggerWithUi();
-    app.MapOpenApi();
-    app.ApplyMigrations();
-}
-
-var runMigrations = builder.Configuration.GetValue<bool>("RunMigrations");
-if (runMigrations)
-{
-    app.ApplyMigrations();
-}
+app.UseSwaggerWithUi();
+app.MapOpenApi();
+app.ApplyMigrations();
 
 app.ApplicationUses();
 
