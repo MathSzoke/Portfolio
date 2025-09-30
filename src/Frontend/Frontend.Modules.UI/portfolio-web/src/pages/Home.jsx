@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { makeStyles } from '@fluentui/react-components';
+import { makeStyles, tokens } from '@fluentui/react-components';
 import { ChatLauncherFloatingButton } from '../components/chat/ChatLauncher.jsx';
 import HeroSection from '../components/home/HeroSection.jsx';
 import AboutSection from '../components/home/AboutSection.jsx';
@@ -9,8 +9,8 @@ import HeaderSection from '../components/home/HeaderSection.jsx';
 
 const useStyles = makeStyles({
     page: {
-        margin: '0',
-        padding: '0',
+        margin: 0,
+        padding: 0,
         width: '100%',
         height: '100%',
         overflowY: 'auto',
@@ -24,6 +24,14 @@ const useStyles = makeStyles({
         padding: '0 24px',
         margin: '0 10%',
         height: 'calc(100vh - 5em)',
+        boxSizing: 'border-box',
+    },
+    safeBottom: {
+        paddingBottom: 'env(safe-area-inset-bottom, 24px)',
+        '@media (max-width: 768px)': {
+            height: 'calc(25em + 100vh)',
+            marginBottom: '10em'
+        },
     }
 });
 
@@ -39,13 +47,13 @@ export default function Home() {
                 <section id="hero" className={`${s.section} scroll-section`} style={{ justifyContent: 'center', height: '100vh' }}>
                     <HeroSection onSeeProjects={() => projectsRef.current?.scrollIntoView({ behavior: 'smooth' })} />
                 </section>
-                <section id="about" className={`${s.section} scroll-section`}>
+                <section id="about" className={`${s.section} ${s.safeBottom} scroll-section`}>
                     <AboutSection />
                 </section>
                 <section id="projects" className={`${s.section} scroll-section`} ref={projectsRef}>
                     <ProjectsSection />
                 </section>
-                {/* TO FINISH <ChatLauncherFloatingButton/>*/}
+                {/* <ChatLauncherFloatingButton/> */}
             </div>
         </>
     );

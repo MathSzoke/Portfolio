@@ -37,7 +37,10 @@ const useStyles = makeStyles({
         fontFamily: 'sans-serif'
     },
     image: {
-        border: `3px solid ${tokens.colorBrandBackground}`
+        border: `3px solid ${tokens.colorBrandBackground}`,
+        '@media (max-width: 768px)': {
+            display: 'none',
+        },
     }
 });
 

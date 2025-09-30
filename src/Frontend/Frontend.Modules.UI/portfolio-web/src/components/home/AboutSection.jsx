@@ -6,7 +6,6 @@
     tokens,
     Button,
     List,
-    ListItem,
     Card,
     CardHeader,
     mergeClasses
@@ -41,13 +40,15 @@ const useStyles = makeStyles({
         gap: '6px',
         margin: '0 0.5em',
         position: 'relative',
-        transition: 'box-shadow 0.2s, transform 0.2s, min-height 0.2s',
+        transition: 'box-shadow 0.3s ease, transform 0.3s ease',
         boxShadow: tokens.shadow4,
         cursor: 'pointer',
         background: tokens.colorNeutralBackground1,
+        '@media (max-width: 768px)': {
+            margin: 0,
+        },
     },
     cardHovered: {
-        minHeight: '340px',
         boxShadow: tokens.shadow8,
         transform: 'scale(1.07)',
         zIndex: 2
@@ -65,25 +66,43 @@ const useStyles = makeStyles({
     },
     description: {
         width: '100%',
-        height: '100%',
+        overflow: 'hidden',
         background: 'rgba(30,30,30,0.97)',
         color: tokens.colorNeutralForegroundOnBrand,
-        zIndex: 2,
+        borderRadius: tokens.borderRadiusMedium,
+        fontSize: '1rem',
+        boxShadow: tokens.shadow8,
+        opacity: 0,
+        maxHeight: 0,
+        transform: 'translateY(-10px)',
+        transition: 'opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        borderRadius: tokens.borderRadiusMedium,
-        fontSize: '1rem',
-        boxShadow: tokens.shadow8,
-        transition: 'opacity 0.2s',
-        opacity: 0.98
+    },
+    descriptionVisible: {
+        opacity: 1,
+        maxHeight: 400,
+        padding: '12px 0',
+        transform: 'translateY(0)',
     },
     techs: {
         display: 'flex',
         gap: '6px',
         flexWrap: 'wrap',
+        marginTop: '0',
+        opacity: 0,
+        maxHeight: 0,
+        overflow: 'hidden',
+        transform: 'translateY(-10px)',
+        transition: 'opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease',
+    },
+    techsVisible: {
+        opacity: 1,
+        maxHeight: 200,
         marginTop: '8px',
+        transform: 'translateY(0)',
     },
     languagesItem: {
         padding: '0 0 0 30px',
@@ -118,12 +137,7 @@ export default function AboutSection() {
                 <Text weight="semibold">{sections.experiences.title}</Text>
                 <Text className={s.sub}>{sections.experiences.text}</Text>
 
-                <Carousel
-                    align="center"
-                    whitespace={false}
-                    announcement={getAnnouncement}
-                    draggable
-                >
+                <Carousel align="center" whitespace={false} announcement={getAnnouncement} draggable>
                     <CarouselViewport>
                         <CarouselSlider
                             cardFocus
@@ -149,26 +163,23 @@ export default function AboutSection() {
                                             />
                                             <Text className={s.period}>{exp.period}</Text>
                                             <Text className={s.sub}>{exp.location}</Text>
-                                            {isHovered && (
-                                                <>
-                                                    <div className={s.description}>
-                                                        <Text weight="semibold" style={{ padding: 8, marginBottom: 8 }}>
-                                                            {t('about.sections.experiences.descriptionTitle', 'Main activities')}
-                                                        </Text>
-                                                        <ul style={{ padding: '0 40px 10px', margin: 0 }}>
-                                                            {exp.description.map((desc, idx) => (
-                                                                <li key={idx}><Text size={200}>{desc}</Text></li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                    <div className={s.techs}>
-                                                        {
-                                                            exp.techs.map((tech, idx) => (
-                                                                    <Badge key={idx} appearance="outline">{tech}</Badge>
-                                                        ))}
-                                                    </div>
-                                                </>
-                                            )}
+
+                                            <div className={mergeClasses(s.description, isHovered && s.descriptionVisible)}>
+                                                <Text weight="semibold" style={{ padding: 8, marginBottom: 8 }}>
+                                                    {t('about.sections.experiences.descriptionTitle', 'Main activities')}
+                                                </Text>
+                                                <ul style={{ padding: '0 40px 10px', margin: 0 }}>
+                                                    {exp.description.map((desc, idx) => (
+                                                        <li key={idx}><Text size={200}>{desc}</Text></li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+
+                                            <div className={mergeClasses(s.techs, isHovered && s.techsVisible)}>
+                                                {exp.techs.map((tech, idx) => (
+                                                    <Badge key={idx} appearance="outline">{tech}</Badge>
+                                                ))}
+                                            </div>
                                         </Card>
                                     </CarouselCard>
                                 );
