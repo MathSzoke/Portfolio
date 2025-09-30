@@ -35,7 +35,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'portfolio-frontend-mathszoke'
+          app-name: 'portfolio'
           slot-name: 'Production'
           package: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CF56042EEB52429E9F8F1C90B356EB2C }}
