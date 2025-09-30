@@ -49,6 +49,12 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
+var runMigrations = builder.Configuration.GetValue<bool>("RunMigrations");
+if (runMigrations)
+{
+    app.ApplyMigrations();
+}
+
 app.ApplicationUses();
 
 app.UseCorsApp();
