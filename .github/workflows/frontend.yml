@@ -32,6 +32,8 @@ jobs:
             VITE_PORTFOLIO_API: ${{ secrets.VITE_PORTFOLIO_API }}
             VITE_API_BASE_URL: ${{ secrets.VITE_PORTFOLIO_API }}
             VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+            VITE_LINKEDIN_CLIENT_ID: ${{ secrets.VITE_LINKEDIN_CLIENT_ID }}
+            VITE_LINKEDIN_REDIRECT_URI: ${{ secrets.VITE_LINKEDIN_REDIRECT_URI }}
 
       - name: List dist contents
         run: ls -R ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
