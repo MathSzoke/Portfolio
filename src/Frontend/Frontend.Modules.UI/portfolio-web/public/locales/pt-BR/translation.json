@@ -42,7 +42,7 @@
         "items": [
           {
             "company": "Banco Bradesco (via Syscode)",
-            "logo": "/assets/NewFolder/bradesco_logo.png",
+            "logo": "/assets/experiences_logos/bradesco_logo.png",
             "role": "Engenheiro de Software Pleno",
             "period": "Set 2024 - Set 2025 · 1 ano 1 mês",
             "location": "Osasco, São Paulo, Brasil · Remoto",
@@ -66,7 +66,7 @@
           },
           {
             "company": "Viveo",
-            "logo": "/assets/NewFolder/viveosaude_logo.png",
+            "logo": "/assets/experiences_logos/viveosaude_logo.png",
             "role": "Engenheiro de Software Júnior",
             "period": "Set 2023 - Ago 2024 · 1 ano",
             "location": "São Paulo, Brasil · Híbrido",
@@ -93,7 +93,7 @@
           },
           {
             "company": "Geosaúde Gerenciadora",
-            "logo": "/assets/NewFolder/geosaude_gerenciadora_logo.png",
+            "logo": "/assets/experiences_logos/geosaude_gerenciadora_logo.png",
             "role": "Analista de Sistemas I",
             "period": "Jun 2023 - Set 2023 · 4 meses",
             "location": "São Paulo, Brasil · Presencial",
@@ -113,7 +113,7 @@
           },
           {
             "company": "Ka Solution",
-            "logo": "/assets/NewFolder/ka_solution_logo.png",
+            "logo": "/assets/experiences_logos/ka_solution_logo.png",
             "role": "Estagiário de Desenvolvimento Web",
             "period": "Jan 2022 - Jun 2023 · 1 ano 6 meses",
             "location": "São Paulo, Brasil · Remoto",
@@ -136,7 +136,7 @@
           },
           {
             "company": "Ajv Sistemas LTDA",
-            "logo": "/assets/NewFolder/ajv_sistemas_logo.png",
+            "logo": "/assets/experiences_logos/ajv_sistemas_logo.png",
             "role": "Estagiário de Desenvolvimento Web",
             "period": "Jan 2021 - Out 2021 · 10 meses",
             "location": "São Paulo, Brasil · Presencial",
