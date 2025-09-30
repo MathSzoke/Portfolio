@@ -34,7 +34,7 @@ export function FullPageLoader({onComplete}) {
     const checkServerStatus = useCallback(async () => {
         const backendUrl = import.meta.env.VITE_PORTFOLIO_API;
         if (!backendUrl) {
-            console.error("URL do backend não encontrada. Verifique as variáveis de ambiente do Aspire.");
+            console.error(`URL do backend não encontrada ${backendUrl}. Verifique as variáveis de ambiente do Aspire.`);
             setStatus('error');
             return;
         }
