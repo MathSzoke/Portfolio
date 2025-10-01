@@ -23,7 +23,7 @@ import {useTranslation} from 'react-i18next';
 import {uploadToCloudinary} from "../../../services/cloudinaryUpload.js";
 
 const useStyles = makeStyles({
-    surface: {minWidth: 'unset', maxWidth: 'unset', width: '45%', height: '80%'},
+    surface: {minWidth: 'unset', maxWidth: 'unset', width: '80%', height: '80%'},
     body: {
         overflowX: 'hidden',
         overflowY: 'hidden',
@@ -47,7 +47,12 @@ const useStyles = makeStyles({
         minHeight: 0,
         overflowY: 'auto'
     },
-    tabs: {display: 'flex', justifyContent: 'space-between', alignItems: 'center'},
+    tabs: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        overflowX: 'auto'
+    },
     searchBox: {width: 360},
     sectionTitle: {fontWeight: 600, marginTop: tokens.spacingVerticalXXS},
     rail: {position: 'relative', paddingInline: tokens.spacingHorizontalS, overflow: 'hidden'},
