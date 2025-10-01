@@ -1,6 +1,18 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Button, Toolbar, ToolbarButton, makeStyles, mergeClasses } from '@fluentui/react-components';
-import { Settings24Regular } from '@fluentui/react-icons';
+import {
+    Button,
+    Toolbar,
+    ToolbarButton,
+    makeStyles,
+    mergeClasses,
+    Drawer,
+    DrawerBody,
+    DrawerHeader,
+    DrawerHeaderTitle,
+    useRestoreFocusSource,
+    useRestoreFocusTarget
+} from '@fluentui/react-components';
+import { Settings24Regular, Navigation24Regular, Dismiss24Regular } from '@fluentui/react-icons';
 import { useTranslation } from 'react-i18next';
 import SettingsModal from '../Settings/General/SettingsModal';
 import AuthModal from '../auth/AuthModal.jsx';
@@ -32,12 +44,48 @@ const useStyles = makeStyles({
         padding: '12px 16px',
         gap: 12
     },
-    center: { justifySelf: 'center' },
+    center: {
+        justifySelf: 'center',
+        '@media (max-width: 320px)': {
+            display: 'none'
+        }
+    },
     right: {
         justifySelf: 'end',
         display: 'flex',
         gap: '3em',
-        alignItems: 'center'
+        alignItems: 'center',
+        '@media (max-width: 768px)': {
+            display: 'none'
+        }
+    },
+    mobileMenuButton: {
+        display: 'none',
+        '@media (max-width: 768px)': {
+            display: 'flex',
+            justifySelf: 'start'
+        }
+    },
+    drawerNav: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        padding: '16px'
+    },
+    drawerBody: {
+            height: '-webkit-fill-available',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column'
+    },
+    drawerContents: {
+        margin: '0 auto'
+    },
+    sections: {
+        width: 'auto',
+        '@media (min-width: 320px)': {
+            display: 'none'
+        }
     }
 });
 
@@ -46,13 +94,16 @@ export default function HeaderSection() {
     const { t } = useTranslation();
     const [openSettings, setOpenSettings] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-
+    const [openDrawer, setOpenDrawer] = useState(false);
     const { isAuthenticated } = useAuth();
+    const restoreFocusTargetAttributes = useRestoreFocusTarget();
+    const restoreFocusSourceAttributes = useRestoreFocusSource();
 
     const scrollToSection = useCallback((id) => {
         const el = document.getElementById(id);
         if (el && el.scrollIntoView) {
             el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setOpenDrawer(false);
         }
     }, []);
 
@@ -67,6 +118,15 @@ export default function HeaderSection() {
         <>
             <header className={mergeClasses(s.wrapper, scrolled && s.scrolled)}>
                 <div className={s.bar}>
+                    <div className={s.mobileMenuButton}>
+                        <Button
+                            {...restoreFocusTargetAttributes}
+                            appearance="subtle"
+                            aria-label="Menu"
+                            icon={<Navigation24Regular />}
+                            onClick={() => setOpenDrawer(true)}
+                        />
+                    </div>
                     <div />
                     <div className={s.center}>
                         <Toolbar size="small" aria-label="Navigation">
@@ -87,6 +147,66 @@ export default function HeaderSection() {
                     </div>
                 </div>
             </header>
+
+            <Drawer
+                {...restoreFocusSourceAttributes}
+                type="overlay"
+                separator
+                open={openDrawer}
+                onOpenChange={(_, { open }) => setOpenDrawer(open)}
+            >
+                <DrawerHeader>
+                    <DrawerHeaderTitle
+                        action={
+                            <Button
+                                appearance="subtle"
+                                aria-label={t('common.close')}
+                                icon={<Dismiss24Regular />}
+                                onClick={() => setOpenDrawer(false)}
+                            />
+                        }
+                    >
+                        {t('header.nav.title', 'Menu')}
+                    </DrawerHeaderTitle>
+                </DrawerHeader>
+                <DrawerBody className={s.drawerNav}>
+                    <div className={s.drawerBody}>
+                        <div className={s.drawerContents}>
+                            <Toolbar vertical size="small" aria-label="vertical" className={s.sections}>
+                                <ToolbarButton appearance="subtle" onClick={() => scrollToSection('hero')}>{t('header.nav.hero')}</ToolbarButton>
+                                <ToolbarButton appearance="subtle" onClick={() => scrollToSection('about')}>{t('header.nav.about')}</ToolbarButton>
+                                <ToolbarButton appearance="subtle" onClick={() => scrollToSection('projects')}>{t('header.nav.projects')}</ToolbarButton>
+                            </Toolbar>
+                            <Button
+                                appearance="subtle"
+                                icon={<Settings24Regular />}
+                                onClick={() => {
+                                    setOpenDrawer(false);
+                                    setOpenSettings(true);
+                                }}
+                            >
+                                {t('header.buttons.settings')}
+                            </Button>
+                        </div>
+                        <div className={s.drawerContents}>
+                            {isAuthenticated ? (
+                                <UserPersonaButton />
+                            ) : (
+                                <Button
+                                    appearance="secondary"
+                                    onClick={() => {
+                                        setOpenDrawer(false);
+                                        window.dispatchEvent(new CustomEvent('open-login'));
+                                    }}
+                                >
+                                    {t('header.buttons.login')}
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </DrawerBody>
+            </Drawer>
+
             <SettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} />
             <UserSettingsModal />
             <AuthModal />

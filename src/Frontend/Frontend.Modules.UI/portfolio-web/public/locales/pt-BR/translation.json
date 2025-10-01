@@ -228,7 +228,8 @@
     "nav": {
       "about": "Sobre",
       "hero": "Início",
-      "projects": "Projetos"
+      "projects": "Projetos",
+      "title": "Menu"
     },
     "buttons": {
       "settings": "Configurações",

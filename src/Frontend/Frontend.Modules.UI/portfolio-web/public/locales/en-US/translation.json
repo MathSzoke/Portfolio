@@ -229,7 +229,8 @@
     "nav": {
       "about": "About",
       "hero": "Home",
-      "projects": "Projects"
+      "projects": "Projects",
+      "title": "Menu"
     },
     "buttons": {
       "settings": "Settings",
