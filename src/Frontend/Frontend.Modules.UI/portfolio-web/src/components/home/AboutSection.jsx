@@ -210,9 +210,9 @@ export default function AboutSection() {
                 <div className={s.skillsTechs}>
                     {
                         sections.skills.techs.map((tech) => (
-                        console.log(tech),
-                        <Badge key={tech} appearance="tint" shape="rounded">{tech}</Badge>
-                    ))}
+                            <Badge key={tech} appearance="tint" shape="rounded">{tech}</Badge>
+                        )
+                    )}
                 </div>
             </div>
 

@@ -9,7 +9,7 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'pt-BR',
-        debug: true,
+        debug: import.meta.env.DEV,
         interpolation: {
             escapeValue: false,
         },
