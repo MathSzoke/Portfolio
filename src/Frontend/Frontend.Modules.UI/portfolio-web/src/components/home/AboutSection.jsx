@@ -107,6 +107,10 @@ const useStyles = makeStyles({
     languagesItem: {
         padding: '0 0 0 30px',
         listStyleType: 'inherit'
+    },
+    skillsTechs: {
+        display: 'flex',
+        gap: '5px'
     }
 });
 
@@ -203,8 +207,10 @@ export default function AboutSection() {
 
             <div className={s.section}>
                 <Text weight="semibold">{sections.skills.title}</Text>
-                <div className={s.techs}>
-                    {sections.skills.techs.map((tech) => (
+                <div className={s.skillsTechs}>
+                    {
+                        sections.skills.techs.map((tech) => (
+                        console.log(tech),
                         <Badge key={tech} appearance="tint" shape="rounded">{tech}</Badge>
                     ))}
                 </div>
