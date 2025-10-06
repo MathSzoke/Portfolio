@@ -34,7 +34,7 @@ const useStyles = makeStyles({
         fontFamily: 'sans-serif'
     },
     helloMessage: {
-        fontFamily: 'sans-serif'
+        fontFamily: 'monospace'
     },
     image: {
         border: `3px solid ${tokens.colorBrandBackground}`,
