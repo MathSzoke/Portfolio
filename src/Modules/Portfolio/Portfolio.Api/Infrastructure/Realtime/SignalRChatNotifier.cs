@@ -9,7 +9,7 @@ namespace Portfolio.Api.Infrastructure.Realtime;
 
 public sealed class SignalRChatNotifier(IHubContext<PresenceHub> hub) : IChatNotifier
 {
-    public Task SendMessageToSessionAsync(Guid sessionId, Guid messageId, string content, string sender, DateTime createdAt, DateTime? readAt, CancellationToken ct = default)
+    public Task SendMessageToSessionAsync(Guid sessionId, Guid messageId, string content, string sender, Guid? senderUserId, DateTime createdAt, DateTime? readAt, CancellationToken ct = default)
     {
         var payload = new
         {
@@ -17,6 +17,7 @@ public sealed class SignalRChatNotifier(IHubContext<PresenceHub> hub) : IChatNot
             sessionId,
             content,
             sender,
+            senderUserId,
             createdAt,
             readAt
         };

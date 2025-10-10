@@ -10,16 +10,19 @@ export type ChatMessageDto = {
 };
 
 function getBackendUrl() {
-    const url = (import.meta.env as any).VITE_PORTFOLIO_API || (import.meta.env as any).VITE_API_BASE_URL;
+    const env: any = import.meta.env;
+    const url = env.VITE_PORTFOLIO_API || env.VITE_API_BASE_URL;
     if (!url) throw new Error("API base URL not set.");
-    return String(url).replace(/\/+$/, '');
+    return String(url).replace(/\/+$/, "");
 }
 
 export function getChatConnection() {
     const base = getBackendUrl();
 
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${base}/hubs/presence`)
+        .withUrl(`${base}/hubs/presence`, {
+            withCredentials: true
+        })
         .withAutomaticReconnect()
         .configureLogging(signalR.LogLevel.Information)
         .build();

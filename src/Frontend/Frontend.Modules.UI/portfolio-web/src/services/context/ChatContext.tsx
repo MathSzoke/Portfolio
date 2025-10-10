@@ -11,7 +11,8 @@ type ChatContextType = {
     open: () => void;
     close: () => void;
     postMessage: (text: string) => Promise<void>;
-    ensureSession: () => Promise<void>;
+    ensureSession: (recipientId?: string) => Promise<string | null>;
+    selectSession: (id: string | null) => Promise<void>;
     hasOpenSession: boolean | null;
 };
 
@@ -32,27 +33,25 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
             .catch(() => setHasOpenSession(null));
     }, [api]);
 
-    useEffect(() => {
-        const c = getChatConnection();
-        c.off("message");
-        c.on("message", (m: ChatMessageDto) => {
-            setMessages(prev => [...prev, m]);
-            if (!openRef.current) dispatchToast("Nova mensagem recebida", { intent: "info" });
-        });
-        if (c.state !== "Connected" && c.state !== "Connecting") {
-            c.start().catch(() => { });
-        }
-        return () => {
-            c.off("message");
-            c.stop().catch(() => { });
-        };
-    }, [dispatchToast]);
-
     const fetchMessages = async (sid?: string) => {
         const id = sid ?? sessionId;
         if (!id) return;
         const list = await api.get(`/api/v1/chat/sessions/${id}/messages`, { skipAuth: true });
-        setMessages(Array.isArray(list) ? list : []);
+        if (Array.isArray(list)) {
+            setMessages(list as any);
+        } else if (list && Array.isArray(list.chatMessageItems)) {
+            const normalized: ChatMessageDto[] = list.chatMessageItems.map((m: any) => ({
+                id: m.id,
+                sessionId: list.sessionId ?? id,
+                sender: m.sender,
+                content: m.content,
+                createdAt: m.createdAt,
+                readAt: m.readAt ?? null
+            }));
+            setMessages(normalized);
+        } else {
+            setMessages([]);
+        }
     };
 
     useEffect(() => {
@@ -63,31 +62,38 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [sessionId, isOpen]);
 
     const ensureSession = async (recipientId?: string) => {
-        if (sessionId) return;
+        if (sessionId) return sessionId;
         const data = await api.post("/api/v1/chat/sessions/start", { RecipientId: recipientId });
-        setSessionId(data.id);
-        await fetchMessages(data.id);
+        const id = data?.id ?? null;
+        if (id) {
+            setSessionId(id);
+            await fetchMessages(id);
+        }
+        return id;
+    };
+
+    const selectSession = async (id: string | null) => {
+        setSessionId(id);
+        if (id) await fetchMessages(id);
+        else setMessages([]);
     };
 
     const postMessage = async (text: string) => {
-        if (!sessionId) return;
+        if (!sessionId || !text?.trim()) return;
         const m = await api.post(`/api/v1/chat/sessions/${sessionId}/messages`, { content: text, asMe: false });
-        setMessages(prev => [...prev, { id: m.id, sessionId: m.sessionId, sender: m.sender, content: m.content, createdAt: m.createdAt }]);
+        console.log(m);
+        setMessages(prev => [
+            ...prev,
+            { id: m.id, sessionId: m.sessionId, sender: m.sender, senderUserId: m.senderUserId, content: m.content, createdAt: m.createdAt }
+        ]);
         await fetchMessages();
     };
 
-    const open = () => {
-        openRef.current = true;
-        setIsOpen(true);
-    };
-
-    const close = () => {
-        openRef.current = false;
-        setIsOpen(false);
-    };
+    const open = () => { openRef.current = true; setIsOpen(true); };
+    const close = () => { openRef.current = false; setIsOpen(false); };
 
     const value = useMemo(
-        () => ({ sessionId, messages, isOpen, open, close, postMessage, ensureSession, hasOpenSession }),
+        () => ({ sessionId, messages, isOpen, open, close, postMessage, ensureSession, selectSession, hasOpenSession }),
         [sessionId, messages, isOpen, hasOpenSession]
     );
 

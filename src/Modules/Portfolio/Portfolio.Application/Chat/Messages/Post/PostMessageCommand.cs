@@ -13,6 +13,7 @@ public sealed record ChatMessageResponse(
     Guid SessionId,
     string Content,
     string Sender,
+    Guid? SenderUserId,
     DateTime CreatedAt,
     DateTime? ReadAt
 );

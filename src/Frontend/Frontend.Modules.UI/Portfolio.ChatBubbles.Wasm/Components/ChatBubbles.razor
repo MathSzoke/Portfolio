@@ -19,11 +19,11 @@
         display: flex;
     }
 
-        .row.me {
+        .row.right {
             justify-content: flex-end;
         }
 
-        .row.other {
+        .row.left {
             justify-content: flex-start;
         }
 
@@ -37,13 +37,13 @@
         white-space: pre-wrap;
     }
 
-    .me .bubble {
+    .right .bubble {
         background: #5AA268;
         color: #fff;
         border-bottom-right-radius: 6px;
     }
 
-    .other .bubble {
+    .left .bubble {
         background: #9399a0;
         color: #fff;
         border-bottom-left-radius: 6px;
@@ -71,7 +71,6 @@
         .dot:nth-child(3) {
             animation-delay: .4s;
         }
-
     @@keyframes blink {
         0%, 80%, 100% {
             opacity: .2;
@@ -86,14 +85,15 @@
 <div class="bubbles">
     @foreach (var m in messages)
     {
-        var cls = m.Sender == "Visitor" ? "me" : "other";
+        var cls = m.SenderUserId == SenderUserId ? "right" : "left";
+
         <div class="row @cls">
             <div class="bubble">@m.Content</div>
         </div>
     }
     @if (thinking)
     {
-        <div class="row other">
+        <div class="row left">
             <div class="bubble">
                 <span class="thinking"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
             </div>
@@ -104,6 +104,9 @@
 @code {
     [Parameter] public string? Api { get; set; }
     [Parameter] public string? SessionId { get; set; }
+    [Parameter] public string? SenderUserId { get; set; }
+    [Parameter] public string? AuthToken { get; set; }
+    [Parameter] public string ChatHubPath { get; set; } = "/hubs/presence";
 
     List<ChatMessageDto> messages = new();
     HubConnection? hub;
@@ -119,12 +122,12 @@
         public string SessionId { get; set; } = string.Empty;
         public List<ChatMessageItem> ChatMessageItems { get; set; } = new();
     }
-
     private sealed class ChatMessageItem
     {
         public string Id { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public string Sender { get; set; } = string.Empty;
+        public string SenderUserId { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? ReadAt { get; set; }
     }
@@ -144,28 +147,37 @@
 
     async Task FetchMessages()
     {
+        if (string.IsNullOrWhiteSpace(Api) || string.IsNullOrWhiteSpace(SessionId)) return;
+
         var url = $"{Api}/api/v1/chat/sessions/{SessionId}/messages";
         try
         {
-            var resp = await Http.GetAsync(url);
+            using var req = new HttpRequestMessage(HttpMethod.Get, url);
+            if (!string.IsNullOrWhiteSpace(AuthToken))
+                req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AuthToken);
+
+            var resp = await Http.SendAsync(req);
             var body = await resp.Content.ReadAsStringAsync();
+
             if (!resp.IsSuccessStatusCode || string.IsNullOrWhiteSpace(body))
             {
                 messages = new();
                 thinking = false;
                 StateHasChanged();
-                await JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))");
+                await NotifyUpdated();
                 return;
             }
 
             var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var env = JsonSerializer.Deserialize<ChatMessagesEnvelope>(body, opts);
+
             messages = (env?.ChatMessageItems ?? new())
                 .Select(i => new ChatMessageDto
                 {
                     Id = i.Id,
                     SessionId = env?.SessionId ?? SessionId ?? string.Empty,
                     Sender = i.Sender,
+                    SenderUserId = i.SenderUserId,
                     Content = i.Content,
                     CreatedAt = i.CreatedAt,
                     ReadAt = i.ReadAt
@@ -174,24 +186,36 @@
 
             var last = messages.LastOrDefault();
             thinking = last != null && last.Sender == "Visitor";
+
             StateHasChanged();
-            await JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))");
+            await NotifyUpdated();
         }
         catch
         {
             messages = new();
             thinking = false;
             StateHasChanged();
-            await JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))");
+            await NotifyUpdated();
         }
     }
 
     async Task EnsureHub()
     {
-        hub = new HubConnectionBuilder()
-            .WithUrl($"{Api}/hubs/presence")
-            .WithAutomaticReconnect()
-            .Build();
+        if (string.IsNullOrWhiteSpace(Api) || string.IsNullOrWhiteSpace(SessionId)) return;
+
+        var hubUrl = $"{Api}{ChatHubPath}";
+
+        await JS.InvokeVoidAsync("eval", $"console.log('[ChatBubbles] connecting to hub:', '{hubUrl}')");
+
+        var builder = new HubConnectionBuilder()
+            .WithUrl(hubUrl, options =>
+            {
+                if (!string.IsNullOrWhiteSpace(AuthToken))
+                    options.AccessTokenProvider = () => Task.FromResult<string?>(AuthToken);
+            })
+            .WithAutomaticReconnect();
+
+        hub = builder.Build();
 
         hub.On<ChatMessageDto>("message", async m =>
         {
@@ -201,7 +225,7 @@
                 messages.Add(m);
                 thinking = m.Sender == "Visitor";
                 await InvokeAsync(StateHasChanged);
-                await JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))");
+                await NotifyUpdated();
             }
         });
 
@@ -211,7 +235,7 @@
         };
 
         await hub.StartAsync();
-        await hub.InvokeAsync("JoinSession", SessionId);
+        try { await hub.InvokeAsync("JoinSession", SessionId); } catch { }
     }
 
     async Task DisposeHub()
@@ -221,6 +245,9 @@
         try { await hub.DisposeAsync(); } catch { }
         hub = null;
     }
+
+    Task NotifyUpdated() =>
+        JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))").AsTask();
 
     public async ValueTask DisposeAsync() => await DisposeHub();
 }

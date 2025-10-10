@@ -1,3 +1,4 @@
+using DeviceDetectorNET.Class;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Abstractions.AI;
 using Portfolio.Application.Abstractions.Data;
@@ -48,8 +49,8 @@ internal sealed class PostMessageCommandHandler(
 
         await db.SaveChangesAsync(ct);
 
-        var dto = new ChatMessageResponse(message.Id, message.SessionId, message.Content, message.Sender.ToString(), message.CreatedAt, message.ReadAt);
-        await notifier.SendMessageToSessionAsync(session.Id, message.Id, message.Content, message.Sender.ToString(), message.CreatedAt, message.ReadAt, ct);
+        var dto = new ChatMessageResponse(message.Id, message.SessionId, message.Content, message.Sender.ToString(), message.SenderUserId, message.CreatedAt, message.ReadAt);
+        await notifier.SendMessageToSessionAsync(session.Id, message.Id, message.Content, message.Sender.ToString(), message.SenderUserId, message.CreatedAt, message.ReadAt, ct);
 
         if (!isRecipient)
         {
@@ -83,7 +84,7 @@ internal sealed class PostMessageCommandHandler(
                     session.LastRecipientSeenAt = DateTime.UtcNow;
                     await db.SaveChangesAsync(ct);
 
-                    await notifier.SendMessageToSessionAsync(session.Id, bot.Id, bot.Content, bot.Sender.ToString(), bot.CreatedAt, bot.ReadAt, ct);
+                    await notifier.SendMessageToSessionAsync(session.Id, bot.Id, bot.Content, bot.Sender.ToString(), bot.SenderUserId, bot.CreatedAt, bot.ReadAt, ct);
                 }
             }
         }

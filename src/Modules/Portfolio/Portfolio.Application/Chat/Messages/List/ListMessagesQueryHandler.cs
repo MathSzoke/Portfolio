@@ -19,7 +19,7 @@ internal sealed class ListMessagesQueryHandler(IApplicationDbContext db)
 
         var items = await query
             .OrderBy(m => m.CreatedAt)
-            .Select(m => new ChatMessageItem(m.Id, m.Content, m.Sender.ToString(), m.CreatedAt, m.ReadAt))
+            .Select(m => new ChatMessageItem(m.Id, m.Content, m.Sender.ToString(), m.SenderUserId, m.CreatedAt, m.ReadAt))
             .AsNoTracking()
             .ToListAsync(ct);
 
