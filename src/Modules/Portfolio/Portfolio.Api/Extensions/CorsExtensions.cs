@@ -7,16 +7,10 @@ public static class CorsExtensions
     {
         var frontendUrl = configuration["PORTFOLIO_FRONTEND"]!;
 
-        services.AddCors(options =>
-        {
-            options.AddPolicy(CorsPolicyName, policy =>
-            {
-                policy.WithOrigins(frontendUrl)
+        services.AddCors(options => options.AddPolicy(CorsPolicyName, policy => policy.WithOrigins(frontendUrl)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
-            });
-        });
+                    .AllowCredentials()));
 
         return services;
     }

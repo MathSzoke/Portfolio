@@ -35,6 +35,8 @@ const useStyles = makeStyles({
     }
 });
 
+const apiBase = import.meta.env.VITE_PORTFOLIO_API || import.meta.env.VITE_API_BASE_URL;
+
 export default function Home() {
     const s = useStyles();
     const projectsRef = useRef(null);
@@ -53,7 +55,7 @@ export default function Home() {
                 <section id="projects" className={`${s.section} scroll-section`} ref={projectsRef}>
                     <ProjectsSection />
                 </section>
-                {/* <ChatLauncherFloatingButton/> */}
+                <ChatLauncherFloatingButton apiBase={apiBase} />
             </div>
         </>
     );

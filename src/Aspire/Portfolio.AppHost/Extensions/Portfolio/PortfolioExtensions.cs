@@ -21,6 +21,15 @@ internal static class PortfolioExtensions
 
         var linkedInRedirect = isDev ? linkedInRedirectDev : linkedInRedirectProd;
 
+        var aiAgent = builder.AddProject<Portfolio_AIAgent>("portfolio-aiagent");
+
+        aiAgent.WithAnnotation(new ResourceRelationshipAnnotation(portfolioGroup.Resource, "Parent"))
+            .WithUrlForEndpoint("https", url =>
+            {
+                url.DisplayText = "Swagger";
+                url.Url = "/swagger";
+            });
+
         var portfolioFrontend = builder.AddNpmApp("portfolio-web", "../../Frontend/Frontend.Modules.UI/portfolio-web", "dev")
             .WithHttpEndpoint(5173, env: "VITE_PORT")
             .WithExternalHttpEndpoints()
@@ -32,6 +41,7 @@ internal static class PortfolioExtensions
 
         var portfolioApi = builder.AddProject<Portfolio_Api>("portfolio-api")
             .WithReference(database)
+            .WithReference(aiAgent)
             .WithEnvironment("PORTFOLIO_FRONTEND", portfolioFrontend.GetEndpoint("http"))
             .WithEnvironment("Auth__LinkedIn__ClientId", "77ri81y6q023po")
             .WithEnvironment("Auth__LinkedIn__ClientSecret", "WPL_AP1.mPc31DWw4Cv4VAX2.cmwlPQ==")

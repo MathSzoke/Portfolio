@@ -7,7 +7,8 @@
     "invalidUrl": "Please enter a valid URL.",
     "validField": "Valid field.",
     "add": "Add",
-    "openNewTab": "Open in a new tab"
+    "openNewTab": "Open in a new tab",
+    "aiWarn": "This AI can bring irrelevant informations or delusional, please, if it's the case, just ignore it."
   },
   "loader": {
     "loading": "Loading Portfolio...",

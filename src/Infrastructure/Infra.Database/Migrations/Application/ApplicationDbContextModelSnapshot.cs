@@ -110,6 +110,9 @@ namespace Infra.Database.Migrations.Application
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SenderUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("SessionId")
                         .HasColumnType("uuid");
 
@@ -121,6 +124,8 @@ namespace Infra.Database.Migrations.Application
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SenderUserId");
+
                     b.HasIndex("SessionId", "CreatedAt");
 
                     b.ToTable("ChatMessages", "portfolio");
@@ -131,14 +136,6 @@ namespace Infra.Database.Migrations.Application
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("ClientIp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("ConsentEmail")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -152,20 +149,20 @@ namespace Infra.Database.Migrations.Application
                     b.Property<string>("DeletedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("LastAgentSeenAt")
+                    b.Property<DateTime?>("LastRecipientSeenAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastSeenAt")
+                    b.Property<DateTime?>("LastSenderSeenAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                    b.Property<Guid>("RecipientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("SenderId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -177,14 +174,17 @@ namespace Infra.Database.Migrations.Application
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("Status", "UpdatedAt");
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("UpdatedAt");
+
+                    b.HasIndex("SenderId", "RecipientId", "Status");
 
                     b.ToTable("ChatSessions", "portfolio");
                 });

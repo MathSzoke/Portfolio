@@ -7,7 +7,8 @@
     "invalidUrl": "Informe uma URL válida.",
     "validField": "Campo válido.",
     "add": "Adicionar",
-    "openNewTab": "Abrir em nova aba"
+    "openNewTab": "Abrir em nova aba",
+    "aiWarn": "Essa IA pode trazer informações irrelevantes ou alucinadas, por favor, se for o caso, ignore apenas."
   },
   "loader": {
     "loading": "Carregando Portfolio...",

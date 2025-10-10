@@ -53,7 +53,7 @@ public static class ChatErrors
         Error.Conflict("Chat.RateLimited", "Too many requests. Please try again later.");
 
     public static readonly Error Unauthorized =
-        Error.Failure("Chat.Unauthorized", "You are not authorized to perform this action.");
+        Error.Unauthorized("Chat.Unauthorized", "You are not authorized to perform this action.");
 
     public static readonly Error Forbidden =
         Error.Failure("Chat.Forbidden", "You do not have permission to perform this action.");

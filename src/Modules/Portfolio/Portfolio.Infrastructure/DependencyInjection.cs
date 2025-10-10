@@ -23,14 +23,15 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         return services
-            .AddServices()
+            .AddServices(configuration)
             .AddExternalAuth()
             .AddHealthChecks(configuration)
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
     }
 
-    private static IServiceCollection AddServices(this IServiceCollection services)
+    private static IServiceCollection AddServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

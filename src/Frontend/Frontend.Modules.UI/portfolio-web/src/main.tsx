@@ -11,6 +11,7 @@ import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './services/auth';
 import AuthLinkedinCallback from "./pages/AuthLinkedinCallback";
+import { ChatProvider } from './services/context/ChatContext';
 
 const router = createBrowserRouter([
     { path: '/', element: <Root /> },
@@ -23,7 +24,6 @@ const router = createBrowserRouter([
         path: '/auth/callback/linkedin',
         element: <AuthLinkedinCallback />
     }
-
 ]);
 
 createRoot(document.getElementById('root')!).render(
@@ -31,9 +31,11 @@ createRoot(document.getElementById('root')!).render(
         <GoogleOAuthProvider clientId={(import.meta.env as any).VITE_GOOGLE_CLIENT_ID as string}>
             <AuthProvider>
                 <ThemeProvider>
-                    <Suspense fallback={<FullPageLoader />}>
-                        <RouterProvider router={router} />
-                    </Suspense>
+                    <ChatProvider>
+                        <Suspense fallback={<FullPageLoader />}>
+                            <RouterProvider router={router} />
+                        </Suspense>
+                    </ChatProvider>
                 </ThemeProvider>
             </AuthProvider>
         </GoogleOAuthProvider>

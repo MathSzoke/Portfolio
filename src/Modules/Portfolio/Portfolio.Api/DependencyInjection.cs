@@ -1,7 +1,9 @@
 using Infra.Database.Portfolio;
 using Portfolio.Api.Extensions;
 using Portfolio.Api.Infrastructure;
+using Portfolio.Api.Infrastructure.Realtime;
 using Portfolio.Application.Abstractions.Data;
+using Portfolio.Application.Abstractions.Realtime;
 using Portfolio.Infrastructure.Authorization;
 using Serilog;
 using Shared.Api.Infrastructure.User;
@@ -16,7 +18,7 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer()
             .AddPortfolioAuthorization()
             .AddControllers();
-        
+
         services.AddSwaggerGenWithAuth();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -26,7 +28,7 @@ public static class DependencyInjection
         services.AddServices();
 
         services.AddUserDeviceDetection();
-        
+
         return services;
     }
 
@@ -41,6 +43,7 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddSignalR();
         services.AddSingleton<ICurrentUserContext, CurrentUserContext>();
+        services.AddScoped<IChatNotifier, SignalRChatNotifier>();
         return services;
     }
 
@@ -62,7 +65,7 @@ public static class DependencyInjection
 
         return app;
     }
-    
+
     public static IServiceCollection AddUserDeviceDetection(this IServiceCollection services)
     {
         services.AddHttpContextAccessor();

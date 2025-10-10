@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run sync-bubbles",
     "dev": "vite",
+    "prebuild": "npm run sync-bubbles",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync-bubbles": "powershell -ExecutionPolicy Bypass -File scripts/sync-chatbubbles.ps1"
   },
   "dependencies": {
     "@cloudinary/react": "^1.14.3",

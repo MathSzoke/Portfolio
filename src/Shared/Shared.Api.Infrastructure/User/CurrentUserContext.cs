@@ -13,6 +13,4 @@ public class CurrentUserContext(IHttpContextAccessor httpContextAccessor) : ICur
         Guid.TryParse(httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out var g)
             ? g
             : Guid.Empty;
-    
-    
 }

@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL"/>
-      <PackageReference Include="AspNetCore.HealthChecks.UI.Client"/>
-      <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Serilog.AspNetCore"/>
-      <PackageReference Include="Serilog.Sinks.Seq"/>
-      <PackageReference Include="Swashbuckle.AspNetCore"/>
+      <PackageReference Include="Serilog.AspNetCore" />
+      <PackageReference Include="Serilog.Sinks.Seq" />
+      <PackageReference Include="Swashbuckle.AspNetCore" />
       <PackageReference Include="Swashbuckle.AspNetCore.Swagger" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
@@ -24,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructure\Infra.Database\Infra.Database.csproj" />
+    <ProjectReference Include="..\..\..\Services\Portfolio.AIAgent\Portfolio.AIAgent.csproj" />
     <ProjectReference Include="..\..\..\Shared\Shared.Api.Infrastructure\Shared.Api.Infrastructure.csproj" />
     <ProjectReference Include="..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
   </ItemGroup>

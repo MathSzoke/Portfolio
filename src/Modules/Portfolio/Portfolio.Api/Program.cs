@@ -1,7 +1,7 @@
-using System.Reflection;
 using HealthChecks.UI.Client;
 using Infra.Database.Portfolio;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Portfolio.AIAgent;
 using Portfolio.Api;
 using Portfolio.Api.Extensions;
 using Portfolio.Api.Infrastructure;
@@ -9,6 +9,7 @@ using Portfolio.Api.Infrastructure.Hubs;
 using Portfolio.Application;
 using Portfolio.Infrastructure;
 using Serilog;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services
     .AddApplication()
     .AddPresentation()
     .AddInfrastructure(builder.Configuration);
+
+builder.Services.AddAiAgent(builder.Configuration);
 
 builder.AddNpgsqlDbContext<ApplicationDbContext>("portfolioDB", configureDbContextOptions: options =>
 {
@@ -51,8 +54,7 @@ app.ApplicationUses();
 app.UseCorsApp();
 
 app.MapControllers();
-
-app.MapHub<PresenceHub>("/hubs/presenceHub").RequireAuthorization();
+app.MapHub<PresenceHub>("/hubs/presence");
 
 await app.RunAsync();
 

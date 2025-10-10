@@ -1,38 +1,41 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Abstractions.Data;
 using Portfolio.Application.Abstractions.Messaging;
-using Portfolio.Domain.Chats.Enums;
+using Portfolio.Domain.Chats;
 using SharedKernel;
 
 namespace Portfolio.Application.Chat.Sessions.List;
 
-internal sealed class ListSessionsQueryHandler(IApplicationDbContext db)
-    : IQueryHandler<ListSessionsQuery, ChatSessionsPageResponse>
+internal sealed class ListSessionsQueryHandler(
+    IApplicationDbContext db,
+    ICurrentUserContext current
+) : IQueryHandler<ListSessionsQuery, ChatSessionsResponse>
 {
-    public async Task<Result<ChatSessionsPageResponse>> Handle(ListSessionsQuery q, CancellationToken ct)
+    public async Task<Result<ChatSessionsResponse>> Handle(ListSessionsQuery q, CancellationToken ct)
     {
-        var query = db.ChatSessions.AsQueryable();
+        var ctxUser = current.UserIdGuid;
+        if (ctxUser == Guid.Empty) return Result.Failure<ChatSessionsResponse>(ChatErrors.Unauthorized);
 
-        if (!string.IsNullOrWhiteSpace(q.Status) && Enum.TryParse<SessionStatus>(q.Status, true, out var s))
-            query = query.Where(x => x.Status == s);
+        var target = q.UserId.HasValue && q.UserId.Value != Guid.Empty ? q.UserId.Value : ctxUser;
 
-        if (!string.IsNullOrWhiteSpace(q.Search))
-        {
-            var t = q.Search.Trim();
-            query = query.Where(x => (x.Name ?? "").Contains(t) || (x.Email ?? "").Contains(t));
-        }
-
-        var total = await query.CountAsync(ct);
-
-        var items = await query
-            .OrderByDescending(x => x.LastSeenAt ?? x.UpdatedAt)
-            .ThenByDescending(x => x.CreatedAt)
-            .Skip((q.Page - 1) * q.PageSize)
-            .Take(q.PageSize)
-            .Select(x => new ChatSessionItem(x.Id, x.Name, x.Email, x.Status.ToString(), x.CreatedAt, x.LastSeenAt))
+        var items = await db.ChatSessions
             .AsNoTracking()
+            .Where(x => x.SenderId == target || x.RecipientId == target && x.SenderId != null)
+            .OrderByDescending(x =>
+                (x.LastSenderSeenAt ?? DateTime.MinValue) > (x.LastRecipientSeenAt ?? DateTime.MinValue)
+                    ? (x.LastSenderSeenAt ?? DateTime.MinValue)
+                    : (x.LastRecipientSeenAt ?? DateTime.MinValue))
+            .ThenByDescending(x => x.CreatedAt)
+            .Select(x => new ChatSessionItem(
+                x.Id,
+                x.SenderId,
+                x.RecipientId,
+                x.Status.ToString(),
+                x.CreatedAt,
+                x.LastSenderSeenAt,
+                x.LastRecipientSeenAt))
             .ToListAsync(ct);
 
-        return Result.Success(new ChatSessionsPageResponse(q.Page, q.PageSize, total, items));
+        return Result.Success(new ChatSessionsResponse(items));
     }
 }

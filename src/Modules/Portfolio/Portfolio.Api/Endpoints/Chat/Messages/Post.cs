@@ -4,7 +4,6 @@ using Portfolio.Api.Extensions;
 using Portfolio.Api.Infrastructure;
 using Portfolio.Application.Abstractions.Messaging;
 using Portfolio.Application.Chat.Messages.Post;
-using Portfolio.Domain.Chats.Enums;
 
 namespace Portfolio.Api.Endpoints.Chat.Messages;
 
@@ -17,13 +16,11 @@ internal sealed class Post : IEndpoint
                 [FromBody] PostMessageRequest request,
                 [FromServices] ICommandHandler<PostMessageCommand, ChatMessageResponse> handler,
                 CancellationToken ct) =>
-            {
-                var cmd = new PostMessageCommand(sessionId, Sender.Visitor, request.Content, request.AsMe);
-                var result = await handler.Handle(cmd, ct);
-                return result.Match(
-                    Results.Ok,
-                    CustomResults.Problem);
-            })
+        {
+            var cmd = new PostMessageCommand(sessionId, request.Content, request.AsMe);
+            var result = await handler.Handle(cmd, ct);
+            return result.Match(Results.Ok, CustomResults.Problem);
+        })
             .WithTags(Tags.Chat);
     }
 }

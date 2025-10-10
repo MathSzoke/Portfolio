@@ -52,7 +52,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddHubsBehaviors(this IServiceCollection services)
     {
-        services.AddScoped<PresenceTracker>();
+        services.AddSingleton<PresenceTracker>();
         return services;
     }
 }
