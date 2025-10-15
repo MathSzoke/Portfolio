@@ -8,7 +8,6 @@
   </Folder>
   <Folder Name="/src/Frontend/" />
   <Folder Name="/src/Frontend/Frontend.Modules.UI/">
-    <Project Path="src/Frontend/Frontend.Modules.UI/Portfolio.ChatBubbles.Wasm/Portfolio.ChatBubbles.Wasm.csproj" />
     <Project Path="src\Frontend\Frontend.Modules.UI\portfolio-web\Portfolio.Web.esproj">
       <Build />
       <Deploy />

@@ -13,8 +13,10 @@ internal sealed class CloseSessionCommandHandler(IApplicationDbContext db) : ICo
     {
         var s = await db.ChatSessions.FirstOrDefaultAsync(x => x.Id == cmd.SessionId, ct);
         if (s is null) return Result.Failure(ChatErrors.SessionNotFound(cmd.SessionId));
-        s.Status = SessionStatus.Closed;
+
+        s.Close();
         await db.SaveChangesAsync(ct);
+
         return Result.Success();
     }
 }
@@ -25,8 +27,10 @@ internal sealed class ArchiveSessionCommandHandler(IApplicationDbContext db) : I
     {
         var s = await db.ChatSessions.FirstOrDefaultAsync(x => x.Id == cmd.SessionId, ct);
         if (s is null) return Result.Failure(ChatErrors.SessionNotFound(cmd.SessionId));
-        s.Status = SessionStatus.Archived;
+
+        s.Archive();
         await db.SaveChangesAsync(ct);
+
         return Result.Success();
     }
 }
@@ -37,8 +41,10 @@ internal sealed class ReopenSessionCommandHandler(IApplicationDbContext db) : IC
     {
         var s = await db.ChatSessions.FirstOrDefaultAsync(x => x.Id == cmd.SessionId, ct);
         if (s is null) return Result.Failure(ChatErrors.SessionNotFound(cmd.SessionId));
-        s.Status = SessionStatus.Open;
+
+        s.Reopen();
         await db.SaveChangesAsync(ct);
+
         return Result.Success();
     }
 }

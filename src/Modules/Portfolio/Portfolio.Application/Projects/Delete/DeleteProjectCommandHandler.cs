@@ -10,9 +10,7 @@ internal sealed class DeleteProjectCommandHandler(IApplicationDbContext db) : IC
 {
     public async Task<Result> Handle(DeleteProjectCommand cmd, CancellationToken ct)
     {
-        var entity = await db.Projects.FirstOrDefaultAsync(p => p.Id == cmd.Id, ct);
-        if (entity is null) return Result.Failure(ProjectErrors.NotFound(cmd.Id));
-        db.Projects.Remove(entity);
+        await db.Projects.Where(p => p.Id == cmd.Id).ExecuteDeleteAsync(ct);
         await db.SaveChangesAsync(ct);
         return Result.Success();
     }

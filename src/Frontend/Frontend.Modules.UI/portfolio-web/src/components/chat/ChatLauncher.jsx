@@ -31,7 +31,6 @@ export function ChatLauncherFloatingButton({ apiBase }) {
     }
 
     async function handleStart() {
-        await ensureSession();
         setStarted(true);
         setMessages([]);
     }

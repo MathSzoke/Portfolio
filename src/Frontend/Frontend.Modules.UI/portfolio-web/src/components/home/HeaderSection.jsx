@@ -37,12 +37,20 @@ const useStyles = makeStyles({
     },
     bar: {
         maxWidth: 1200,
-        margin: '0 auto',
         display: 'grid',
         gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center',
         padding: '12px 16px',
-        gap: 12
+        gap: 12,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        margin: '0 1rem',
+        webkitBackdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(10px)',
+        transition: 'background-color .3s, border-color .3s'
     },
     center: {
         justifySelf: 'center',

@@ -19,6 +19,11 @@ internal sealed class DeleteUserCommandHandler(IApplicationDbContext db, ICurren
         await db.RefreshTokens.Where(x => x.UserId == userId).ExecuteDeleteAsync(ct);
         await db.ExternalLogins.Where(x => x.UserId == userId).ExecuteDeleteAsync(ct);
 
+        var entitySessions = await db.ChatSessions.FirstOrDefaultAsync(x => x.SenderId == userId, ct);
+        if (entitySessions is not null) db.ChatSessions.Remove(entitySessions);
+        var entity = await db.ChatMessages.FirstOrDefaultAsync(x => x.SenderUserId == userId, ct);
+        if(entity is not null) db.ChatMessages.Remove(entity);
+
         var affected = await db.Users.IgnoreQueryFilters().Where(x => x.Id == userId).ExecuteDeleteAsync(ct);
         return affected == 0 ? Result.Failure(UserErrors.NotFound(userId)) : Result.Success();
     }

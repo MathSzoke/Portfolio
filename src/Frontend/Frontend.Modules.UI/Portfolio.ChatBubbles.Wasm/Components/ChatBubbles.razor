@@ -12,19 +12,19 @@
         gap: 12px;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
+        box-sizing: border-box
     }
 
     .row {
-        display: flex;
+        display: flex
     }
 
         .row.right {
-            justify-content: flex-end;
+            justify-content: flex-end
         }
 
         .row.left {
-            justify-content: flex-start;
+            justify-content: flex-start
         }
 
     .bubble {
@@ -34,25 +34,25 @@
         font-size: 14px;
         line-height: 1.4;
         word-break: break-word;
-        white-space: pre-wrap;
+        white-space: pre-wrap
     }
 
     .right .bubble {
         background: #5AA268;
         color: #fff;
-        border-bottom-right-radius: 6px;
+        border-bottom-right-radius: 6px
     }
 
     .left .bubble {
-        background: #9399a0;
+        background: #68809d;
         color: #fff;
-        border-bottom-left-radius: 6px;
+        border-bottom-left-radius: 6px
     }
 
     .thinking {
         display: inline-flex;
         gap: 6px;
-        align-items: center;
+        align-items: center
     }
 
     .dot {
@@ -61,23 +61,23 @@
         border-radius: 50%;
         background: #fff;
         opacity: .7;
-        animation: blink 1s infinite;
+        animation: blink 1s infinite
     }
 
         .dot:nth-child(2) {
-            animation-delay: .2s;
+            animation-delay: .2s
         }
 
         .dot:nth-child(3) {
-            animation-delay: .4s;
+            animation-delay: .4s
         }
     @@keyframes blink {
         0%, 80%, 100% {
-            opacity: .2;
+            opacity: .2
         }
 
         40% {
-            opacity: 1;
+            opacity: 1
         }
     }
 </style>
@@ -86,7 +86,6 @@
     @foreach (var m in messages)
     {
         var cls = m.SenderUserId == SenderUserId ? "right" : "left";
-
         <div class="row @cls">
             <div class="bubble">@m.Content</div>
         </div>
@@ -106,13 +105,14 @@
     [Parameter] public string? SessionId { get; set; }
     [Parameter] public string? SenderUserId { get; set; }
     [Parameter] public string? AuthToken { get; set; }
-    [Parameter] public string ChatHubPath { get; set; } = "/hubs/presence";
+    [Parameter] public string ChatHubPath { get; set; } = "/hubs/chat";
 
     List<ChatMessageDto> messages = new();
     HubConnection? hub;
     string? lastApi;
     string? lastSession;
     bool thinking;
+    bool starting;
 
     [Inject] HttpClient Http { get; set; } = default!;
     [Inject] IJSRuntime JS { get; set; } = default!;
@@ -136,41 +136,59 @@
     {
         if (string.IsNullOrWhiteSpace(Api) || string.IsNullOrWhiteSpace(SessionId)) return;
         if (Api == lastApi && SessionId == lastSession) return;
-
         lastApi = Api;
         lastSession = SessionId;
-
         await DisposeHub();
+        messages = new();
+        thinking = false;
+        StateHasChanged();
+        await NotifyUpdated();
+        await NotifyThinking();
+        _ = WaitTokenThenStart(Api, SessionId);
+    }
+
+    async Task WaitTokenThenStart(string api, string session)
+    {
+        if (starting) return;
+        starting = true;
+        var attempts = 0;
+        while (attempts < 20 && string.IsNullOrWhiteSpace(AuthToken))
+        {
+            attempts++;
+            await Task.Delay(100);
+        }
+        if (api != Api || session != SessionId)
+        {
+            starting = false;
+            return;
+        }
         await FetchMessages();
         await EnsureHub();
+        starting = false;
     }
 
     async Task FetchMessages()
     {
         if (string.IsNullOrWhiteSpace(Api) || string.IsNullOrWhiteSpace(SessionId)) return;
-
         var url = $"{Api}/api/v1/chat/sessions/{SessionId}/messages";
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
             if (!string.IsNullOrWhiteSpace(AuthToken))
                 req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AuthToken);
-
             var resp = await Http.SendAsync(req);
             var body = await resp.Content.ReadAsStringAsync();
-
             if (!resp.IsSuccessStatusCode || string.IsNullOrWhiteSpace(body))
             {
                 messages = new();
                 thinking = false;
                 StateHasChanged();
                 await NotifyUpdated();
+                await NotifyThinking();
                 return;
             }
-
             var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var env = JsonSerializer.Deserialize<ChatMessagesEnvelope>(body, opts);
-
             messages = (env?.ChatMessageItems ?? new())
                 .Select(i => new ChatMessageDto
                 {
@@ -183,12 +201,11 @@
                     ReadAt = i.ReadAt
                 })
                 .ToList();
-
             var last = messages.LastOrDefault();
             thinking = last != null && last.Sender == "Visitor";
-
             StateHasChanged();
             await NotifyUpdated();
+            await NotifyThinking();
         }
         catch
         {
@@ -196,6 +213,7 @@
             thinking = false;
             StateHasChanged();
             await NotifyUpdated();
+            await NotifyThinking();
         }
     }
 
@@ -204,9 +222,6 @@
         if (string.IsNullOrWhiteSpace(Api) || string.IsNullOrWhiteSpace(SessionId)) return;
 
         var hubUrl = $"{Api}{ChatHubPath}";
-
-        await JS.InvokeVoidAsync("eval", $"console.log('[ChatBubbles] connecting to hub:', '{hubUrl}')");
-
         var builder = new HubConnectionBuilder()
             .WithUrl(hubUrl, options =>
             {
@@ -217,7 +232,7 @@
 
         hub = builder.Build();
 
-        hub.On<ChatMessageDto>("message", async m =>
+        hub.On<ChatMessageDto>("MessagePosted", async m =>
         {
             if (string.IsNullOrWhiteSpace(m.SessionId)) m.SessionId = SessionId ?? m.SessionId;
             if (m.SessionId == SessionId)
@@ -226,7 +241,13 @@
                 thinking = m.Sender == "Visitor";
                 await InvokeAsync(StateHasChanged);
                 await NotifyUpdated();
+                await NotifyThinking();
             }
+        });
+
+        hub.On<object>("MessageRead", async payload =>
+        {
+            await InvokeAsync(StateHasChanged);
         });
 
         hub.Reconnected += async _ =>
@@ -248,6 +269,12 @@
 
     Task NotifyUpdated() =>
         JS.InvokeVoidAsync("eval", "window.dispatchEvent(new CustomEvent('chat-bubbles-updated'))").AsTask();
+
+    Task NotifyThinking()
+    {
+        var payload = JsonSerializer.Serialize(new { detail = new { sessionId = SessionId ?? "", thinking } });
+        return JS.InvokeVoidAsync("eval", $"window.dispatchEvent(new CustomEvent('chat-bubbles-thinking', {payload}));").AsTask();
+    }
 
     public async ValueTask DisposeAsync() => await DisposeHub();
 }

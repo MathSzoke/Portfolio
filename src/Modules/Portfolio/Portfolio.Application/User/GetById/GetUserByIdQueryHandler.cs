@@ -17,7 +17,7 @@ internal sealed class GetUserByIdQueryHandler(IApplicationDbContext db)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == q.UserId, ct);
 
-        if (u is null) Result.Failure<UserResponse>(UserErrors.NotFound(q.UserId));
+        if (u is null) return Result.Failure<UserResponse>(UserErrors.NotFound(q.UserId));
 
         var socialPhotos = u!.ExternalLogins
             .Select(x => new ExternalLoginPhoto(x.Provider, x.UserPhotoUrl))

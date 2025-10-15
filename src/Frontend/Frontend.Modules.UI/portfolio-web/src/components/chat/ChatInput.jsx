@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button, makeStyles, tokens } from "@fluentui/react-components";
-import { SendFilled, Emoji24Regular } from "@fluentui/react-icons";
-import {useTranslation} from "react-i18next";
+import { SendFilled } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     wrapper: {
@@ -11,12 +11,12 @@ const useStyles = makeStyles({
         alignItems: "center",
         background: tokens.colorNeutralBackground1,
         borderRadius: "26px",
-        gap: '5px',
+        gap: "5px",
         padding: "8px",
         minHeight: "56px",
         maxHeight: "180px",
         boxSizing: "border-box",
-        transition: "box-shadow 0.2s",
+        transition: "box-shadow 0.2s"
     },
     textarea: {
         width: "100%",
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
         overflowY: "auto",
         lineHeight: "1.6",
         boxSizing: "border-box",
-        fontFamily: 'sans-serif'
+        fontFamily: "sans-serif"
     },
     sendBtn: {
         background: tokens.colorBrandBackground,
@@ -42,14 +42,11 @@ const useStyles = makeStyles({
         minWidth: "36px",
         minHeight: "36px",
         boxShadow: "0 2px 12px #0001",
-        zIndex: 1,
-        "&:hover": {
-            background: tokens.colorBrandBackgroundHover,
-        }
-    },
+        zIndex: 1
+    }
 });
 
-export function ChatInput({ value, onChange, onSend }) {
+export function ChatInput({ value, onChange, onSend, disabled }) {
     const s = useStyles();
     const textareaRef = useRef(null);
     const { t } = useTranslation();
@@ -63,10 +60,13 @@ export function ChatInput({ value, onChange, onSend }) {
     };
 
     const handleKeyDown = (e) => {
+        if (disabled) return;
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             if (value.trim()) {
+                const el = textareaRef.current;
                 onSend(value);
+                el.style.height = "unset";
             }
         }
     };
@@ -77,25 +77,19 @@ export function ChatInput({ value, onChange, onSend }) {
                 ref={textareaRef}
                 className={s.textarea}
                 value={value}
-                onChange={(e) => {
-                    handleInput(e);
-                }}
+                onChange={(e) => { handleInput(e); }}
                 onInput={handleInput}
                 onKeyDown={handleKeyDown}
-                placeholder={t('chat.inputPlaceholder')}
+                placeholder={t("chat.inputPlaceholder")}
                 rows={1}
-                style={{
-                    maxHeight: "110px",
-                }}
+                style={{ maxHeight: "110px" }}
             />
             <Button
                 type="button"
                 icon={<SendFilled />}
                 className={s.sendBtn}
-                disabled={!value.trim()}
-                onClick={() => {
-                    if (value.trim()) onSend(value);
-                }}
+                disabled={!value.trim() || disabled}
+                onClick={() => { if (!disabled && value.trim()) onSend(value); }}
             />
         </div>
     );

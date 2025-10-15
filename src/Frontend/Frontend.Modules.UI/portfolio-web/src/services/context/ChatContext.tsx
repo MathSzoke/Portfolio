@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { Toaster, useToastController } from "@fluentui/react-components";
+import { Toaster } from "@fluentui/react-components";
 import { getChatConnection } from "../../services/Hubs/chatHub";
 import type { ChatMessageDto } from "../../services/Hubs/chatHub";
 import useApiClient from "../useApiClient";
@@ -20,12 +20,10 @@ const ChatContext = createContext<ChatContextType | null>(null);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const api = useApiClient();
-    const { dispatchToast } = useToastController();
     const [sessionId, setSessionId] = useState<string | null>(null);
     const [messages, setMessages] = useState<ChatMessageDto[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [hasOpenSession, setHasOpenSession] = useState<boolean | null>(null);
-    const openRef = useRef(false);
 
     useEffect(() => {
         api.get("/api/v1/chat/sessions/me/has-open", { skipAuth: true })
@@ -44,9 +42,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 id: m.id,
                 sessionId: list.sessionId ?? id,
                 sender: m.sender,
+                senderUserId: m.senderUserId,
                 content: m.content,
                 createdAt: m.createdAt,
-                readAt: m.readAt ?? null
+                readAt: m.readAt ?? null,
             }));
             setMessages(normalized);
         } else {
@@ -55,11 +54,35 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     useEffect(() => {
-        if (!sessionId || !isOpen) return;
-        fetchMessages().catch(() => { });
-        const h = setInterval(() => fetchMessages().catch(() => { }), 1500);
-        return () => clearInterval(h);
-    }, [sessionId, isOpen]);
+        if (!isOpen || !sessionId) return;
+
+        let unsub: (() => void) | null = null;
+        let mounted = true;
+
+        (async () => {
+            const hub = await getChatConnection();
+            await hub.invoke("JoinSession", sessionId).catch(() => { });
+
+            const onPosted = (m: ChatMessageDto) => {
+                const sid = (m as any).sessionId ?? sessionId;
+                if (sid !== sessionId) return;
+
+                setMessages(prev => {
+                    if (prev.some(x => x.id === m.id)) return prev;
+                    return [...prev, m];
+                });
+            };
+
+            hub.on("MessagePosted", onPosted);
+
+            unsub = () => {
+                try { hub.off("MessagePosted", onPosted); } catch { }
+                try { hub.invoke("LeaveSession", sessionId).catch(() => { }); } catch { }
+            };
+        })();
+
+        return () => { if (unsub) unsub(); };
+    }, [isOpen, sessionId]);
 
     const ensureSession = async (recipientId?: string) => {
         if (sessionId) return sessionId;
@@ -67,6 +90,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const id = data?.id ?? null;
         if (id) {
             setSessionId(id);
+            setHasOpenSession(true);
             await fetchMessages(id);
         }
         return id;
@@ -80,17 +104,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const postMessage = async (text: string) => {
         if (!sessionId || !text?.trim()) return;
-        const m = await api.post(`/api/v1/chat/sessions/${sessionId}/messages`, { content: text, asMe: false });
-        console.log(m);
-        setMessages(prev => [
-            ...prev,
-            { id: m.id, sessionId: m.sessionId, sender: m.sender, senderUserId: m.senderUserId, content: m.content, createdAt: m.createdAt }
-        ]);
-        await fetchMessages();
+        await api.post(`/api/v1/chat/sessions/${sessionId}/messages`, { content: text, asMe: false });
     };
 
-    const open = () => { openRef.current = true; setIsOpen(true); };
-    const close = () => { openRef.current = false; setIsOpen(false); };
+    const open = () => setIsOpen(true);
+    const close = () => setIsOpen(false);
 
     const value = useMemo(
         () => ({ sessionId, messages, isOpen, open, close, postMessage, ensureSession, selectSession, hasOpenSession }),

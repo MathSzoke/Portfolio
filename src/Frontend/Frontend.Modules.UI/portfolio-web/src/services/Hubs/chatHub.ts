@@ -20,7 +20,7 @@ export function getChatConnection() {
     const base = getBackendUrl();
 
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${base}/hubs/presence`, {
+        .withUrl(`${base}/hubs/chat`, {
             withCredentials: true
         })
         .withAutomaticReconnect()
@@ -30,5 +30,6 @@ export function getChatConnection() {
     connection.onclose(err => console.error("SignalR closed:", err));
     connection.onreconnecting(err => console.warn("SignalR reconnecting:", err));
     connection.onreconnected(id => console.log("SignalR reconnected:", id));
+    console.log("SignalR connected: ", connection.connectionId);
     return connection;
 }

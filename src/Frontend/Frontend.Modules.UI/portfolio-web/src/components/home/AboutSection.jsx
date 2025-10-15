@@ -109,7 +109,8 @@ const useStyles = makeStyles({
         listStyleType: 'inherit'
     },
     skillsTechs: {
-        display: 'flex',
+        display: 'inline-flex',
+        flexWrap: 'wrap',
         gap: '5px'
     }
 });

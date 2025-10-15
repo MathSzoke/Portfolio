@@ -7,7 +7,7 @@ import { useAuth } from '../../services/auth';
 export const StartChatButton = ({ onStarted }) => {
     const { t } = useTranslation();
     const { hasOpenSession, ensureSession, open } = useChat();
-    const { userInfo } = useAuth();
+    const { mathInfo, userInfo } = useAuth();
 
     if (hasOpenSession === true) return null;
     const start = async () => {
@@ -15,8 +15,6 @@ export const StartChatButton = ({ onStarted }) => {
             window.dispatchEvent(new Event('open-login'));
             return;
         }
-
-        await ensureSession();
         open();
         if (onStarted) onStarted();
     };

@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddSignalR();
         services.AddSingleton<ICurrentUserContext, CurrentUserContext>();
+        services.AddScoped<ISessionsNotifier, SignalRSessionsNotifier>();
         services.AddScoped<IChatNotifier, SignalRChatNotifier>();
         return services;
     }

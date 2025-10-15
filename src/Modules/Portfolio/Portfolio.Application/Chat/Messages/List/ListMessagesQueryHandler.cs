@@ -12,7 +12,7 @@ internal sealed class ListMessagesQueryHandler(IApplicationDbContext db)
     public async Task<Result<ChatMessagesResponse>> Handle(ListMessagesQuery q, CancellationToken ct)
     {
         var exists = await db.ChatSessions.AnyAsync(s => s.Id == q.SessionId, ct);
-        if (!exists) return Result.Failure<ChatMessagesResponse>(ChatErrors.SessionNotFound(q.SessionId));
+        if (!exists) return Result.Success(new ChatMessagesResponse(q.SessionId, []));
 
         var query = db.ChatMessages.Where(m => m.SessionId == q.SessionId);
         if (q.After.HasValue) query = query.Where(m => m.CreatedAt > q.After.Value.UtcDateTime);

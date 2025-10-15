@@ -54,7 +54,8 @@ app.ApplicationUses();
 app.UseCorsApp();
 
 app.MapControllers();
-app.MapHub<PresenceHub>("/hubs/presence");
+
+app.MapHubs();
 
 await app.RunAsync();
 

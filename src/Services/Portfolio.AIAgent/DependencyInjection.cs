@@ -11,7 +11,7 @@ public static class DependencyInjection
         var url = configuration.GetValue<string>("OllamaUrl") ?? "http://localhost:11434";
 
         services.AddOllamaChatCompletion(
-            modelId: "llama3.1:latest",
+            modelId: "phi3.5",
             endpoint: new Uri(url)
         );
 

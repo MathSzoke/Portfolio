@@ -80,10 +80,21 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 15);
         var hash = await Hash(refreshToken);
 
-        var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
-                      ?? throw new InvalidOperationException("invalid_refresh_token");
+        var current = new RefreshToken();
 
-        if (current.RevokedAtUtc is not null)
+        try
+        {
+            current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
+                          ?? throw new InvalidOperationException("invalid_refresh_token");
+        }
+        catch
+        {
+            Thread.Sleep(2000); // 2 seconds
+            current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
+                          ?? throw new InvalidOperationException("invalid_refresh_token");
+        }
+
+        if (current!.RevokedAtUtc is not null)
         {
             var newToken = GenerateToken();
             var newHash = await Hash(newToken);

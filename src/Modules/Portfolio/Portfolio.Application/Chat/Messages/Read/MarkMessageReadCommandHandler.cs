@@ -12,8 +12,10 @@ internal sealed class MarkMessageReadCommandHandler(IApplicationDbContext db) : 
     {
         var m = await db.ChatMessages.FirstOrDefaultAsync(x => x.Id == cmd.MessageId, ct);
         if (m is null) return Result.Failure(ChatErrors.MessageNotFound(cmd.MessageId));
-        m.ReadAt = DateTime.UtcNow;
+
+        m.MarkRead();
         await db.SaveChangesAsync(ct);
+
         return Result.Success();
     }
 }
