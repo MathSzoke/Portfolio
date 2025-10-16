@@ -25,11 +25,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isOpen, setIsOpen] = useState(false);
     const [hasOpenSession, setHasOpenSession] = useState<boolean | null>(null);
 
-    useEffect(() => {
-        api.get("/api/v1/chat/sessions/me/has-open", { skipAuth: true })
-            .then((b: any) => setHasOpenSession(Boolean(b)))
-            .catch(() => setHasOpenSession(null));
-    }, [api]);
+    //useEffect(() => {
+    //    api.get("/api/v1/chat/sessions/me/has-open", { skipAuth: true })
+    //        .then((b: any) => setHasOpenSession(Boolean(b)))
+    //        .catch(() => setHasOpenSession(null));
+    //}, [api]);
 
     const fetchMessages = async (sid?: string) => {
         const id = sid ?? sessionId;
