@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUserInfo(null);
     }, []);
 
+    // === Auto-refresh do token ===
     const refreshToken = useCallback(async () => {
         try {
             const api = getApiClient();
-
             const refreshed = await api.post('/api/v1/auth/refresh',
                 { refreshTokenStorage: localStorage.getItem('refreshToken') },
                 { skipAuth: true }
@@ -79,7 +79,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [logout]);
 
-    // === Auto-refresh do token ===
     useEffect(() => {
         if (!token) return;
 

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useLayoutEffect } from "react";
 import { makeStyles, tokens, mergeClasses } from "@fluentui/react-components";
 import { useChatMessages } from "../../services/hooks/useChatMessages";
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         borderBottomRightRadius: "6px",
     },
     bubbleLeft: {
-        background: "#9399a0",
+        background: "#39526f",
         color: "#fff",
         borderBottomLeftRadius: "6px",
     },
@@ -47,6 +47,7 @@ const useStyles = makeStyles({
         borderRadius: "50%",
         background: "#fff",
         opacity: 0.7,
+        animationName: "chatBlink",
         animationDuration: "1s",
         animationIterationCount: "infinite",
     },
@@ -60,22 +61,22 @@ export function ChatBubbles({ sessionId, meId, thinking = false }) {
     const msgs = useChatMessages(apiBase, sessionId, () => localStorage.getItem("authToken"));
 
     const items = useMemo(
-        () => [...msgs].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
+        () => [...msgs].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()),
         [msgs]
     );
+
+    const tailRef = useRef(null);
+    useLayoutEffect(() => {
+        tailRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, [items.length, thinking, sessionId]); 
 
     return (
         <div className={s.container}>
             {items.map((m) => {
                 const right = m.senderUserId === meId;
                 return (
-                    <div
-                        key={m.id}
-                        className={mergeClasses(s.row, right ? s.rowRight : s.rowLeft)}
-                    >
-                        <div
-                            className={mergeClasses(s.bubble, right ? s.bubbleRight : s.bubbleLeft)}
-                        >
+                    <div key={m.id} className={mergeClasses(s.row, right ? s.rowRight : s.rowLeft)}>
+                        <div className={mergeClasses(s.bubble, right ? s.bubbleRight : s.bubbleLeft)}>
                             {m.content}
                         </div>
                     </div>
@@ -93,6 +94,8 @@ export function ChatBubbles({ sessionId, meId, thinking = false }) {
                     </div>
                 </div>
             )}
+
+            <div ref={tailRef} />
         </div>
     );
 }

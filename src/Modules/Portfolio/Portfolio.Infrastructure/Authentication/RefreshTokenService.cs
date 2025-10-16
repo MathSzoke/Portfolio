@@ -6,10 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Portfolio.Application.Abstractions.Authentication;
 using Portfolio.Application.Abstractions.Data;
 using Portfolio.Domain.Auth;
+using SharedKernel;
 
 namespace Portfolio.Infrastructure.Authentication;
 
-internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvider accessTokens, IConfiguration cfg)
+internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvider accessTokens, IConfiguration cfg, ICurrentUserContext currentUser)
     : IRefreshTokenService
 {
     public async Task<(string accessToken, string refreshToken, DateTime refreshExpires)> IssueAsync(
@@ -80,19 +81,12 @@ internal sealed class RefreshTokenService(IApplicationDbContext db, ITokenProvid
         var sliding = TimeSpan.FromMinutes(cfg.GetValue<int?>("Jwt:RefreshSlidingMinutes") ?? 15);
         var hash = await Hash(refreshToken);
 
-        var current = new RefreshToken();
-
-        try
-        {
-            current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
+        var current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
+                          ?? await db.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == currentUser.UserIdGuid
+                                && x.RevokedAtUtc == null
+                                && x.RevokedReason == null,
+                                ct)
                           ?? throw new InvalidOperationException("invalid_refresh_token");
-        }
-        catch
-        {
-            Thread.Sleep(2000); // 2 seconds
-            current = await db.RefreshTokens.FirstOrDefaultAsync(x => x.TokenHash == hash, ct)
-                          ?? throw new InvalidOperationException("invalid_refresh_token");
-        }
 
         if (current!.RevokedAtUtc is not null)
         {

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Button, makeStyles, tokens } from "@fluentui/react-components";
+import { Button, makeStyles, tokens, Textarea } from "@fluentui/react-components";
 import { SendFilled } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 
@@ -89,7 +89,12 @@ export function ChatInput({ value, onChange, onSend, disabled }) {
                 icon={<SendFilled />}
                 className={s.sendBtn}
                 disabled={!value.trim() || disabled}
-                onClick={() => { if (!disabled && value.trim()) onSend(value); }}
+                onClick={() => {
+                    if (!disabled && value.trim()) {
+                        onSend(value);
+                        setLocal('');
+                    }
+                }}
             />
         </div>
     );

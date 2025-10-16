@@ -1,4 +1,3 @@
-// src/services/hooks/useChatMessages.ts
 import { useEffect, useRef, useState } from "react";
 import { HubConnectionState } from "@microsoft/signalr";
 import { getChatConnection } from "../signalrClient";
@@ -10,8 +9,8 @@ type Msg = {
     content: string;
     sender: string;
     senderUserId?: string | null;
-    createdAt: string;      // ISO
-    readAt?: string | null; // ISO
+    createdAt: string;
+    readAt?: string | null;
 };
 
 function uniqueSorted(next: Msg[]) {

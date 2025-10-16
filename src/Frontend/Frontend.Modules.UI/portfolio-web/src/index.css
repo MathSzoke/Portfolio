@@ -99,34 +99,12 @@ html {
     -ms-user-select: none;
 }
 
-@media (prefers-color-scheme: light) {
-: root {
-    color: #213547;
-    background-color: #ffffff;
-}
-    a:hover {
-        color: #747bff;
+@keyframes chatBlink {
+    0%, 80%, 100% {
+        opacity: .2;
     }
 
-    button {
-        background-color: #f9f9f9;
+    40% {
+        opacity: 1;
     }
-}
-
-.epr-emoji-picker,
-.epr-body,
-.epr-emoji-category-list,
-.epr-search-container,
-.epr-search {
-    background: var(--fluentui-neutralBackground1, #f3f3f3) !important;
-    color: var(--fluentui-neutralForeground1, #1b1b1b) !important;
-    border-radius: 12px !important;
-}
-html[data-theme='dark'] .epr-emoji-picker,
-html[data-theme='dark'] .epr-body,
-html[data-theme='dark'] .epr-emoji-category-list,
-html[data-theme='dark'] .epr-search-container,
-html[data-theme='dark'] .epr-search {
-    background: var(--fluentui-neutralBackground1, #18191a) !important;
-    color: var(--fluentui-neutralForeground1, #fff) !important;
 }
