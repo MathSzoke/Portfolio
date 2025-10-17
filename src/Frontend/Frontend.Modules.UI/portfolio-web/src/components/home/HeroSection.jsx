@@ -12,7 +12,11 @@ const useStyles = makeStyles({
     root: {
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        '@media (max-width: 768px)': {
+            flexDirection: 'column-reverse',
+            gap: '20px'
+        },
     },
     heroTextContent: {
         display: 'flex',
@@ -28,7 +32,7 @@ const useStyles = makeStyles({
         color: tokens.colorBrandBackground
     },
     highlight: {
-        fontSize: '2.5rem',
+        fontSize: '2rem',
         fontWeight: 700,
         display: 'inline-block',
         fontFamily: 'sans-serif'
@@ -39,7 +43,8 @@ const useStyles = makeStyles({
     image: {
         border: `3px solid ${tokens.colorBrandBackground}`,
         '@media (max-width: 768px)': {
-            display: 'none',
+            height: '300px',
+            width: '300px'
         },
     }
 });

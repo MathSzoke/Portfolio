@@ -25,6 +25,9 @@ const useStyles = makeStyles({
         margin: '0 10%',
         height: 'calc(100vh - 5em)',
         boxSizing: 'border-box',
+        '@media (max-width: 768px)': {
+            marginTop: '5em'
+        },
     },
     safeBottom: {
         paddingBottom: 'env(safe-area-inset-bottom, 24px)',
