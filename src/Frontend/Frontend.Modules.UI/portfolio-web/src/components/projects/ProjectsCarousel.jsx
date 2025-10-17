@@ -45,8 +45,8 @@ export const ProjectsCarousel = ({ children }) => {
                 <CarouselNavContainer
                     layout="inline"
                     autoplayTooltip={children.length > 3 ? { content: 'Autoplay', relationship: 'label' } : ""}
-                    next={{ 'aria-label': 'Next' }}
-                    prev={{ 'aria-label': 'Previous' }}
+                    next={children.length > 0 ? { 'aria-label': 'Next' } : ""}
+                    prev={children.length > 0 ? { 'aria-label': 'Previous' } : ""}
                 >
                     <CarouselNav>
                         {(index) => (
