@@ -14,7 +14,6 @@
   <img src="https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white"/>
   <img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white"/>
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Fluent%20UI-0078D4?style=for-the-badge&logo=microsoft&logoColor=white"/>
 </p>
 
 ---
@@ -34,10 +33,9 @@ The application reflects my development philosophy: **organization, scalability,
 | Layer | Technologies |
 |:--|:--|
 | **Frontend** | React + Fluent UI + i18next |
-| **Backend** | .NET Aspire (Clean Architecture, CQRS, DDD) |
+| **Backend** | .NET Aspire 9 (Clean Architecture, CQRS, DDD) |
 | **Database** | PostgreSQL (via EF Core) |
 | **Infrastructure** | Azure App Service + Azure Redis + Postgres Flexible Server |
-| **Dev Tools** | Docker, VSCode, Visual Studio, Postman |
 
 ---
 
@@ -45,12 +43,58 @@ The application reflects my development philosophy: **organization, scalability,
 
 ```
 src/
- ├─ Aspire/Portfolio.AppHost/         → .NET Aspire Orchestrator
- ├─ Backend/Portfolio.Api/            → Main API (CQRS, Auth, REST Endpoints)
- ├─ Backend/Portfolio.AIAgent/        → AI Service (in development)
- ├─ Frontend/Frontend.Modules.UI/     → React Interface + Fluent UI
- ├─ Infrastructure/Infra.Database/    → EF Core Context + Migrations
- └─ SharedKernel/                     → Result<T>, Errors, Domain abstractions
+ ├─ Aspire/Portfolio.AppHost/         → Orquestrador do .NET Aspire
+ │                                     - Define ServiceDefaults, health checks, configuração distribuída
+ │                                     - Orquestra serviços (API, AIAgent, DB, Redis, etc.) no dev
+ │                                     - Facilita observabilidade e composition local
+
+ ├─ Backend/Portfolio.Api/            → Camada de Apresentação (API)
+ │                                     - Endpoints/Controllers (REST)
+ │                                     - Autenticação/Autorização, filtros/middlewares
+ │                                     - DI/Composition Root: registra Application + Infrastructure
+ │                                     - Versionamento, Swagger/OpenAPI, validação de requests
+
+ ├─ Backend/Portfolio.Application/    → Camada de Aplicação (Casos de Uso)
+ │                                     - Handlers CQRS (Commands/Queries), orquestra regra de negócio
+ │                                     - DTOs/ViewModels/Mappers
+ │                                     - Validações (FluentValidation), regras de aplicação
+ │                                     - Portas/Interfaces (ex.: IEmailSender, IUnitOfWork, ICurrentUser)
+ │                                     - Publica/consome eventos de domínio via MediatR (quando aplicável)
+ │                                     - NÃO conhece detalhes de infra nem do HTTP – só contratos
+
+ ├─ Backend/Portfolio.Domain/         → Camada de Domínio (Coração do negócio)
+ │                                     - Entidades, Agregados, Value Objects
+ │                                     - Eventos de domínio
+ │                                     - Erros de domínio, Result types base, BaseEntity, etc.
+ │                                     - Zero dependência de infraestrutura/UI; só C# puro
+
+ ├─ Backend/Portfolio.Infrastructure/ → Camada de Infraestrutura (implementações técnicas)
+ │                                     - EF Core (DbContext, configurations), repositórios concretos
+ │                                     - Migrations (se não estiverem em Infra.Database)
+ │                                     - Integrações externas (Azure, fila/mensageria, email, cache, storage)
+ │                                     - Logging/Telemetry, Polly, HttpClients
+ │                                     - Implementações de portas da Application (ex.: IEmailSender)
+ │                                     - Depende de Domain e expõe implementações para Application/API
+
+ ├─ Backend/Portfolio.AIAgent/        → Serviço de IA (em desenvolvimento)
+ │                                     - Adapters para modelos (ex.: Ollama/OpenAI/Azure OpenAI)
+ │                                     - Endpoints internos/Worker para tarefas de IA
+ │                                     - Pipelines de prompt, ferramentas/agents, caching de respostas
+
+ ├─ Frontend/Frontend.Modules.UI/     → Interface Web (React + Fluent UI)
+ │                                     - Páginas/Seções (About, Projects), i18n, temas
+ │                                     - Componentes UI (carrossel, badges, cards)
+ │                                     - Integração com API, roteamento, animações
+
+ ├─ Infrastructure/Infra.Database/    → Projeto de Banco (opcional/separado)
+ │                                     - Migrações EF Core isoladas
+ │                                     - Scripts SQL, seeds, utilitários para DB
+
+ └─ SharedKernel/                     → Núcleo compartilhado
+                                       - Tipos utilitários (Result<T>, Error, Paginação)
+                                       - Abstrações base (BaseEntity, DomainEvent, IHasDomainEvents)
+                                       - Contratos comuns (ex.: IDateTime, IGuidGenerator)
+                                       - Constantes, exceptions e helpers sem dependência pesada
 ```
 
 ---
@@ -89,5 +133,5 @@ Each component was designed using Fluent UI and styled with `makeStyles` to main
 ---
 
 <p align="center">
-  <sub>Made with ❤️ and C# by <strong>Matheus Szoke</strong></sub>
+  <sub>Made with 💚 by <strong>Matheus Szoke</strong></sub>
 </p>
