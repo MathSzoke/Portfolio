@@ -5,3 +5,5 @@ obj/
 .vscode/
 node_modules/
 .vs/
+.azure/
+Portfolio.sln.DotSettings.user
