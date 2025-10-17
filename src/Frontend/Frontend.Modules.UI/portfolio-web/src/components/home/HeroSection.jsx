@@ -44,7 +44,7 @@ const useStyles = makeStyles({
         border: `3px solid ${tokens.colorBrandBackground}`,
         '@media (max-width: 768px)': {
             height: '300px',
-            width: '300px'
+            width: '200px'
         },
     }
 });

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Button,
     Dialog,
@@ -15,7 +15,7 @@ import {
     TabList,
     tokens
 } from '@fluentui/react-components';
-import {Dismiss24Regular, Settings24Regular, Translate24Regular} from '@fluentui/react-icons';
+import { Dismiss24Regular, Settings24Regular, Translate24Regular } from '@fluentui/react-icons';
 import ThemeSettings from './ThemeSettings';
 import LanguageSettings from './LanguageSettings';
 
@@ -77,14 +77,44 @@ const useStyles = makeStyles({
     },
 });
 
-const SettingsModal = ({isOpen, onClose}) => {
+function useIsWide(minWidth = 371) {
+    const getMatches = useCallback(() => {
+        if (typeof window === 'undefined') return true;
+        return window.matchMedia(`(min-width: ${minWidth}px)`).matches;
+    }, [minWidth]);
+
+    const [isWide, setIsWide] = useState(getMatches);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mql = window.matchMedia(`(min-width: ${minWidth}px)`);
+        const handler = (e) => setIsWide(e.matches);
+
+        if (mql.addEventListener) mql.addEventListener('change', handler);
+        else mql.addListener(handler);
+
+        setIsWide(mql.matches);
+
+        return () => {
+            if (mql.removeEventListener) mql.removeEventListener('change', handler);
+            else mql.removeListener(handler);
+        };
+    }, [minWidth]);
+
+    return isWide;
+}
+
+const SettingsModal = ({ isOpen, onClose }) => {
     const styles = useStyles();
     const [selectedTab, setSelectedTab] = useState('general');
-    const {t} = useTranslation();
+    const { t } = useTranslation();
+    const isWide = useIsWide(371);
+
     const navigationItems = [
-        {id: 'general', icon: <Settings24Regular/>, label: t('settings.sidebar.general', 'Geral')},
-        {id: 'language', icon: <Translate24Regular/>, label: t('settings.sidebar.language', 'Idioma')}
+        { id: 'general', icon: <Settings24Regular />, label: t('settings.sidebar.general', 'Geral') },
+        { id: 'language', icon: <Translate24Regular />, label: t('settings.sidebar.language', 'Idioma') }
     ];
+
     return (
         <Dialog modalType='modal' open={isOpen} onOpenChange={(event, data) => !data.open && onClose()}>
             <DialogSurface className={styles.surface}>
@@ -93,12 +123,10 @@ const SettingsModal = ({isOpen, onClose}) => {
                     <DialogTitle
                         action={
                             <DialogTrigger disableButtonEnhancement>
-                                <Button appearance="subtle" aria-label="Fechar" icon={<Dismiss24Regular/>}
-                                        onClick={onClose}/>
+                                <Button appearance="subtle" aria-label="Fechar" icon={<Dismiss24Regular />} onClick={onClose} />
                             </DialogTrigger>
                         }
-                    >
-                    </DialogTitle>
+                    />
                     <DialogContent className={styles.content}>
                         <TabList
                             selectedValue={selectedTab}
@@ -114,16 +142,16 @@ const SettingsModal = ({isOpen, onClose}) => {
                                     icon={item.icon}
                                     className={mergeClasses(styles.navTab, selectedTab === item.id && styles.selectedNavTab)}
                                 >
-                                    {item.label}
+                                    {isWide && item.label}
                                 </Tab>
                             ))}
                         </TabList>
 
                         <div role="tabpanel" aria-labelledby="settingsTab-general" hidden={selectedTab !== 'general'}>
-                            <ThemeSettings/>
+                            <ThemeSettings />
                         </div>
                         <div role="tabpanel" aria-labelledby="settingsTab-language" hidden={selectedTab !== 'language'}>
-                            <LanguageSettings/>
+                            <LanguageSettings />
                         </div>
                     </DialogContent>
                 </DialogBody>

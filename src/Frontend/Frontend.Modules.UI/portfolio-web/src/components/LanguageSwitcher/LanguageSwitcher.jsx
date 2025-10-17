@@ -7,6 +7,9 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         ...shorthands.gap('4px'),
+        '@media (max-width: 768px)': {
+            flexDirection: 'column',
+        },
     },
     flag: {
         ...shorthands.borderRadius('2px'),
