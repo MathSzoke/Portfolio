@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         width: '100%',
         height: '100%',
         overflowY: 'auto',
-        scrollSnapType: 'y mandatory',
+        /*scrollSnapType: 'y mandatory',*/
     },
     section: {
         scrollSnapAlign: 'start',
