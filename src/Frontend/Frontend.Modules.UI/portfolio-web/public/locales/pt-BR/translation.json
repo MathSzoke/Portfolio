@@ -30,7 +30,7 @@
     "sections": {
       "summary": {
         "title": "Resumo",
-        "text": "Sou Desenvolvedor Web especializado em .NET e React, apaixonado por criar soluções escaláveis. Mais de 4 anos de experiência em sistemas corporativos e web apps, seguindo boas práticas como Clean Architecture e padrão de design S.O.L.I.D"
+        "text": "Sou Desenvolvedor Web especializado em .NET e React, apaixonado por criar soluções escaláveis. Mais de 4 anos de experiência em sistemas corporativos e web apps, seguindo boas práticas como Clean Architecture"
       },
       "interests": {
         "title": "Interesses",
@@ -156,8 +156,7 @@
         ]
       },
       "skills": {
-        "title": "Habilidades",
-        "techs": [ ".NET Framework/Core", ".NET Aspire", "React", "PostgreSQL", "SQL Server", "Docker", "Python", "Azure" ]
+        "title": "Tecnologias e ferramentas"
       },
       "languages": {
         "title": "Idiomas",

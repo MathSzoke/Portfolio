@@ -30,7 +30,7 @@
     "sections": {
       "summary": {
         "title": "Summary",
-        "text": "I'm a Web developer specializing in .NET and React, passionate about building scalable solutions. Over 4 years of experience in corporate systems and web applications, following best practices like Clean Architecture and Design pattern S.O.L.I.D"
+        "text": "I'm a Web developer specializing in .NET and React, passionate about building scalable solutions. Over 4 years of experience in corporate systems and web applications, following best practices like Clean Architecture"
       },
       "interests": {
         "title": "Interests",
@@ -156,8 +156,7 @@
         ]
       },
       "skills": {
-        "title": "Skills",
-        "techs": [ ".NET Framework/Core", ".NET Aspire", "React", "PostgreSQL", "SQL Server", "Docker", "Python", "Azure" ]
+        "title": "Techs & Tools"
       },
       "languages": {
         "title": "Languages",
