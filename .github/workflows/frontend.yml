@@ -1,4 +1,4 @@
-name: Portfolio Frontend Workflow
+name: Portfolio Frontend - GitHub Pages
 
 on:
   push:
@@ -6,42 +6,59 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      - name: Install dependencies
+      - name: Install
         run: npm install --legacy-peer-deps
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
 
-      - name: Build project
+      - name: Build
         run: npm run build
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
         env:
-            VITE_PORTFOLIO_API: ${{ secrets.VITE_PORTFOLIO_API }}
-            VITE_API_BASE_URL: ${{ secrets.VITE_PORTFOLIO_API }}
-            VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-            VITE_LINKEDIN_CLIENT_ID: ${{ secrets.VITE_LINKEDIN_CLIENT_ID }}
-            VITE_LINKEDIN_REDIRECT_URI: ${{ secrets.VITE_LINKEDIN_REDIRECT_URI }}
+          VITE_PORTFOLIO_API: ${{ secrets.VITE_PORTFOLIO_API }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_PORTFOLIO_API }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_LINKEDIN_CLIENT_ID: ${{ secrets.VITE_LINKEDIN_CLIENT_ID }}
+          VITE_LINKEDIN_REDIRECT_URI: ${{ secrets.VITE_LINKEDIN_REDIRECT_URI }}
 
-      - name: List dist contents
-        run: ls -R ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
+      - name: Prepare Pages Artifacts
+        run: |
+          cp dist/index.html dist/404.html
+          echo "www.mathszoke.com" > dist/CNAME
+        working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-            app-name: 'portfolio'
-            slot-name: 'Production'
-            package: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
-            publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FRONTEND  }}
+          path: ./src/Frontend/Frontend.Modules.UI/portfolio-web/dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
