@@ -1,4 +1,4 @@
-name: Portfolio Frontend - GitHub Pages
+name: Portfolio Frontend
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
       - name: Prepare Pages Artifacts
         run: |
           cp dist/index.html dist/404.html
-          echo "www.mathszoke.com" > dist/CNAME
+          echo "portfolio.mathszoke.com" > dist/CNAME
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
 
       - name: Upload artifact
