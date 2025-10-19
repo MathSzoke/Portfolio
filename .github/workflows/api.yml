@@ -1,13 +1,20 @@
-name: Portfolio API Workflow
+name: Portfolio API
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  WEBAPP_NAME: portfolio-api-mathszoke
+  RESOURCE_GROUP: rg-portfolio
+  PROJECT: src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj
+  PUBLISH_DIR: publish
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -16,34 +23,29 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore
-        run: dotnet restore ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj
+        run: dotnet restore $PROJECT
 
       - name: Build
-        run: dotnet build ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj --configuration Release --no-restore
+        run: dotnet build $PROJECT --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj -c Release -o "$GITHUB_WORKSPACE/publish" --no-build
+        run: dotnet publish $PROJECT -c Release -o ./$PUBLISH_DIR --no-build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-publish
-          path: ${{ github.workspace }}/publish
+      - name: Zip artifact
+        run: |
+          cd $PUBLISH_DIR
+          zip -r ../app.zip .
+          cd ..
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      - name: Azure login (OIDC/Service Principal)
+        uses: azure/login@v2
         with:
-          name: api-publish
-          path: ./publish
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'portfolio-api'
-          slot-name: 'Production'
-          package: ./publish
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_API }}
+      - name: Deploy zip to Web App
+        run: |
+          az webapp deploy --resource-group "$RESOURCE_GROUP" --name "$WEBAPP_NAME" --type zip --src-path "./app.zip"
+
+      - name: Restart app
+        run: |
+          az webapp restart --resource-group "$RESOURCE_GROUP" --name "$WEBAPP_NAME"
