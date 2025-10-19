@@ -20,5 +20,12 @@
     <ProjectReference Include="..\..\Aspire\Portfolio.ServiceDefaults\Portfolio.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Modules\Portfolio\Portfolio.Application\Portfolio.Application.csproj" />
   </ItemGroup>
+	
+	<ItemGroup>
+		<Content Remove="appsettings.json" />
+		<Content Remove="appsettings.Development.json" />
+		<None Include="appsettings.json" />
+		<None Include="appsettings.Development.json" />
+	</ItemGroup>
 
 </Project>
