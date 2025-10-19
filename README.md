@@ -118,7 +118,7 @@ Each component was designed using Fluent UI and styled with `makeStyles` to main
 
 ## 🌐 Live Demo
 
-🔗 **[mathszoke.com](https://mathszoke.com)**  
+🔗 **[portfolio.mathszoke.com](https://portfolio.mathszoke.com)**  
 > The production version is continuously updated via automated GitHub Actions pipelines.
 
 ---
@@ -127,7 +127,7 @@ Each component was designed using Fluent UI and styled with `makeStyles` to main
 
 📧 **Email:** [matheusszoke@gmail.com](mailto:matheusszoke@gmail.com)  
 💼 **LinkedIn:** [linkedin.com/in/matheusszoke](https://linkedin.com/in/matheusszoke)  
-🌐 **Website:** [mathszoke.com](https://mathszoke.com)
+🌐 **Website:** [portfolio.mathszoke.com](https://portfolio.mathszoke.com)
 
 ---
 
