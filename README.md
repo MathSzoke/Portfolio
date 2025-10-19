@@ -77,7 +77,7 @@ src/
  │                                     - Depende de Domain e expõe implementações para Application/API
 
  ├─ Backend/Portfolio.AIAgent/        → Serviço de IA (em desenvolvimento)
- │                                     - Adapters para modelos (ex.: Ollama/OpenAI/Azure OpenAI)
+ │                                     - Adapters para modelos (ex.: Ollama e GPT para produção)
  │                                     - Endpoints internos/Worker para tarefas de IA
  │                                     - Pipelines de prompt, ferramentas/agents, caching de respostas
 
@@ -103,10 +103,9 @@ src/
 
 - Detailed display of professional experiences  
 - Dynamic and multilingual *About Me* section (🇧🇷 / 🇺🇸)  
-- Integrated *Projects* section powered by the API  
-- Animated marquee with highlighted technologies  
-- Fully responsive design optimized for desktop and mobile  
-- Scalable cloud deployment managed on Azure  
+- Integrated *Projects* section powered by the API
+- Fully responsive design optimized for desktop and mobile
+- Scalable cloud deployment managed on AWS Lambda for API and Github pages for frontend React.  
 
 ---
 
