@@ -11,7 +11,7 @@ internal static class PortfolioExtensions
         var portfolioGroup = builder.AddGroup("Portfolio");
 
         var frontendDevUrl = "http://localhost:5173";
-        var frontendProdUrl = "https://mathszoke.com";
+        var frontendProdUrl = "https://portfolio.mathszoke.com";
         var linkedInRedirectDev = $"{frontendDevUrl}/auth/callback/linkedin";
         var linkedInRedirectProd = $"{frontendProdUrl}/auth/callback/linkedin";
 
