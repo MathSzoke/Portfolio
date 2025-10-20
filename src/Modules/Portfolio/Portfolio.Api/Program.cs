@@ -56,7 +56,7 @@ try
 }
 catch (Exception ex)
 {
-    app.Logger.LogError(ex, "Failed to apply migrations on startup");
+    app.Logger.LogError(ex.ToString(), "Failed to apply migrations on startup");
 }
 
 
