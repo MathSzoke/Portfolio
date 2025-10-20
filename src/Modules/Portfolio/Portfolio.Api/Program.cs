@@ -49,7 +49,16 @@ app.MapHealthChecks("health", new HealthCheckOptions
 
 app.UseSwaggerWithUi();
 app.MapOpenApi();
-app.ApplyMigrations();
+
+try
+{
+    app.ApplyMigrations();
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Failed to apply migrations on startup");
+}
+
 
 app.ApplicationUses();
 
