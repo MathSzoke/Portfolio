@@ -52,13 +52,14 @@ app.MapOpenApi();
 
 try
 {
+    app.Logger.LogInformation("Applying EF migrations...");
     app.ApplyMigrations();
+    app.Logger.LogInformation("EF migrations applied.");
 }
 catch (Exception ex)
 {
-    app.Logger.LogError(ex.ToString(), "Failed to apply migrations on startup");
+    app.Logger.LogError(ex, "EF migrations failed");
 }
-
 
 app.ApplicationUses();
 
