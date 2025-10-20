@@ -4,17 +4,10 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
-env:
-  WEBAPP_NAME: portfolio-api-mathszoke
-  RESOURCE_GROUP: rg-portfolio
-  PROJECT: src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj
-  PUBLISH_DIR: publish
-
+  
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -23,29 +16,10 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore
-        run: dotnet restore $PROJECT
+        run: dotnet restore ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj
 
       - name: Build
-        run: dotnet build $PROJECT --configuration Release --no-restore
+        run: dotnet build ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish $PROJECT -c Release -o ./$PUBLISH_DIR --no-build
-
-      - name: Zip artifact
-        run: |
-          cd $PUBLISH_DIR
-          zip -r ../app.zip .
-          cd ..
-
-      - name: Azure login (OIDC/Service Principal)
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy zip to Web App
-        run: |
-          az webapp deploy --resource-group "$RESOURCE_GROUP" --name "$WEBAPP_NAME" --type zip --src-path "./app.zip"
-
-      - name: Restart app
-        run: |
-          az webapp restart --resource-group "$RESOURCE_GROUP" --name "$WEBAPP_NAME"
+        run: dotnet publish ./src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj -c Release -o "$GITHUB_WORKSPACE/publish" --no-build
