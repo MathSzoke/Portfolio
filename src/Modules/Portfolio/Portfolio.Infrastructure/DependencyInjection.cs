@@ -45,9 +45,9 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("portfolioDB");
 
         if (string.IsNullOrWhiteSpace(connectionString))
-            services.AddHealthChecks().AddNpgSql(name: "PostgreSQL");
+            services.AddHealthChecks().AddNpgSql(name: "postgres");
         else
-            services.AddHealthChecks().AddNpgSql(connectionString, name: "PostgreSQL");
+            services.AddHealthChecks().AddNpgSql(connectionString, name: "postgres");
 
         return services;
     }

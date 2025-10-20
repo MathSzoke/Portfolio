@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using Infra.Database.Portfolio;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.AIAgent;
 using Portfolio.Api;
 using Portfolio.Api.Extensions;
@@ -26,10 +27,15 @@ builder.Services
 
 builder.Services.AddAiAgent(builder.Configuration);
 
-builder.AddNpgsqlDbContext<ApplicationDbContext>("portfolioDB", configureDbContextOptions: options =>
+var cs = builder.Configuration.GetConnectionString("portfolioDB");
+
+builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 {
+    options.UseNpgsql(cs);
     options.EnableDetailedErrors();
 });
+
+builder.Services.AddNpgsqlDataSource(cs!);
 
 builder.Services.AddCorsServices(builder.Configuration);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
