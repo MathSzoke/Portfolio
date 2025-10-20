@@ -1,7 +1,6 @@
 using HealthChecks.UI.Client;
 using Infra.Database.Portfolio;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
 using Portfolio.AIAgent;
 using Portfolio.Api;
 using Portfolio.Api.Extensions;
@@ -27,15 +26,10 @@ builder.Services
 
 builder.Services.AddAiAgent(builder.Configuration);
 
-var cs = builder.Configuration.GetConnectionString("portfolioDB");
-
-builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+builder.AddNpgsqlDbContext<ApplicationDbContext>("portfolioDB", configureDbContextOptions: options =>
 {
-    options.UseNpgsql(cs);
     options.EnableDetailedErrors();
 });
-
-builder.Services.AddNpgsqlDataSource(cs!);
 
 builder.Services.AddCorsServices(builder.Configuration);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
@@ -55,17 +49,7 @@ app.MapHealthChecks("health", new HealthCheckOptions
 
 app.UseSwaggerWithUi();
 app.MapOpenApi();
-
-try
-{
-    app.Logger.LogInformation("Applying EF migrations...");
-    app.ApplyMigrations();
-    app.Logger.LogInformation("EF migrations applied.");
-}
-catch (Exception ex)
-{
-    app.Logger.LogError(ex, "EF migrations failed");
-}
+app.ApplyMigrations();
 
 app.ApplicationUses();
 
