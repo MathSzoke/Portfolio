@@ -15,6 +15,7 @@
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.65.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.65.0-alpha" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.66.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageVersion Include="EFCore.NamingConventions" Version="9.0.0" />
     <PackageVersion Include="RabbitMQ.Client" Version="7.1.2" />
@@ -85,10 +86,10 @@
     <PackageVersion Include="NetArchTest.Rules" Version="1.3.2" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
   </ItemGroup>
-	<ItemGroup Label="Frontend Blazor">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.CustomElements" Version="9.0.8" />
-		<PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.8" />
-	</ItemGroup>
+  <ItemGroup Label="Frontend Blazor">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.CustomElements" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.8" />
+  </ItemGroup>
 </Project>

@@ -8,14 +8,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAiAgent(this IServiceCollection services, IConfiguration configuration)
     {
-        var url = configuration.GetValue<string>("OllamaUrl") ?? "http://localhost:11434";
+        var apiKey = configuration["OpenAI:ApiKey"] ?? configuration["OPENAI_API_KEY"] ?? string.Empty;
+        var modelId = configuration["OpenAI:ModelId"] ?? "gpt-5-nano";
 
-        services.AddOllamaChatCompletion(
-            modelId: "phi3.5",
-            endpoint: new Uri(url)
-        );
-
-        services.AddScoped<IAgentResponder, OllamaService>();
+        services.AddOpenAIChatCompletion(modelId, apiKey);
+        services.AddScoped<IAgentResponder, GptService>();
         return services;
     }
 }

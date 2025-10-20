@@ -58,7 +58,7 @@ export default function Home() {
                 <section id="projects" className={`${s.section} scroll-section`} ref={projectsRef}>
                     <ProjectsSection />
                 </section>
-                {/*<ChatLauncherFloatingButton apiBase={apiBase} />*/}
+                <ChatLauncherFloatingButton apiBase={apiBase} />
             </div>
         </>
     );
