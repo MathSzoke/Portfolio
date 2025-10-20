@@ -43,8 +43,11 @@ jobs:
 
       - name: Prepare Pages Artifacts
         run: |
-          cp dist/index.html dist/404.html
-          echo "portfolio.mathszoke.com" > dist/CNAME
+            mkdir -p dist/br dist/us
+            cp dist/index.html dist/404.html
+            cp dist/index.html dist/br/index.html
+            cp dist/index.html dist/us/index.html
+            echo "portfolio.mathszoke.com" > dist/CNAME
         working-directory: ./src/Frontend/Frontend.Modules.UI/portfolio-web
 
       - name: Upload artifact
