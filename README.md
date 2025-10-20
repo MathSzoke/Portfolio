@@ -1,7 +1,7 @@
 # 💼 Portfolio — Matheus Szoke
 
 <p align="center">
-  <img src="https://mathszoke.com/assets/banner.png" alt="Portfolio Banner" width="800"/>
+  <img src="https://portfolio.mathszoke.com/assets/banner.png" alt="Portfolio Banner" width="800"/>
 </p>
 
 <p align="center">
