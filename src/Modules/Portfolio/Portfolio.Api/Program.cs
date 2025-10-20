@@ -40,8 +40,10 @@ UserDeviceCtx.Provider = app.Services;
 
 app.MapEndpoints();
 
+app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 app.MapHealthChecks("health", new HealthCheckOptions
 {
+    Predicate = _ => true,
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
