@@ -35,7 +35,7 @@ The application reflects my development philosophy: **organization, scalability,
 | **Frontend** | React + Fluent UI + i18next |
 | **Backend** | .NET Aspire 9 (Clean Architecture, CQRS, DDD) |
 | **Database** | PostgreSQL (via EF Core) |
-| **Infrastructure** | Azure App Service + Azure Redis + Postgres Flexible Server |
+| **Infrastructure** | Azure App Service + Github Actions (CI/CD) + Github Pages |
 
 ---
 
@@ -105,7 +105,7 @@ src/
 - Dynamic and multilingual *About Me* section (🇧🇷 / 🇺🇸)  
 - Integrated *Projects* section powered by the API
 - Fully responsive design optimized for desktop and mobile
-- Scalable cloud deployment managed on AWS Lambda for API and Github pages for frontend React.  
+- Scalable cloud deployment managed on Azure App Service for API and Github pages for frontend React.  
 
 ---
 
