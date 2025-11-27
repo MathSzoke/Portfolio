@@ -162,7 +162,16 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
                             />
                         </div>
                     )}
-                    <div style={{ alignSelf: 'end' }}>
+                    <div style={{ alignSelf: 'end', display: 'flex', gap: '8px' }}>
+                        {projectUrl ? (
+                            <Button
+                                as="a"
+                                href={`${projectUrl}`}
+                                target="_blank"
+                                icon={<FaExternalLinkAlt />}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        ) : null}
                         {repoName ? (
                             <Button
                                 as="a"
