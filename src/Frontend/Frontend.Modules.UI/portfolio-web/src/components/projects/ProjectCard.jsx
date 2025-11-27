@@ -24,7 +24,7 @@ import {
     ToastTitle,
     Toast,
 } from '@fluentui/react-components';
-import { FaGithub, FaEdit } from 'react-icons/fa';
+import { FaGithub, FaEdit, FaExternalLinkAlt } from 'react-icons/fa';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dismiss24Regular } from '@fluentui/react-icons';
