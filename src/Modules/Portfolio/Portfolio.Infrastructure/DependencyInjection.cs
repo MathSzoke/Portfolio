@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Portfolio.Application.Abstractions.Authentication;
+using Portfolio.Application.Abstractions.Projects;
 using Portfolio.Application.Abstractions.Security;
 using Portfolio.Infrastructure.Authentication;
 using Portfolio.Infrastructure.Authorization;

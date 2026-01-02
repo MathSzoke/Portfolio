@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Infrastructure.Services.StatusProjectClient;
+﻿namespace Portfolio.Application.Abstractions.Projects;
 
 public interface IStatusProjectsClient
 {

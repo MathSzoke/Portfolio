@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Abstractions.Data;
 using Portfolio.Application.Abstractions.Messaging;
+using Portfolio.Application.Abstractions.Projects;
 using Portfolio.Domain.Projects;
 using SharedKernel;
 

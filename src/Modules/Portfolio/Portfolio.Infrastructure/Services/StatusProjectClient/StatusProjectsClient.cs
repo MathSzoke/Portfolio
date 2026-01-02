@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using Portfolio.Application.Abstractions.Projects;
+using System.Net.Http.Json;
 
 namespace Portfolio.Infrastructure.Services.StatusProjectClient;
 
@@ -16,3 +17,4 @@ internal sealed class StatusProjectsClient(HttpClient client) : IStatusProjectsC
         var resp = await client.PostAsJsonAsync("/registerProject", payload, ct);
         resp.EnsureSuccessStatusCode();
     }
+}
