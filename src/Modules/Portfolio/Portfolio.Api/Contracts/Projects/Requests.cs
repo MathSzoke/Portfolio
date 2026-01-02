@@ -9,6 +9,7 @@ public sealed class AddProjectRequest
     public string RepoName { get; init; } = null!;
     public IReadOnlyCollection<string> Technologies { get; init; } = [];
     public int SortOrder { get; init; } = 0;
+    public string? UrlEndpoint { get; init; }
 }
 
 public sealed class UpdateProjectRequest

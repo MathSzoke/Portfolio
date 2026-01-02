@@ -220,7 +220,8 @@
         "labels": {
           "uploadImage": "Subir imagem",
           "newTechnology": "Nova tecnologia",
-          "tech": "Thumbnail URL / Upload"
+          "tech": "Thumbnail URL / Upload",
+          "urlEndpoint": "URL do endpoint"
         }
       }
     },

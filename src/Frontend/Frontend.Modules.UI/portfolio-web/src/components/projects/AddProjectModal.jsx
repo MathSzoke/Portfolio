@@ -31,6 +31,7 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
         repoName: '',
         projectUrl: '',
         thumbnailUrl: '',
+        urlEndpoint: '',
         technologies: []
     });
     const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                 repoName: initialData.repoName || '',
                 projectUrl: initialData.projectUrl || '',
                 thumbnailUrl: initialData.thumbnailUrl || '',
+                urlEndpoint: initialData.urlEndpoint || '',
                 technologies: initialData.technologies || []
             });
         } else {
@@ -58,6 +60,7 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                 repoName: '',
                 projectUrl: '',
                 thumbnailUrl: '',
+                urlEndpoint: '',
                 technologies: []
             });
         }
@@ -165,6 +168,7 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                 repoName: form.repoName || null,
                 projectUrl: form.projectUrl || null,
                 thumbnailUrl: form.thumbnailUrl || null,
+                urlEndpoint: form.urlEndpoint || null,
                 technologies: form.technologies,
                 sortOrder: 0
             };
@@ -278,6 +282,14 @@ export default function AddProjectModal({ open, onClose, onSuccess, initialData 
                                             </div>
                                         )}
                                     </div>
+                                </Field>
+                                <Field label={t("projects.superAdmin.labels.urlEndpoint")}>
+                                    <Input
+                                        name="urlEndpoint"
+                                        value={form.urlEndpoint}
+                                        onChange={handleChange}
+                                        placeholder="https://minha-api.com"
+                                    />
                                 </Field>
                                 <Field label={t('projects.superAdmin.labels.tech')} validationState={getValidation('thumbnailUrl').state} validationMessage={getValidation('thumbnailUrl').message}>
                                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>

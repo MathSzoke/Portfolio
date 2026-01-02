@@ -23,7 +23,8 @@ internal sealed class Add : IEndpoint
                     request.ProjectUrl,
                     request.RepoName,
                     request.Technologies,
-                    request.SortOrder
+                    request.SortOrder,
+                    request.UrlEndpoint
                 );
 
                 var result = await handler.Handle(cmd, ct);

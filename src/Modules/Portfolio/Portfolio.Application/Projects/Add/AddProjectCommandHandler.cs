@@ -6,7 +6,9 @@ using SharedKernel;
 
 namespace Portfolio.Application.Projects.Add;
 
-internal sealed class AddProjectCommandHandler(IApplicationDbContext db)
+internal sealed class AddProjectCommandHandler(
+    IApplicationDbContext db,
+    IStatusProjectsClient statusClient)
     : ICommandHandler<AddProjectCommand, ProjectResponse>
 {
     public async Task<Result<ProjectResponse>> Handle(AddProjectCommand cmd, CancellationToken ct)
@@ -23,10 +25,26 @@ internal sealed class AddProjectCommandHandler(IApplicationDbContext db)
             SortOrder = cmd.SortOrder
         };
 
-        await this.AttachTechnologiesAsync(project, cmd.Technologies, ct);
+        await AttachTechnologiesAsync(project, cmd.Technologies, ct);
 
         db.Projects.Add(project);
         await db.SaveChangesAsync(ct);
+
+        if (!string.IsNullOrWhiteSpace(cmd.UrlEndpoint))
+        {
+            try
+            {
+                await statusClient.RegisterAsync(
+                    project.Name,
+                    cmd.UrlEndpoint,
+                    project.ProjectUrl,
+                    ct
+                );
+            }
+            catch
+            {
+            }
+        }
 
         return Result.Success(new ProjectResponse(project.Id));
     }
@@ -35,7 +53,11 @@ internal sealed class AddProjectCommandHandler(IApplicationDbContext db)
     {
         if (techs is null || techs.Count == 0) return;
 
-        var names = techs.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+        var names = techs
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Select(x => x.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
 
         var existing = await db.Technologies
             .Where(t => names.Contains(t.Name))
@@ -50,7 +72,12 @@ internal sealed class AddProjectCommandHandler(IApplicationDbContext db)
                 tech = new Technology { Name = n };
                 db.Technologies.Add(tech);
             }
-            project.Technologies.Add(new ProjectTechnology { Project = project, Technology = tech });
+
+            project.Technologies.Add(new ProjectTechnology
+            {
+                Project = project,
+                Technology = tech
+            });
         }
     }
 }

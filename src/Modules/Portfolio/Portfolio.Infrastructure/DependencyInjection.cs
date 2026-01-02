@@ -8,6 +8,7 @@ using Portfolio.Application.Abstractions.Authentication;
 using Portfolio.Application.Abstractions.Security;
 using Portfolio.Infrastructure.Authentication;
 using Portfolio.Infrastructure.Authorization;
+using Portfolio.Infrastructure.Services.StatusProjectClient;
 using Portfolio.Infrastructure.Time;
 using SharedKernel;
 using SharedKernel.DomainEvents;
@@ -27,7 +28,8 @@ public static class DependencyInjection
             .AddExternalAuth()
             .AddHealthChecks(configuration)
             .AddAuthenticationInternal(configuration)
-            .AddAuthorizationInternal();
+            .AddAuthorizationInternal()
+            .AddExternalAPIs();
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services,
@@ -36,6 +38,14 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddTransient<DomainEventsDispatcher>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddExternalAPIs(this IServiceCollection services)
+    {
+        services.AddHttpClient<IStatusProjectsClient, StatusProjectsClient>(c =>
+                c.BaseAddress = new Uri("https://status-projects-portfolio-h0azhhb2dmb5g0dq.brazilsouth-01.azurewebsites.net/"));
 
         return services;
     }

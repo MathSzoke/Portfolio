@@ -221,7 +221,8 @@
         "labels": {
           "uploadImage": "Upload image",
           "newTechnology": "New technology",
-          "tech": "Thumbnail URL / Upload"
+          "tech": "Thumbnail URL / Upload",
+          "urlEndpoint": "Endpoint URL"
         }
       }
     },

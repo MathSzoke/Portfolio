@@ -9,5 +9,6 @@ public sealed record AddProjectCommand(
     string ProjectUrl,
     string RepoName,
     IReadOnlyCollection<string> Technologies,
-    int SortOrder
+    int SortOrder,
+    string? UrlEndpoint
 ) : ICommand<ProjectResponse>;
