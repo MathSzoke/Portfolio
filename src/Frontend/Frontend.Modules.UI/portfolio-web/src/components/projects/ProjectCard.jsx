@@ -69,6 +69,7 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
     const [isEditing, setIsEditing] = useState(false);
     const [currentRating, setCurrentRating] = useState(rating);
     const [currentCount, setCurrentCount] = useState(ratingCount);
+    const [editRating, setEditRating] = useState(0);
     const [openPreview, setOpenPreview] = useState(false);
     const { dispatchToast } = useToastController();
     const api = getApiClient();
@@ -83,16 +84,19 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
 
         try {
             const res = await api.post(`/api/v1/Projects/${id}/rate`, { Rating: value });
-            setCurrentRating(res.rating);
-            setCurrentCount(res.ratingCount);
+            const data = res.data ?? res;
+            setCurrentRating(data.rating);
+            setCurrentCount(data.ratingCount);
         } catch (err) {
-            console.error("Erro ao salvar avaliação:", err);
+            console.error('Erro ao salvar avaliação:', err);
             dispatchToast(
                 <Toast>
                     <ToastTitle>{t('projects.responses.rateError')}</ToastTitle>
                 </Toast>,
                 { intent: 'error' }
             );
+        } finally {
+            setIsEditing(false);
         }
     }
 
@@ -110,7 +114,7 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
     return (
         <>
             <Card
-                size='small'
+                size="small"
                 className={mergeClasses(styles.card, styles.clickableCard)}
                 onClick={openCardPreview}
                 onKeyDown={(e) => {
@@ -135,7 +139,7 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
 
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
                     {technologies.slice(0, 4).map(t => (
-                        <Badge size='small' key={t} appearance="outline">{t}</Badge>
+                        <Badge size="small" key={t} appearance="outline">{t}</Badge>
                     ))}
                 </div>
 
@@ -144,20 +148,28 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
                         <div onClick={(e) => e.stopPropagation()}>
                             <Rating
                                 step={0.5}
-                                size='large'
+                                size="large"
                                 style={{ alignItems: 'center' }}
-                                value={currentRating}
-                                onChange={(_, data) => handleRate(data.value, _)}
+                                value={editRating}
+                                onChange={(_, data) => {
+                                    setEditRating(data.value);
+                                    handleRate(data.value, _);
+                                }}
                                 onMouseLeave={() => setIsEditing(false)}
                                 onClick={(e) => e.stopPropagation()}
                             />
                         </div>
                     ) : (
-                        <div onClick={(e) => e.stopPropagation()}>
+                        <div
+                            onClick={(e) => e.stopPropagation()}
+                            onMouseEnter={() => {
+                                setEditRating(0);
+                                setIsEditing(true);
+                            }}
+                        >
                             <RatingDisplay
                                 value={currentRating}
                                 count={currentCount}
-                                onMouseEnter={() => setIsEditing(true)}
                                 onClick={(e) => e.stopPropagation()}
                             />
                         </div>
@@ -166,7 +178,7 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
                         {projectUrl ? (
                             <Button
                                 as="a"
-                                href={`${projectUrl}`}
+                                href={projectUrl}
                                 target="_blank"
                                 icon={<FaExternalLinkAlt />}
                                 onClick={(e) => e.stopPropagation()}
@@ -190,12 +202,18 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
                             appearance="outline"
                             className={styles.dangerButton}
                             icon={<Dismiss24Regular />}
-                            onClick={(e) => { e.stopPropagation(); onClickDeletable?.(); }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onClickDeletable?.();
+                            }}
                         />
                         <Button
                             appearance="primary"
                             icon={<FaEdit />}
-                            onClick={(e) => { e.stopPropagation(); onClickEditable?.(); }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onClickEditable?.();
+                            }}
                         />
                     </CardFooter>
                 )}
@@ -204,16 +222,28 @@ export default function ProjectCard({ project, superAdmin, userInfo, onClickEdit
             <Dialog open={openPreview} modalType="modal" onOpenChange={(_, d) => !d.open && setOpenPreview(false)}>
                 <DialogSurface className={styles.DialogSurface}>
                     <DialogContent style={{ margin: 0, height: '100%', borderRadius: 15 }}>
-                            <iframe
-                                title={`${name} preview`}
-                                src={liveUrl}
-                                style={{ width: '100%', height: '95%', border: '0' }}
+                        <iframe
+                            title={`${name} preview`}
+                            src={liveUrl}
+                            style={{ width: '100%', height: '95%', border: '0' }}
                         />
                         <DialogActions>
-                            <Button appearance="secondary" onClick={closePreview}>{t('common.close')}</Button>
-                            {liveUrl && <Button as="a" href={liveUrl} target="_blank" appearance="primary" onClick={(e) => e.stopPropagation()}>{t('common.openNewTab')}</Button>}
+                            <Button appearance="secondary" onClick={closePreview}>
+                                {t('common.close')}
+                            </Button>
+                            {liveUrl && (
+                                <Button
+                                    as="a"
+                                    href={liveUrl}
+                                    target="_blank"
+                                    appearance="primary"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    {t('common.openNewTab')}
+                                </Button>
+                            )}
                         </DialogActions>
-                        </DialogContent>
+                    </DialogContent>
                 </DialogSurface>
             </Dialog>
         </>
