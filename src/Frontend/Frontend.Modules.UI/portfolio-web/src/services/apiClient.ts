@@ -1,55 +1,91 @@
 import i18n from '../config/i18n';
+import { jwtDecode } from 'jwt-decode';
 
-const getApiClient = (refreshTokenCallback?: () => Promise<any>) => {
+type JwtPayload = { exp?: number };
+
+let refreshingPromise: Promise<string> | null = null;
+
+const isTokenExpired = (token: string) => {
+    try {
+        const decoded = jwtDecode<JwtPayload>(token);
+        if (!decoded.exp) return true;
+        const buffer = 10;
+        return (Date.now() / 1000) >= (decoded.exp - buffer);
+    } catch {
+        return true;
+    }
+};
+
+const getApiClient = (refreshTokenCallback?: () => Promise<string>) => {
     const backendUrl = import.meta.env.VITE_PORTFOLIO_API || import.meta.env.VITE_API_BASE_URL;
-    if (!backendUrl) throw new Error("API base URL not set.");
+
+    const ensureValidToken = async () => {
+        const token = localStorage.getItem('authToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!token || !refreshToken) return null;
+
+        if (!isTokenExpired(token)) return token;
+
+        if (!refreshTokenCallback) return null;
+
+        if (!refreshingPromise) {
+            refreshingPromise = refreshTokenCallback().finally(() => {
+                refreshingPromise = null;
+            });
+        }
+
+        return refreshingPromise;
+    };
 
     const request = async (method: string, endpoint: string, body: any = null, options: { skipAuth?: boolean } = {}) => {
-        const makeFetch = async () => {
-            const currentLang = i18n.resolvedLanguage || 'pt-BR';
-            const token = localStorage.getItem('authToken');
-            const headers = new Headers({
-                'Content-Type': 'application/json',
-                'Accept-Language': currentLang,
-            });
-            if (token && !options.skipAuth) headers.append('Authorization', `Bearer ${token}`);
-            const config: RequestInit = {
-                method: method.toUpperCase(),
-                headers,
-                credentials: 'include',
-            };
-            if (body) config.body = JSON.stringify(body);
-            return fetch(`${backendUrl}${endpoint}`, config);
+        const lang = i18n.resolvedLanguage || 'pt-BR';
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'Accept-Language': lang
+        });
+
+        if (!options.skipAuth) {
+            const token = await ensureValidToken();
+            if (token) {
+                headers.append('Authorization', `Bearer ${token}`);
+            }
+        }
+
+        const config: RequestInit = {
+            method,
+            headers,
+            credentials: 'include',
+            body: body ? JSON.stringify(body) : null
         };
 
-        let response = await makeFetch();
+        const response = await fetch(`${backendUrl}${endpoint}`, config);
 
-        if (response.status === 401 && typeof refreshTokenCallback === 'function' && !options.skipAuth) {
-            try {
-                await refreshTokenCallback();
-                response = await makeFetch();
-            } catch {
-                throw new Error("Sessão expirada. Por favor, faça login novamente.");
+        if (response.status === 401 && !options.skipAuth) {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('refreshToken');
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login';
             }
+            throw new Error('unauthorized');
         }
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            const error: any = new Error(errorData.detail || `HTTP error! status: ${response.status}`);
-            error.response = response;
-            error.data = errorData;
-            throw error;
+            const err: any = new Error(errorData.detail || `HTTP ${response.status}`);
+            err.status = response.status;
+            err.data = errorData;
+            throw err;
         }
 
-        if (response.status === 204) return null;
-        return response.json();
+        return response.status === 204 ? null : response.json();
     };
 
     return {
-        get: (endpoint: string, options?: { skipAuth?: boolean }) => request('GET', endpoint, null, options),
-        post: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('POST', endpoint, body, options),
-        put: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('PUT', endpoint, body, options),
-        delete: (endpoint: string, body?: any, options?: { skipAuth?: boolean }) => request('DELETE', endpoint, body, options),
+        get: (e: string, o?: any) => request('GET', e, null, o),
+        post: (e: string, b?: any, o?: any) => request('POST', e, b, o),
+        put: (e: string, b?: any, o?: any) => request('PUT', e, b, o),
+        delete: (e: string, b?: any, o?: any) => request('DELETE', e, b, o)
     };
 };
 

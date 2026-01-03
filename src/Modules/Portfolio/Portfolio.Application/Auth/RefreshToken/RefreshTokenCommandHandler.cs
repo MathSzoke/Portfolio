@@ -16,7 +16,7 @@ internal sealed class RefreshTokenCommandHandler(
     {
         var ttlMin = int.TryParse(config["Jwt:AccessTokenMinutes"], out var m) ? m : 15;
 
-        var (accessToken, refreshToken, refreshExpires) = await rts.RefreshAsync(
+        var result = await rts.RefreshAsync(
             cmd.RefreshToken,
             uid => claimsGenerator.GenerateAsync(uid, "refresh", ct).GetAwaiter().GetResult(),
             null,
@@ -24,10 +24,15 @@ internal sealed class RefreshTokenCommandHandler(
             new UserDeviceDetector(null).Find().Device,
             ct);
 
+        if (result.IsFailure)
+        {
+            return Result.Failure<RefreshResponse>(result.Error);
+        }
+
         return Result.Success(new RefreshResponse(
-            accessToken,
+            result.Value.accessToken,
             ttlMin * 60,
-            refreshToken,
-            refreshExpires));
+            result.Value.refreshToken,
+            result.Value.refreshExpires));
     }
 }

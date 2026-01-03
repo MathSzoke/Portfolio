@@ -1,8 +1,9 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import getApiClient from './apiClient';
 
 type SocialPhoto = { provider: string; userPhotoUrl: string };
+
 type UserProfile = {
     id: string;
     name: string;
@@ -18,8 +19,8 @@ type AuthContextType = {
     userInfo: UserProfile | null;
     mathInfo: UserProfile | null;
     isLoading: boolean;
-    login: (loginResponse: any) => void;
-    logout: () => void;
+    login: (data: any) => void;
+    logout: () => Promise<void>;
     refreshToken: () => Promise<string>;
     isRole: (roles: string[]) => boolean;
     refreshUserProfile: () => Promise<void>;
@@ -34,110 +35,92 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [mathInfo, setMathInfo] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const login = useCallback((loginResponse: any) => {
-        const newAccess = loginResponse.token || loginResponse.accessToken || loginResponse;
-
-        if (newAccess) {
-            localStorage.setItem('authToken', newAccess);
-            localStorage.setItem('refreshToken', loginResponse.refreshToken);
-            setToken(newAccess);
-        }
+    const login = useCallback((data: any) => {
+        const access = data.accessToken || data.token || data;
+        if (!access) return;
+        localStorage.setItem('authToken', access);
+        if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+        setToken(access);
     }, []);
 
     const logout = useCallback(async () => {
         try {
             const api = getApiClient();
             await api.post('/api/v1/auth/logout');
-        } catch (_) { }
+        } catch { }
         localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
         setToken(null);
         setUserInfo(null);
     }, []);
 
-    // === Auto-refresh do token ===
     const refreshToken = useCallback(async () => {
-        try {
-            const api = getApiClient();
-            const refreshed = await api.post('/api/v1/auth/refresh',
-                { refreshTokenStorage: localStorage.getItem('refreshToken') },
-                { skipAuth: true }
-            );
-            const newToken = refreshed.accessToken;
-            const newRefresh = refreshed.refreshToken;
+        const api = getApiClient();
+        const result = await api.post(
+            '/api/v1/auth/refresh',
+            { refreshTokenStorage: localStorage.getItem('refreshToken') },
+            { skipAuth: true }
+        );
 
-            if (!newToken || !newRefresh) throw new Error('Invalid refresh response');
+        if (!result?.accessToken) throw new Error('refresh_failed');
 
-            localStorage.setItem('authToken', newToken);
-            localStorage.setItem('refreshToken', newRefresh);
-
-            setToken(newToken);
-            return newToken;
-
-        } catch (err) {
-            await logout();
-            throw err;
-        }
-    }, [logout]);
-
-    useEffect(() => {
-        if (!token) return;
-
-        const decoded: any = jwtDecode(token);
-        const expSeconds = decoded.exp ? decoded.exp * 1000 : Date.now() + 14 * 60 * 1000;
-        const now = Date.now();
-        let timeout = expSeconds - now - 30 * 1000;
-
-        if (timeout < 0) timeout = 0;
-
-        const handle = setTimeout(async function refreshLoop() {
-            try {
-                await refreshToken();
-                const newToken = localStorage.getItem('authToken');
-                if (!newToken) throw new Error("Refresh failed to return a new token.");
-
-                const decodedNew: any = jwtDecode(newToken);
-                const nextExp = decodedNew.exp ? decodedNew.exp * 1000 : Date.now() + 14 * 60 * 1000;
-                const delay = nextExp - Date.now() - 30 * 1000;
-                setTimeout(refreshLoop, delay > 0 ? delay : 0);
-            } catch (err) {
-                console.error('[Auth] Falha ao auto-refresh do token:', err);
-            }
-        }, timeout);
-
-        return () => clearTimeout(handle);
-    }, [token, refreshToken, logout]);
+        localStorage.setItem('authToken', result.accessToken);
+        if (result.refreshToken) localStorage.setItem('refreshToken', result.refreshToken);
+        setToken(result.accessToken);
+        return result.accessToken;
+    }, []);
 
     const fetchUserProfile = useCallback(async (t: string) => {
         try {
             const decoded: any = jwtDecode(t);
-            const roleClaim =
-                decoded.roles ?? decoded.role ?? decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            const roles =
+                decoded.roles ??
+                decoded.role ??
+                decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
             const profile: UserProfile = {
-                id: decoded.sub || decoded.userId || '',
-                name: decoded.name || '',
-                email: decoded.email || '',
-                picture: decoded.picture || '',
-                roles: Array.isArray(roleClaim) ? roleClaim : roleClaim ? [roleClaim] : [],
+                id: decoded.sub,
+                name: decoded.name,
+                email: decoded.email,
+                picture: decoded.picture,
+                roles: Array.isArray(roles) ? roles : roles ? [roles] : []
             };
+
             const api = getApiClient(refreshToken);
-            const userApiResp = await api.get('/api/v1/User');
-            const d = userApiResp ?? {};
-            profile.socialPhotos = d.socialPhotos || [];
-            profile.uploadedPhotos = d.uploadedPhotos || [];
-            if (d.avatarUrl) profile.picture = d.avatarUrl;
-            if (d.fullName) profile.name = d.fullName;
+            const d = await api.get('/api/v1/User');
+            profile.socialPhotos = d?.socialPhotos || [];
+            profile.uploadedPhotos = d?.uploadedPhotos || [];
+            if (d?.avatarUrl) profile.picture = d.avatarUrl;
+            if (d?.fullName) profile.name = d.fullName;
+
             setUserInfo(profile);
-        } catch (e) {
+        } catch {
             setUserInfo(null);
         }
     }, [refreshToken]);
 
     useEffect(() => {
-        async function fetchMathInfo() {
+        let cancelled = false;
+        if (!token) {
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+        fetchUserProfile(token).finally(() => {
+            if (!cancelled) setIsLoading(false);
+        });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [token, fetchUserProfile]);
+
+    useEffect(() => {
+        const loadMath = async () => {
             try {
                 const api = getApiClient(refreshToken);
-                const result = await api.get('/api/v1/User/matheusszoke@gmail.com');
-                const d = result ?? {};
+                const d = await api.get('/api/v1/User/matheusszoke@gmail.com');
                 if (d) {
                     setMathInfo({
                         id: d.id,
@@ -146,30 +129,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         picture: d.avatarUrl
                     });
                 }
-            } catch (_) { }
-        }
-        fetchMathInfo();
+            } catch { }
+        };
+        loadMath();
     }, [refreshToken]);
 
     const refreshUserProfile = useCallback(async () => {
         if (token) await fetchUserProfile(token);
     }, [token, fetchUserProfile]);
 
-    useEffect(() => {
-        let cancelled = false;
-        if (token) {
-            setIsLoading(true);
-            fetchUserProfile(token).finally(() => { if (!cancelled) setIsLoading(false); });
-        } else {
-            setUserInfo(null);
-            setIsLoading(false);
-        }
-        return () => { cancelled = true; };
-    }, [token, fetchUserProfile]);
-
-    const isRole = (requiredRoles: string[]) => {
-        if (!userInfo?.roles || !Array.isArray(requiredRoles)) return false;
-        return requiredRoles.some(r => userInfo.roles?.includes(r));
+    const isRole = (roles: string[]) => {
+        if (!userInfo?.roles) return false;
+        return roles.some(r => userInfo.roles!.includes(r));
     };
 
     const value = useMemo(() => ({
@@ -181,9 +152,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
         refreshToken,
         isRole,
-        isAuthenticated: !!token,
-        refreshUserProfile
-    }), [token, userInfo, mathInfo, isLoading, login, logout, refreshToken, isRole, refreshUserProfile]);
+        refreshUserProfile,
+        isAuthenticated: !!token
+    }), [token, userInfo, mathInfo, isLoading, login, logout, refreshToken]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
@@ -193,4 +164,3 @@ export const useAuth = () => {
     if (!ctx) throw new Error('useAuth must be used within AuthProvider');
     return ctx;
 };
-
