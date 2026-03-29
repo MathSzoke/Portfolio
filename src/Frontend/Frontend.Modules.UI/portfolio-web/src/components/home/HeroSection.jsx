@@ -83,7 +83,7 @@ export default function HeroSection({ onSeeProjects }) {
                     alt={t('hero.imageAlt')}
                     shape="circular"
                     className={s.image}
-                    src="/assets/my_image.png"
+                    src="/assets/my_image.jpg"
                     height={600}
                     width={400}
                 />
