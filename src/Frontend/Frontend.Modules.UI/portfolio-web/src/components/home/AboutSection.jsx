@@ -29,9 +29,14 @@ import {
     SiPostgresql,
     SiDocker,
     SiPython,
-    SiPostman
+    SiPostman,
+    SiDynatrace
 } from 'react-icons/si';
-import { VscVscode, VscAzure } from 'react-icons/vsc';
+import {
+    VscVscode,
+    VscAzure,
+    VscAzureDevops
+} from 'react-icons/vsc';
 import { DiMsqlServer, DiVisualstudio } from 'react-icons/di';
 
 const useStyles = makeStyles({
@@ -201,15 +206,17 @@ const useStyles = makeStyles({
 const techImageMap = {
     'C#': { name: 'C#', Icon: TbBrandCSharp, color: '#68217A' },
     '.NET': { name: '.NET Framework/Core', Icon: SiDotnet, color: '#512BD4', highlight: true },
+    'SQL Server': { name: 'SQL Server', Icon: DiMsqlServer, color: '#A91D22' },
+    Python: { name: 'Python', Icon: SiPython, color: '#3776AB' },
     React: { name: 'React', Icon: SiReact, color: '#61DAFB', highlight: true },
     PostgreSQL: { name: 'PostgreSQL', Icon: SiPostgresql, color: '#336791' },
-    'SQL Server': { name: 'SQL Server', Icon: DiMsqlServer, color: '#A91D22' },
     Docker: { name: 'Docker', Icon: SiDocker, color: '#2496ED' },
-    Python: { name: 'Python', Icon: SiPython, color: '#3776AB' },
     Azure: { name: 'Azure', Icon: VscAzure, color: '#0078D4', highlight: true },
+    AzureDevops: { name: 'Azure DevOps', Icon: VscAzureDevops, color: '#0078D4' },
     Postman: { name: 'Postman', Icon: SiPostman, color: '#FF6C37' },
     VSCode: { name: 'VSCode', Icon: VscVscode, color: '#007ACC' },
-    'Visual Studio': { name: 'Visual Studio', Icon: DiVisualstudio, color: '#5C2D91' }
+    'Visual Studio': { name: 'Visual Studio', Icon: DiVisualstudio, color: '#5C2D91' },
+    Dynatrace: { name: 'Dynatrace', Icon: SiDynatrace, color: '#E6007E' }
 };
 
 const getAnnouncement = (index, total) => `Carrossel: slide ${index + 1} de ${total}`;
@@ -226,15 +233,17 @@ export default function AboutSection() {
         () => [
             techImageMap['C#'],
             techImageMap['.NET'],
-            techImageMap.React,
-            techImageMap.PostgreSQL,
             techImageMap['SQL Server'],
-            techImageMap.Docker,
+            techImageMap.React,
             techImageMap.Python,
-            techImageMap.Azure,
+            techImageMap.PostgreSQL,
+            techImageMap.Docker,
             techImageMap.Postman,
+            techImageMap.Azure,
+            techImageMap.AzureDevops,
             techImageMap.VSCode,
-            techImageMap['Visual Studio']
+            techImageMap['Visual Studio'],
+            techImageMap.Dynatrace
         ].filter(Boolean),
         []
     );
@@ -243,6 +252,27 @@ export default function AboutSection() {
         const full = [...extraTools];
         return [...full, ...full];
     }, [extraTools]);
+
+    function getWorkingTime(startDate) {
+        const start = new Date(startDate);
+        const now = new Date();
+
+        let years = now.getFullYear() - start.getFullYear();
+        let months = now.getMonth() - start.getMonth();
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        const yearLabel = years === 1 ? '1 ano' : `${years} anos`;
+        const monthLabel = months === 1 ? '1 mês' : `${months} meses`;
+
+        if (years === 0) return monthLabel;
+        if (months === 0) return yearLabel;
+
+        return `${yearLabel} ${monthLabel}`;
+    }
 
     return (
         <div className={s.root}>
@@ -281,7 +311,11 @@ export default function AboutSection() {
                                                 header={<Text weight="semibold">{exp.role}</Text>}
                                                 description={<Text>{exp.company}</Text>}
                                             />
-                                            <Text className={s.period}>{exp.period}</Text>
+                                            <Text className={s.period}>
+                                                {t('about.sections.experiences.items.' + i + '.period', {
+                                                    timerWorking: getWorkingTime(exp.startDate)
+                                                })}
+                                            </Text>
                                             <Text className={s.sub}>{exp.location}</Text>
 
                                             <div className={mergeClasses(s.description, isHovered && s.descriptionVisible)}>

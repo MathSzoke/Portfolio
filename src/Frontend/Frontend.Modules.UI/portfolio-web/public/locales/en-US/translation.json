@@ -42,6 +42,36 @@
         "descriptionTitle": "Main activities",
         "items": [
           {
+            "company": "XP Inc",
+            "logo": "/assets/experiences_logos/xp_logo.png",
+            "role": "Software Engineer III",
+            "startDate": "2026-01-19",
+            "period": "Jan 2026 - Present · {{timerWorking}}",
+            "location": "Vila Olímpia, São Paulo, Brazil · Remote",
+            "description": [
+              "Migration and consolidation of legacy services into centralized platform components, improving architectural consistency and maintainability.",
+              "Development and maintenance of high-reliability backend services supporting the investment ecosystem.",
+              "Involvement in production reliability activities, including service validation, operational readiness and pre-release stabilization.",
+              "Investigation and resolution of production incidents related to financial mechanisms such as cashback and reward systems.",
+              "Ownership of operational improvements across multiple services, enhancing monitoring, stability and overall system quality.",
+              "Participation in architectural discussions and technical planning for scalable mission and rewards systems.",
+              "Full-cycle engineering approach with strong contribution to software quality, including testing strategies and reliability practices.",
+              "Collaboration in an Agile environment with active participation in planning, refinement sessions and backlog management."
+            ],
+            "techs": [
+              "C#",
+              ".NET",
+              "Backend Services",
+              "Microsoft Azure",
+              "Azure DevOps",
+              "CI/CD",
+              "Observability (Dynatrace, Grafana)",
+              "Testing Tools",
+              "Architecture & Design",
+              "Problem Solving"
+            ]
+          },
+          {
             "company": "Banco Bradesco (via Syscode)",
             "logo": "/assets/experiences_logos/bradesco_logo.png",
             "role": "Software Engineer",

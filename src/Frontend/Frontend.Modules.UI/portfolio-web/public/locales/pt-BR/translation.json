@@ -42,6 +42,36 @@
         "descriptionTitle": "Principais atividades",
         "items": [
           {
+            "company": "XP Inc",
+            "logo": "/assets/experiences_logos/xp_logo.png",
+            "role": "Engenheiro de Software III",
+            "startDate": "2026-01-19",
+            "period": "Jan 2026 - Atual · {{timerWorking}}",
+            "location": "Vila Olímpia, São Paulo, Brasil · Remoto",
+            "description": [
+              "Migração e consolidação de serviços legados para componentes centralizados, aumentando consistência arquitetural e manutenibilidade.",
+              "Desenvolvimento e manutenção de serviços backend críticos voltados ao ecossistema de investimentos.",
+              "Atuação em confiabilidade de produção, incluindo validação de serviços, readiness operacional e estabilização pré-release.",
+              "Investigação e resolução de incidentes em produção relacionados a mecanismos financeiros como cashback e recompensas.",
+              "Responsabilidade por melhorias operacionais em múltiplos serviços, elevando monitoramento, estabilidade e qualidade geral.",
+              "Participação ativa em discussões arquiteturais e planejamento técnico de sistemas de missão e rewards em larga escala.",
+              "Atuação full cycle com forte colaboração em qualidade de software, incluindo estratégias de testes e garantia de confiabilidade.",
+              "Trabalho em ambiente ágil com participação em planning, refinamento técnico/negócio e gestão de backlog."
+            ],
+            "techs": [
+              "C#",
+              ".NET",
+              "Backend Services",
+              "Microsoft Azure",
+              "Azure DevOps",
+              "CI/CD",
+              "Observability (Dynatrace, Grafana)",
+              "Testing Tools",
+              "Architecture & Design",
+              "Problem Solving"
+            ]
+          },
+          {
             "company": "Banco Bradesco (via Syscode)",
             "logo": "/assets/experiences_logos/bradesco_logo.png",
             "role": "Engenheiro de Software",
