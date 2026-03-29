@@ -105,7 +105,7 @@ const useStyles = makeStyles({
     },
     descriptionVisible: {
         opacity: 1,
-        maxHeight: 400,
+        maxHeight: '10.5rem',
         padding: '12px 0',
         transform: 'translateY(0)'
     },
@@ -322,7 +322,7 @@ export default function AboutSection() {
                                                 <Text weight="semibold" style={{ padding: 8, marginBottom: 8 }}>
                                                     {t('about.sections.experiences.descriptionTitle', 'Main activities')}
                                                 </Text>
-                                                <ul style={{ padding: '0 40px 10px', margin: 0 }}>
+                                                <ul style={{ padding: '0 40px 10px', margin: 0, overflowY: 'auto' }}>
                                                     {(exp.description || []).map((desc, idx) => (
                                                         <li key={idx}>
                                                             <Text size={200}>{desc}</Text>
