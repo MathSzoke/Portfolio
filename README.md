@@ -68,7 +68,7 @@ src/
  │                                     - Erros de domínio, Result types base, BaseEntity, etc.
  │                                     - Zero dependência de infraestrutura/UI; só C# puro
 
- ├─ Backend/Portfolio.Infrastructure/ → Camada de Infraestrutura (implementações técnicas)
+ ├─ src/Infrastructure/Portfolio.Infrastructure/ → Camada de Infraestrutura (implementações técnicas)
  │                                     - EF Core (DbContext, configurations), repositórios concretos
  │                                     - Migrations (se não estiverem em Infra.Database)
  │                                     - Integrações externas (Azure, fila/mensageria, email, cache, storage)
@@ -76,21 +76,16 @@ src/
  │                                     - Implementações de portas da Application (ex.: IEmailSender)
  │                                     - Depende de Domain e expõe implementações para Application/API
 
- ├─ Backend/Portfolio.AIAgent/        → Serviço de IA (em desenvolvimento)
+ ├─ src/Services/Portfolio.AIAgent/   → Serviço de IA (em desenvolvimento)
  │                                     - Adapters para modelos (ex.: Ollama e GPT para produção)
  │                                     - Endpoints internos/Worker para tarefas de IA
  │                                     - Pipelines de prompt, ferramentas/agents, caching de respostas
 
- ├─ Frontend/Frontend.Modules.UI/     → Interface Web (React + Fluent UI)
- │                                     - Páginas/Seções (About, Projects), i18n, temas
- │                                     - Componentes UI (carrossel, badges, cards)
- │                                     - Integração com API, roteamento, animações
-
- ├─ Infrastructure/Infra.Database/    → Projeto de Banco (opcional/separado)
+ ├─ src/Infrastructure/Infra.Database/ → Projeto de Banco (opcional/separado)
  │                                     - Migrações EF Core isoladas
  │                                     - Scripts SQL, seeds, utilitários para DB
 
- └─ SharedKernel/                     → Núcleo compartilhado
+ └─ src/Shared/SharedKernel/          → Núcleo compartilhado
                                        - Tipos utilitários (Result<T>, Error, Paginação)
                                        - Abstrações base (BaseEntity, DomainEvent, IHasDomainEvents)
                                        - Contratos comuns (ex.: IDateTime, IGuidGenerator)
