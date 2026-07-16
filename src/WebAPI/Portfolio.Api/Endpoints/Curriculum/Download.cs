@@ -1,17 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Portfolio.Api.Contracts.Curriculum;
 using Portfolio.Application.Abstractions.Data;
 
 namespace Portfolio.Api.Endpoints.Curriculum;
 
-internal sealed class Get : IEndpoint
+internal sealed class Download : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/v1/curriculum", async (
-                [FromQuery] string language,
-                HttpRequest request,
+        app.MapGet("api/v1/curriculum/{language}/file", async (
+                [FromRoute] string language,
                 [FromServices] IApplicationDbContext db,
                 CancellationToken ct) =>
             {
@@ -20,11 +18,15 @@ internal sealed class Get : IEndpoint
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Language == normalized, ct);
 
-                var url = asset is { FileContent.Length: > 0 }
-                    ? $"{request.Scheme}://{request.Host}/api/v1/curriculum/{normalized}/file?v={asset.UpdatedAt.Ticks}"
-                    : asset?.Url;
+                if (asset?.FileContent is not { Length: > 0 })
+                {
+                    return Results.NotFound();
+                }
 
-                return Results.Ok(new CurriculumAssetResponse(normalized, url ?? string.Empty));
+                return Results.File(
+                    asset.FileContent,
+                    asset.ContentType ?? "application/pdf",
+                    enableRangeProcessing: true);
             })
             .WithTags(Tags.Curriculum);
     }

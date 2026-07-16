@@ -38,6 +38,10 @@ internal sealed class Update : IEndpoint
                     asset.Url = request.Url.Trim();
                 }
 
+                asset.FileContent = null;
+                asset.FileName = null;
+                asset.ContentType = null;
+
                 await db.SaveChangesAsync(ct);
                 return Results.NoContent();
             })

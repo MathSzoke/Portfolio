@@ -10,7 +10,9 @@ internal sealed class CurriculumAssetConfig : IEntityTypeConfiguration<Curriculu
     {
         b.HasKey(x => x.Id);
         b.Property(x => x.Language).HasMaxLength(16).IsRequired();
-        b.Property(x => x.Url).HasMaxLength(2048).IsRequired();
+        b.Property(x => x.Url).HasMaxLength(2048);
+        b.Property(x => x.FileName).HasMaxLength(256);
+        b.Property(x => x.ContentType).HasMaxLength(128);
         b.HasIndex(x => x.Language).IsUnique();
         b.HasQueryFilter(x => !x.IsDeleted);
     }
