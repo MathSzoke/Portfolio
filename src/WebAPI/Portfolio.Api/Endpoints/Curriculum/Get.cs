@@ -22,11 +22,20 @@ internal sealed class Get : IEndpoint
 
                 var url = asset is { FileContent.Length: > 0 }
                     ? $"{request.Scheme}://{request.Host}/api/v1/curriculum/{normalized}/file?v={asset.UpdatedAt.Ticks}"
-                    : asset?.Url;
+                    : NormalizeStoredUrl(asset?.Url);
 
                 return Results.Ok(new CurriculumAssetResponse(normalized, url ?? string.Empty));
             })
             .WithTags(Tags.Curriculum);
+    }
+
+    private static string? NormalizeStoredUrl(string? url)
+    {
+        return url is not null &&
+               url.Contains("res.cloudinary.com", StringComparison.OrdinalIgnoreCase) &&
+               url.Contains("/raw/upload/", StringComparison.OrdinalIgnoreCase)
+            ? null
+            : url;
     }
 
     private static string NormalizeLanguage(string? language)
