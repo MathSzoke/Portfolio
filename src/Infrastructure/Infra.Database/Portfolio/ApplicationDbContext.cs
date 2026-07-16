@@ -4,6 +4,7 @@ using Portfolio.Application.Abstractions.Data;
 using Portfolio.Domain.Auth;
 using Portfolio.Domain.Chats;
 using Portfolio.Domain.Curriculum;
+using Portfolio.Domain.Experiences;
 using Portfolio.Domain.Projects;
 using Portfolio.Domain.Users;
 using SharedKernel;
@@ -29,6 +30,7 @@ public class ApplicationDbContext(
     public DbSet<ChatMessage> ChatMessages => this.Set<ChatMessage>();
     public DbSet<EmailOutbox> EmailOutbox => this.Set<EmailOutbox>();
     public DbSet<CurriculumAsset> CurriculumAssets => this.Set<CurriculumAsset>();
+    public DbSet<ExperienceItem> ExperienceItems => this.Set<ExperienceItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

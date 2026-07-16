@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Auth;
 using Portfolio.Domain.Curriculum;
+using Portfolio.Domain.Experiences;
 using Portfolio.Domain.Projects;
 using Portfolio.Domain.Chats;
 using Portfolio.Domain.Users;
@@ -21,6 +22,7 @@ public interface IApplicationDbContext
     DbSet<ChatMessage> ChatMessages { get; }
     DbSet<EmailOutbox> EmailOutbox { get; }
     DbSet<CurriculumAsset> CurriculumAssets { get; }
+    DbSet<ExperienceItem> ExperienceItems { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

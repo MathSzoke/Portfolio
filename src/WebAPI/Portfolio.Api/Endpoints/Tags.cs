@@ -8,4 +8,5 @@ public static class Tags
     public const string Projects = "Projects";
     public const string Presence = "Presence";
     public const string Curriculum = "Curriculum";
+    public const string Experiences = "Experiences";
 }
