@@ -51,5 +51,19 @@ internal sealed class Status : IEndpoint
             })
             .WithTags(Tags.Chat)
             .RequireAuthorization("SuperAdminOnly");
+
+        app.MapDelete("api/v1/chat/sessions/{sessionId:guid}", async (
+                [FromRoute] Guid sessionId,
+                [FromServices] ICommandHandler<DeleteSessionCommand> deleteHandler,
+                CancellationToken ct) =>
+            {
+                var cmd = new DeleteSessionCommand(sessionId);
+                var result = await deleteHandler.Handle(cmd, ct);
+                return result.Match(
+                    Results.NoContent,
+                    CustomResults.Problem);
+            })
+            .WithTags(Tags.Chat)
+            .RequireAuthorization();
     }
 }

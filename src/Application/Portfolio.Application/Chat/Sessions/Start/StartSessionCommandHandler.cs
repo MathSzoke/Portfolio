@@ -21,7 +21,10 @@ internal sealed class StartSessionCommandHandler(
 
         var existing = await db.ChatSessions
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.SenderId == senderId && x.RecipientId == cmd.RecipientId && x.Status == SessionStatus.Open, ct);
+            .FirstOrDefaultAsync(x =>
+                x.Status == SessionStatus.Open &&
+                ((x.SenderId == senderId && x.RecipientId == cmd.RecipientId) ||
+                 (x.SenderId == cmd.RecipientId && x.RecipientId == senderId)), ct);
 
         if (existing is not null)
         {

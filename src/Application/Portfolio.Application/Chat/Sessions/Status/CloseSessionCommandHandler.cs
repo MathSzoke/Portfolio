@@ -48,3 +48,25 @@ internal sealed class ReopenSessionCommandHandler(IApplicationDbContext db) : IC
         return Result.Success();
     }
 }
+
+internal sealed class DeleteSessionCommandHandler(
+    IApplicationDbContext db,
+    ICurrentUserContext currentUser
+) : ICommandHandler<DeleteSessionCommand>
+{
+    public async Task<Result> Handle(DeleteSessionCommand cmd, CancellationToken ct)
+    {
+        var userId = currentUser.UserIdGuid;
+        if (userId == Guid.Empty) return Result.Failure(ChatErrors.Unauthorized);
+
+        var s = await db.ChatSessions.FirstOrDefaultAsync(x => x.Id == cmd.SessionId, ct);
+        if (s is null) return Result.Failure(ChatErrors.SessionNotFound(cmd.SessionId));
+
+        if (s.SenderId != userId && s.RecipientId != userId) return Result.Failure(ChatErrors.Forbidden);
+
+        db.ChatSessions.Remove(s);
+        await db.SaveChangesAsync(ct);
+
+        return Result.Success();
+    }
+}
