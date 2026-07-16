@@ -24,14 +24,14 @@ builder.Services
     .AddPresentation()
     .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddAiAgent(builder.Configuration);
+builder.Services.AddAiAgent(builder.Configuration, builder.Environment);
 
 builder.AddNpgsqlDbContext<ApplicationDbContext>("portfolioDB", configureDbContextOptions: options =>
 {
     options.EnableDetailedErrors();
 });
 
-builder.Services.AddCorsServices(builder.Configuration);
+builder.Services.AddCorsServices(builder.Configuration, builder.Environment);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();

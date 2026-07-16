@@ -7,12 +7,14 @@ on:
   workflow_dispatch:
   
 jobs:
-  build-test-publish:
+  build-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-dotnet@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
@@ -33,8 +35,20 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Testing
 
+  publish:
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
       - name: Publish
-        run: dotnet publish ./src/WebAPI/Portfolio.Api/Portfolio.Api.csproj -c Release -o "$GITHUB_WORKSPACE/publish" --no-build
+        run: dotnet publish ./src/WebAPI/Portfolio.Api/Portfolio.Api.csproj -c Release -o "$GITHUB_WORKSPACE/publish"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -44,7 +58,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-test-publish
+    needs: publish
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Download artifact

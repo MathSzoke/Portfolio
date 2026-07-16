@@ -5,11 +5,11 @@ namespace Infra.AIClient;
 
 internal sealed class PortfolioAIClient(HttpClient http) : IAgentResponder
 {
-    public async Task<string> GenerateReplyAsync(Guid sessionId, string name, string lastMessage)
+    public async Task<string> GenerateReplyAsync(IEnumerable<ChatTurn> history, string message, CancellationToken ct = default)
     {
-        var res = await http.PostAsJsonAsync("/api/v1/agent/reply", new { sessionId, name, lastMessage });
+        var res = await http.PostAsJsonAsync("/api/v1/agent/reply", new { history, message }, ct);
         if (!res.IsSuccessStatusCode) return "Desculpe, estou offline no momento.";
-        var body = await res.Content.ReadFromJsonAsync<ReplyResponse>();
+        var body = await res.Content.ReadFromJsonAsync<ReplyResponse>(cancellationToken: ct);
         return body?.Reply ?? "Desculpe, estou offline no momento.";
     }
 

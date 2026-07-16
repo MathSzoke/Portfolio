@@ -23,6 +23,8 @@ public sealed class HealthEndpointTests : IClassFixture<WebApplicationFactory<Pr
                     ["Jwt:Secret"] = "local-functional-tests-secret-key-with-enough-length",
                     ["Jwt:Issuer"] = "Portfolio.FunctionalTests",
                     ["Jwt:Audience"] = "Portfolio.FunctionalTests",
+                    ["OpenAI:ApiKey"] = "functional-tests-placeholder",
+                    ["PORTFOLIO_FRONTEND"] = "http://localhost",
                     ["ConnectionStrings:portfolioDB"] = "Host=localhost;Database=portfolio_tests;Username=postgres;Password=postgres"
                 });
             });
