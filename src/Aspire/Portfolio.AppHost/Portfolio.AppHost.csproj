@@ -23,8 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Frontend\Frontend.Modules.UI\portfolio-web\Portfolio.Web.esproj" />
-      <ProjectReference Include="..\..\Modules\Portfolio\Portfolio.Api\Portfolio.Api.csproj" />
+      <ProjectReference Include="..\..\WebAPI\Portfolio.Api\Portfolio.Api.csproj" />
       <ProjectReference Include="..\..\Services\Portfolio.AIAgent\Portfolio.AIAgent.csproj" />
     </ItemGroup>
 
