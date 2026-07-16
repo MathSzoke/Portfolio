@@ -17,5 +17,7 @@ public sealed class ExperienceItem : Entity
     public string[] DescriptionEnUs { get; set; } = [];
     public string[] Techs { get; set; } = [];
     public string? StartDate { get; set; }
+    public string? EndDate { get; set; }
+    public bool IsPresent { get; set; }
     public int SortOrder { get; set; }
 }

@@ -336,6 +336,13 @@ namespace Infra.Database.Migrations.Application
                         .IsRequired()
                         .HasColumnType("text[]");
 
+                    b.Property<string>("EndDate")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 

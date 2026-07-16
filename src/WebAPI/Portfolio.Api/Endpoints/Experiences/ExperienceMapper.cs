@@ -20,6 +20,8 @@ internal static class ExperienceMapper
             useEnglish ? item.DescriptionEnUs : item.DescriptionPtBr,
             item.Techs,
             item.StartDate,
+            item.EndDate,
+            item.IsPresent,
             item.SortOrder,
             new ExperienceItemTranslations(
                 new ExperienceItemTranslation(item.RolePtBr, item.PeriodPtBr, item.LocationPtBr, item.DescriptionPtBr),
@@ -45,6 +47,8 @@ internal static class ExperienceMapper
         item.LogoUrl = request.LogoUrl.Trim();
         item.Techs = CleanArray(request.Techs);
         item.StartDate = string.IsNullOrWhiteSpace(request.StartDate) ? null : request.StartDate.Trim();
+        item.EndDate = string.IsNullOrWhiteSpace(request.EndDate) ? null : request.EndDate.Trim();
+        item.IsPresent = request.IsPresent;
         item.SortOrder = request.SortOrder;
 
         if (source == "en-US")

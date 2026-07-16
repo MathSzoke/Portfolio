@@ -21,6 +21,7 @@ internal sealed class ExperienceItemConfig : IEntityTypeConfiguration<Experience
         b.Property(x => x.DescriptionEnUs).HasColumnType("text[]").IsRequired();
         b.Property(x => x.Techs).HasColumnType("text[]").IsRequired();
         b.Property(x => x.StartDate).HasMaxLength(32);
+        b.Property(x => x.EndDate).HasMaxLength(32);
         b.HasIndex(x => x.SortOrder);
         b.HasQueryFilter(x => !x.IsDeleted);
     }

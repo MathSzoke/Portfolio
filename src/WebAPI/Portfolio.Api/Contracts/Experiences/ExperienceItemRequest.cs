@@ -10,4 +10,6 @@ public sealed record ExperienceItemRequest(
     string[] Description,
     string[] Techs,
     string? StartDate,
+    string? EndDate,
+    bool IsPresent,
     int SortOrder);

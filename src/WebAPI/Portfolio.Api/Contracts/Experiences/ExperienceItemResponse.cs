@@ -10,6 +10,8 @@ public sealed record ExperienceItemResponse(
     string[] Description,
     string[] Techs,
     string? StartDate,
+    string? EndDate,
+    bool IsPresent,
     int SortOrder,
     ExperienceItemTranslations Translations);
 
