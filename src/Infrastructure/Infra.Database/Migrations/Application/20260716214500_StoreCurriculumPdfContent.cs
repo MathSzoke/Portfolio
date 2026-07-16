@@ -1,3 +1,5 @@
+using Infra.Database.Portfolio;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -5,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infra.Database.Migrations.Application
 {
     /// <inheritdoc />
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260716214500_StoreCurriculumPdfContent")]
     public partial class StoreCurriculumPdfContent : Migration
     {
