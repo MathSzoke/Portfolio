@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Abstractions.Data;
 using Portfolio.Domain.Auth;
 using Portfolio.Domain.Chats;
+using Portfolio.Domain.Curriculum;
 using Portfolio.Domain.Projects;
 using Portfolio.Domain.Users;
 using SharedKernel;
@@ -27,6 +28,7 @@ public class ApplicationDbContext(
     public DbSet<ChatSession> ChatSessions => this.Set<ChatSession>();
     public DbSet<ChatMessage> ChatMessages => this.Set<ChatMessage>();
     public DbSet<EmailOutbox> EmailOutbox => this.Set<EmailOutbox>();
+    public DbSet<CurriculumAsset> CurriculumAssets => this.Set<CurriculumAsset>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
