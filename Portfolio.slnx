@@ -1,43 +1,41 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".github/workflows/api.yml" />
-    <File Path=".github/workflows/frontend.yml" />
     <File Path=".gitignore" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
     <File Path="src\Directory.Packages.props" />
   </Folder>
+  <Folder Name="/src/Application/">
+    <Project Path="src\Application\Portfolio.Application\Portfolio.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/">
+    <Project Path="src\Domain\Portfolio.Domain\Portfolio.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src\Infrastructure\Infra.AIClient\Infra.AIClient.csproj" />
+    <Project Path="src\Infrastructure\Infra.Database\Infra.Database.csproj" />
+    <Project Path="src\Infrastructure\Infra.Email\Infra.Email.csproj" />
+    <Project Path="src\Infrastructure\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/WebAPI/">
+    <Project Path="src\WebAPI\Portfolio.Api\Portfolio.Api.csproj" />
+  </Folder>
   <Folder Name="/src/Aspire/">
     <Project Path="src\Aspire\Portfolio.AppHost\Portfolio.AppHost.csproj" />
     <Project Path="src\Aspire\Portfolio.ServiceDefaults\Portfolio.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/src/Frontend/" />
-  <Folder Name="/src/Frontend/Frontend.Modules.UI/">
-    <Project Path="src\Frontend\Frontend.Modules.UI\portfolio-web\Portfolio.Web.esproj">
-      <Build />
-      <Deploy />
-    </Project>
-  </Folder>
-  <Folder Name="/src/Infrastructure/" />
-  <Folder Name="/src/Infrastructure/Infra.Database/">
-    <Project Path="src/Infrastructure/Infra.Database/Infra.Database.csproj" />
-  </Folder>
-  <Folder Name="/src/Infrastructure/Infra.Email/">
-    <Project Path="src/Infrastructure/Infra.Email/Infra.Email.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/" />
-  <Folder Name="/src/Modules/Portfolio/">
-    <Project Path="src/Modules/Portfolio/Portfolio.Api/Portfolio.Api.csproj" />
-    <Project Path="src/Modules/Portfolio/Portfolio.Application/Portfolio.Application.csproj" />
-    <Project Path="src/Modules/Portfolio/Portfolio.Domain/Portfolio.Domain.csproj" />
-    <Project Path="src/Modules/Portfolio/Portfolio.Infrastructure/Portfolio.Infrastructure.csproj" />
-  </Folder>
   <Folder Name="/src/Services/">
-    <Project Path="src/Services/Portfolio.AIAgent/Portfolio.AIAgent.csproj" />
+    <Project Path="src\Services\Portfolio.AIAgent\Portfolio.AIAgent.csproj" />
   </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="src\Shared\Shared.Api.Infrastructure\Shared.Api.Infrastructure.csproj" />
     <Project Path="src\Shared\SharedKernel\SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\UnitTests\Portfolio.UnitTests.csproj" />
+    <Project Path="tests\IntegratedTests\Portfolio.IntegratedTests.csproj" />
+    <Project Path="tests\FunctionalTests\Portfolio.FunctionalTests.csproj" />
   </Folder>
 </Solution>
