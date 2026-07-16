@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infra.Database.Migrations.Application
 {
     /// <inheritdoc />
+    [Migration("20260716214500_StoreCurriculumPdfContent")]
     public partial class StoreCurriculumPdfContent : Migration
     {
         /// <inheritdoc />
